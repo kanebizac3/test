@@ -16,7 +16,12 @@
         {% for comment in comments %}
             <div class="comment">
                 {{ forloop.counter }}, &ensp;
-                {{ comment.author }}, &ensp;
+                {% if comment.author != 'shohei' %}
+                管理人
+                {% else %}
+                {{ comment.author }}
+                {% endif %}
+                &ensp;
                 {{ comment.created_date }}
                 <p>{{ comment.text|linebreaksbr }}</p>
             </div>
