@@ -10,4 +10,24 @@
         <h2>{{ post.title }}</h2>
         <p>{{ post.text|linebreaksbr }}</p>
     </div>
+
+    <div class="comment">
+        <h2>Comments</h2>
+        {% for comment in comments %}
+            <div class="comment">
+                {{ forloop.counter }}, &ensp;
+                {{ comment.author }}, &ensp;
+                {{ comment.created_date }}
+                <p>{{ comment.text|linebreaksbr }}</p>
+            </div>
+        {% endfor %}
+        
+        <h2>Add a comment</h2>
+        <form method="POST" class="post-form">{% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="save btn btn-default">Save</button>
+        </form>
+    
+    </div>
+
 {% endblock %}
