@@ -3,6 +3,7 @@ from django.utils import timezone
 from .models import Post, Comments
 from .forms import PostForm, CommentsForm
 from django.shortcuts import redirect
+from django.contrib.auth.models import User
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
@@ -15,7 +16,11 @@ def post_detail(request, pk):
         form = CommentsForm(request.POST)
         if form.is_valid():
             comments = form.save(commit=False)
-            comments.author = request.user
+            if request.user.is_authenticated:
+                comments.author = request.user
+            else:
+                # 認証されていない場合は特定のユーザーを割り当て（例：ユーザー名が"guest"のユーザー）
+                comments.author, created = User.objects.get_or_create(username="guest")
             comments.title = post.title
             comments.created_date = timezone.now()
             comments.save()
@@ -29,7 +34,11 @@ def post_new(request):
         form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
-            post.author = request.user
+            if request.user.is_authenticated:
+                post.author = request.user
+            else:
+                # 認証されていない場合は特定のユーザーを割り当て（例：ユーザー名が"guest"のユーザー）
+                post.author, created = User.objects.get_or_create(username="guest")
             post.published_date = timezone.now()
             post.save()
             return redirect('post_detail', pk=post.pk)
