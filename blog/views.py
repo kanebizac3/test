@@ -36,3 +36,9 @@ def post_new(request):
     else:
         form = PostForm()
     return render(request, 'blog/post_edit.html', {'form': form})
+
+def top(request):
+    return render(request, 'blog/top.html', {})
+
+def life(request):
+    return render(request, 'blog/life.html', {})

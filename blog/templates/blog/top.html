@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>トップページ</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>中島ナビ</h1>
+            <nav>
+                <ul>
+                    <li><a href="#">🏠</a></li>
+                    <li><a href="#">☎️</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <p>つながる、育てる、中島ナビ</p>
+                <a href="{% url 'post_list' %}" class="btn">チャットを使ってみる</a>
+            </div>
+        </section>
+
+        <section class="services">
+            <div class="container">
+                <h2>サービス紹介</h2>
+                <div class="service-list">
+                    <div class="service-item">
+                        <a href="{% url 'post_list' %}"><h3>掲示板</h3></a>
+                        <p>住民の皆さんが相談できるチャット機能です。安心して相談できる機能を実装していきます。</p>
+                    </div>
+                    <div class="service-item">
+                        <div class="life"><a href="{% url 'life' %}"><h3>暮らし</h3></a></div>
+                        <p>天気、ごみ収集日、皆様の暮らしに役立つ情報を網羅しています。</p>
+                    </div>
+                    <div class="service-item">
+                        <h3>解析(準備中)</h3>
+                        <p>掲示板を解析し、住民の需要や関心ごとを解析します。中島の環境整備や行政への働きかけを行なっていきます</p>
+                    </div>
+                    <div class="service-item">
+                        <h3>相談</h3>
+                        <p>ユーザーみんなで育てるWebサービスを目指しています。追加して欲しい機能を募集します。</p>
+                    </div>
+                    <div class="service-item">
+                        <h3>引越し</h3>
+                        <p>中島に引っ越すことを考え中の方に役立つ情報を載せています。</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+    <style>.max_temp{display:inline-block !important}.min_temp{display:inline-block !important}.temp{display:block !important}.rain_s{display:block !important}.pop-rain{undefined}.speed-wind{undefined}.deg-wind{undefined}.w_snow{undefined}.w_bg{background:linear-gradient(to right,#ff5722, #fff)}</style><link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.12/css/weather-icons.min.css"><link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.12/css/weather-icons-wind.css"><link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet"><script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><script type="text/javascript">weather_value=7;lat = 34.711388;lon =135.456116;inputText1 = "大阪府大阪市西淀川区";search_add = "大阪府大阪市西淀川区";</script><script src="https://sitecreation.co.jp/wp-content/themes/sango-theme-child/tpl/weather.js"></script><link id="PageStyleSheet" rel="stylesheet" href="https://sitecreation.co.jp/wp-content/themes/sango-theme-child/tpl/style.css"><div id="weather-wrapper"><div id="weather1"></div><div id="weather2"></div></div>
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Nakajima-Navi.com</p>
+        </div>
+    </footer>
+</body>
+</html>

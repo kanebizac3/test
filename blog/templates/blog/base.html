@@ -1,5 +1,6 @@
 {% load static %}
 <html>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <head>
         <title>>Nakajima Channels</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
@@ -12,6 +13,7 @@
             <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
             <h1><a href="/">Nakajima Channels</a></h1>
         </div>
+        <div><a href="{% url 'top' %}">中島ナビへ>></a></div>
         <div class="content container">
             <div class="row">
                 <div class="col-md-8">
@@ -21,4 +23,12 @@
             </div>
         </div>
     </body>
+    <footer style="background-color: #333; color: #fff; padding: 30px; text-align: center;">
+        <div style="margin-bottom: 20px;">
+          <a href="#" style="color: #fff; margin: 0 10px;"><i class="fab fa-twitter"></i></a>
+          <a href="#" style="color: #fff; margin: 0 10px;"><i class="fab fa-facebook"></i></a>
+          <a href="#" style="color: #fff; margin: 0 10px;"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p>&copy; 2025 Nakajima-navi | <a href="#" style="color: #fff;">プライバシーポリシー</a> | <a href="#" style="color: #fff;">利用規約</a></p>
+      </footer>
 </html>
