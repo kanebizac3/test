@@ -51,6 +51,16 @@ h1, h2, h3, h4 {
     color: #000000;
 }
 
+.comment_data h5 {
+    font-size: 0.5em;
+    color: #828282;
+}
+
+.comment_contents h5 {
+    font-size: 1 em;
+    color:#000000;
+}
+
 /* スマホ向け (最大幅767px) */
 @media (max-width: 767px) {
     .page-header {

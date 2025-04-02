@@ -14,8 +14,8 @@
     <div class="comment">
         <h2>Comments</h2>
         {% for comment in comments %}
-            <div class="comment">
-                {{ forloop.counter }}, &ensp;
+            <div class="comment_data">
+                <h5>{{ forloop.counter }}, &ensp;
                 {% if comment.author != 'shohei' %}
                 匿名
                 {% else %}
@@ -23,7 +23,10 @@
                 {% endif %}
                 &ensp;
                 {{ comment.created_date }}
-                <p>{{ comment.text|linebreaksbr }}</p>
+                </h5>
+            </div>
+            <div class="comment_contents">
+                <h5 class="comment_text">{{ comment.text|linebreaksbr }}</h5>
             </div>
         {% endfor %}
         

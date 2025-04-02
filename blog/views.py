@@ -51,3 +51,6 @@ def top(request):
 
 def life(request):
     return render(request, 'blog/life.html', {})
+
+def analytic(request):
+    return render(request, 'blog/analytic.html', {})
