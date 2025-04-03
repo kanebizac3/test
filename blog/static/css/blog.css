@@ -51,6 +51,13 @@ h1, h2, h3, h4 {
     color: #000000;
 }
 
+.post_list_contents {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5; /* 表示する行数を指定 */
+    overflow: hidden;
+}
+
 .comment_data h5 {
     font-size: 0.5em;
     color: #828282;
