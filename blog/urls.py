@@ -8,5 +8,6 @@ urlpatterns = [
     path('top', views.top, name='top'),
     path('top/life', views.life, name='life'),
     path('top/analytic', views.analytic, name='analytic'),
-
+    path('policy', views.policy, name='policy'),
+    path('term', views.term, name='term'),
 ]

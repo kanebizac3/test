@@ -54,3 +54,10 @@ def life(request):
 
 def analytic(request):
     return render(request, 'blog/analytic.html', {})
+
+def policy(request):
+    return render(request, 'blog/plibacypolicy.html', {})
+
+def term(request):
+    return render(request, 'blog/terms_of_use.html', {})
+

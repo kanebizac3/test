@@ -15,7 +15,7 @@
     </head>
     <body>
         <div class="page-header">
-            <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+            <a href="{% url 'post_new' %}" class="top-menu"><h5>new post   <span class="glyphicon glyphicon-plus"></span></h5></a>
             <h1><a href="/">Nakajima Channels</a></h1>
         </div>
         <div class="content container"><a href="{% url 'top' %}">中島ナビへ>></a></div>
@@ -34,6 +34,6 @@
           <a href="#" style="color: #fff; margin: 0 10px;"><i class="fab fa-facebook"></i></a>
           <a href="#" style="color: #fff; margin: 0 10px;"><i class="fab fa-instagram"></i></a>
         </div>
-        <p>&copy; 2025 Nakajima-navi | <a href="#" style="color: #fff;">プライバシーポリシー</a> | <a href="#" style="color: #fff;">利用規約</a></p>
+        <p>&copy; 2025 Nakajima-navi | <a href="{% url 'policy' %}" style="color: #fff;">プライバシーポリシー</a> | <a href="{% url 'term' %}" style="color: #fff;">利用規約</a></p>
       </footer>
 </html>
