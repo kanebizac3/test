@@ -12,11 +12,19 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <link href='https://fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap" rel="stylesheet">
+        <style>
+            .page-header h5 {
+                font-family: 'Hachi Maru Pop', cursive;
+            }
+        </style>
     </head>
     <body>
         <div class="page-header">
             <a href="{% url 'post_new' %}" class="top-menu"><h5>new post   <span class="glyphicon glyphicon-plus"></span></h5></a>
-            <h1><a href="/">Nakajima Channels</a></h1>
+            <h1><a href="/">Nakajima Channels</a></h1><h5>ナカジマチャンネル</h5>
         </div>
         <div class="content container"><a href="{% url 'top' %}">中島ナビへ>></a></div>
         <div class="content container">

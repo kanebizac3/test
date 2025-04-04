@@ -11,6 +11,12 @@
     font-size: 2em; /* 相対的なフォントサイズ */
     text-decoration: none;
 }
+.page-header h5 {
+    color: #ffffff;
+    font-size: 0.8 em; /* 相対的なフォントサイズ */
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-decoration: none;
+}
 
 .content {
     padding: 20px; /* 左右のパディングを調整 */
