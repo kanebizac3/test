@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
+from django import forms
+from django.core.validators import RegexValidator
 
 
 class Post(models.Model):
@@ -29,3 +31,19 @@ class Comments(models.Model):
 
     def __str__(self):
         return self.title
+    
+
+class GasolineOwada(models.Model):
+    regular = models.CharField(max_length=3,
+        validators=[RegexValidator(r'^\d{3}$', message='3桁の数字')]
+    )
+    deisel = models.CharField(max_length=3,
+        validators=[RegexValidator(r'^\d{3}$', message='3桁の数字')]
+    )
+    created_date = models.DateTimeField(default=timezone.now)
+
+    def publish(self):
+        self.save()
+
+    def __str__(self):
+        return "Owada"

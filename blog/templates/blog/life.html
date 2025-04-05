@@ -24,30 +24,29 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>ガソリンスタンド</th>
-                            <th>レギュラー</th>
+                            <th>ガソスタ</th>
+                            <th>ガソリン</th>
                             <th>軽油</th>
                             <th>備考</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>大和田SS</td>
-                            <td>186円/L</td>
-                            <td>166円/L</td>
-                            <td>３or５円引きラインクーポンあり
-                                <a href="https://linevoom.line.me/user/_dRbpzc93B5im1BpmOKwLiDGljnjHUxt9u1tx2P4">line登録する</a>
+                            <td><a href="https://www.google.co.jp/maps/place/apollostation+%E5%A4%A7%E5%92%8C%E7%94%B0SS+%EF%BC%88%E3%82%BF%E3%82%AB%E3%82%BF%E3%82%A8%E3%83%8A%E3%82%B8%E3%83%BC%EF%BC%89/@34.7010574,135.430579,15z/data=!4m10!1m2!2m1!1z44Ks44K944Oq44Oz44K544K_44Oz44OJ!3m6!1s0x6000ef4450aae239:0x76a9a564e98c467e!8m2!3d34.7022078!4d135.4377675!15sChjjgqzjgr3jg6rjg7Pjgrnjgr_jg7Pjg4mSAQtnYXNfc3RhdGlvbuABAA!16s%2Fg%2F1tdm_d2j?hl=ja&entry=ttu&g_ep=EgoyMDI1MDQwMS4wIKXMDSoASAFQAw%3D%3D">大和田SS</a></td>
+                            <td>{{ latest.regular }}</td>
+                            <td>{{ latest.deisel }}</td>
+                            <td>
+                                <a href="https://linevoom.line.me/user/_dRbpzc93B5im1BpmOKwLiDGljnjHUxt9u1tx2P4">LINEクーポン有</a>
                             </td>
-                        </tr>
-                        <tr>
-                            <td>出来島SS</td>
-                            <td>？？</td>
-                            <td>？？</td>
-                            <td>セルフ</td>
                         </tr>
                     </tbody>
                 </table>
-                <p>上記はナカジマナビ調べ。<br>
+                <p>上記はナカジマナビ調べ。
+                <form method="POST" class="post-form">{% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="save btn btn-default">ガソリン価格の修正</button>
+                </form>
+                <br>
                     <a href="https://gogo.gs/">ガソリン価格を調べるならgogo.gs</a></p>
         
             </div>    

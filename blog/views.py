@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
-from .models import Post, Comments
-from .forms import PostForm, CommentsForm
+from .models import Post, Comments, GasolineOwada
+from .forms import PostForm, CommentsForm, GasolineOwadaForm
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
 
@@ -49,8 +49,21 @@ def post_new(request):
 def top(request):
     return render(request, 'blog/top.html', {})
 
+
 def life(request):
-    return render(request, 'blog/life.html', {})
+    if request.method == "POST":
+        form = GasolineOwadaForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.save()
+            latest = GasolineOwada.objects.latest('created_date')
+            render(request, 'blog/life.html', {'form': form, "latest": latest})
+    
+    else:
+        form = GasolineOwadaForm()
+        latest = GasolineOwada.objects.latest('created_date')
+    return render(request, 'blog/life.html', {'form': form, "latest": latest})
+
 
 def analytic(request):
     return render(request, 'blog/analytic.html', {})
