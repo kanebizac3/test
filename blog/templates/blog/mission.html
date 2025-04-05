@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+{% load static %}
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mission & Promise</title>
+  <link rel="stylesheet" href="{% static 'css/mission.css' %}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="{% url 'top' %}"><h1>中島ナビ</h1></a>
+        </div>
+    </header>
+     <section class="mission-section">
+        <img src="{% static 'img/mission&promise.png' %}" alt="ロゴ" class="logo">
+         <h1 class="title">Mission & Promise</h1>
+
+    <div class="content">
+      <h2>ミッション</h2>
+      <p>デジタルの力で、政治変革と地域の暮らしに新しい風を。<br>
+         私たちは、テクノロジーを通じて、市民一人ひとりの声を反映し、透明で公正な政治、そして豊かな地域社会の実現を目指します。</p>
+
+      <h2>プロミス</h2>
+      <ul>
+        <li><strong>生活：</strong> 地域住民の声に耳を傾け、誰もが安心して暮らせる社会を築きます。</li>
+        <li><strong>環境：</strong> 未来の世代に豊かな自然を残すために、持続可能な取り組みを推進します。</li>
+        <li><strong>人：</strong> すべての人の尊厳と多様性を尊重し、共に成長できるコミュニティを育みます。</li>
+      </ul>
+    </div>
+  </section>
+</body>
+</html>

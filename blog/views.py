@@ -61,3 +61,5 @@ def policy(request):
 def term(request):
     return render(request, 'blog/terms_of_use.html', {})
 
+def mission_promise(request):
+    return render(request, 'blog/mission.html', {})

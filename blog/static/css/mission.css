@@ -1,0 +1,57 @@
+body {
+    margin: 0;
+    font-family: "Helvetica Neue", sans-serif;
+    background-color: #fffaf5;
+    color: #333;
+  }
+  
+  .mission-section {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .logo {
+    width: 120px;
+    height: auto;
+    margin-bottom: 20px;
+  }
+  
+  .title {
+    font-size: 2rem;
+    color: #f2701d; /* オレンジ系 */
+    margin-bottom: 30px;
+  }
+  
+  .content h2 {
+    color: #f2701d;
+    margin-top: 30px;
+    font-size: 1.5rem;
+  }
+  
+  .content p {
+    line-height: 1.8;
+    margin-top: 10px;
+  }
+  
+  .content ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 20px;
+    text-align: left;
+  }
+  
+  .content li {
+    margin-bottom: 15px;
+    line-height: 1.6;
+  }
+  
+  .container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.container h1{
+    font-size : 1.0 rem;
+}
