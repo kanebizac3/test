@@ -48,7 +48,7 @@ def post_new(request):
                 post.author, created = User.objects.get_or_create(username="guest")
             if 'image' in request.FILES:
                 image = Image.open(request.FILES['image'])
-                if image.mode == 'RGBA': #RGBAモードの場合
+                if image.mode != 'RGB': #RGBAモードの場合
                    image = image.convert('RGB') #RGBモードへ変更
                 image.thumbnail((300, 300))  # 画像を300x300にリサイズ
                 buffer = io.BytesIO()
