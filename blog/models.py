@@ -35,10 +35,12 @@ class Comments(models.Model):
 
 class GasolineOwada(models.Model):
     regular = models.CharField(max_length=3,
-        validators=[RegexValidator(r'^\d{3}$', message='3桁の数字')]
+        validators=[RegexValidator(r'^\d{3}$', message='3桁の数字')],
+                    verbose_name='レギュラー',
     )
     deisel = models.CharField(max_length=3,
-        validators=[RegexValidator(r'^\d{3}$', message='3桁の数字')]
+        validators=[RegexValidator(r'^\d{3}$', message='3桁の数字')],
+                    verbose_name='軽油',
     )
     created_date = models.DateTimeField(default=timezone.now)
 

@@ -32,7 +32,8 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><a href="https://www.google.co.jp/maps/place/apollostation+%E5%A4%A7%E5%92%8C%E7%94%B0SS+%EF%BC%88%E3%82%BF%E3%82%AB%E3%82%BF%E3%82%A8%E3%83%8A%E3%82%B8%E3%83%BC%EF%BC%89/@34.7010574,135.430579,15z/data=!4m10!1m2!2m1!1z44Ks44K944Oq44Oz44K544K_44Oz44OJ!3m6!1s0x6000ef4450aae239:0x76a9a564e98c467e!8m2!3d34.7022078!4d135.4377675!15sChjjgqzjgr3jg6rjg7Pjgrnjgr_jg7Pjg4mSAQtnYXNfc3RhdGlvbuABAA!16s%2Fg%2F1tdm_d2j?hl=ja&entry=ttu&g_ep=EgoyMDI1MDQwMS4wIKXMDSoASAFQAw%3D%3D">大和田SS</a></td>
+                            <td><a href="https://www.google.co.jp/maps/place/%E3%80%92555-0043+%E5%A4%A7%E9%98%AA%E5%BA%9C%E5%A4%A7%E9%98%AA%E5%B8%82%E8%A5%BF%E6%B7%80%E5%B7%9D%E5%8C%BA%E5%A4%A7%E9%87%8E%EF%BC%91%E4%B8%81%E7%9B%AE%EF%BC%99%E2%88%92%EF%BC%97+%E3%82%B3%E3%82%B9%E3%83%A2%E7%9F%B3%E6%B2%B9+%E5%A4%A7%E5%92%8C%E7%94%B0+SS+(%E4%B8%B8%E4%BA%95%E5%95%86%E4%BC%9A)/@34.7020034,135.4387642,16z/data=!4m6!3m5!1s0x6000ef451d73d2d7:0xef7fac5bd3f5e496!8m2!3d34.7020034!4d135.4387642!16s%2Fg%2F1v8j0b37">
+                                大和田SS</a></td>
                             <td>{{ latest.regular }}</td>
                             <td>{{ latest.deisel }}</td>
                             <td>
@@ -41,7 +42,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <p>上記はナカジマナビ調べ。
+                <p>上記はナカジマナビ調べ。更新日：{{ latest.created_date|date:"Y/n/j" }}。
                 <form method="POST" class="post-form">{% csrf_token %}
                     {{ form.as_p }}
                     <button type="submit" class="save btn btn-default">ガソリン価格の修正</button>
@@ -93,7 +94,7 @@
                     </div>
 
             </div>
-            <div class="container">
+            <div class="container_center">
                 <h2>天気</h2>
                 <style>.max_temp{display:inline-block !important}.min_temp{display:inline-block !important}.temp{display:block !important}.rain_s{display:block !important}.pop-rain{undefined}.speed-wind{undefined}.deg-wind{undefined}.w_snow{undefined}.w_bg{background:linear-gradient(to right,#ff5722, #fff)}</style><link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.12/css/weather-icons.min.css"><link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.12/css/weather-icons-wind.css"><link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet"><script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><script type="text/javascript">weather_value=7;lat = 34.711388;lon =135.456116;inputText1 = "大阪府大阪市西淀川区";search_add = "大阪府大阪市西淀川区";</script><script src="https://sitecreation.co.jp/wp-content/themes/sango-theme-child/tpl/weather.js"></script><link id="PageStyleSheet" rel="stylesheet" href="https://sitecreation.co.jp/wp-content/themes/sango-theme-child/tpl/style.css"><div id="weather-wrapper"><div id="weather1"></div><div id="weather2"></div></div>
 

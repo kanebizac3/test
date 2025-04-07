@@ -8,6 +8,12 @@ body {
     margin: 0 auto;
 }
 
+.container_center{
+    width: 300px; /* 要素の幅を指定 */
+    margin: 0 auto;
+    text-align: center;
+}
+
 header {
     background-color: #333;
     color: #fff;
