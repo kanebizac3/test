@@ -3,7 +3,7 @@ from django.utils import timezone
 from .models import Post, Comments, GasolineOwada
 from .forms import PostForm, CommentsForm, GasolineOwadaForm
 from django.contrib.auth.models import User
-from PIL import Image
+# from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import io
 
@@ -45,15 +45,15 @@ def post_new(request):
             else:
                 # 認証されていない場合は特定のユーザーを割り当て（例：ユーザー名が"guest"のユーザー）
                 post.author, created = User.objects.get_or_create(username="guest")
-            if 'image' in request.FILES:
-                image = Image.open(request.FILES['image'])
-                if image.mode == 'RGBA': #RGBAモードの場合
-                   image = image.convert('RGB') #RGBモードへ変更
-                image.thumbnail((300, 300))  # 画像を300x300にリサイズ
-                buffer = io.BytesIO()
-                image.save(buffer, format='JPEG')  # JPEG形式で保存
-                post.image = InMemoryUploadedFile(buffer, None, 'thumb.jpg', 'image/jpeg',
-                                                    buffer.getbuffer().nbytes, None)
+            # if 'image' in request.FILES:
+            #     image = Image.open(request.FILES['image'])
+            #     if image.mode == 'RGBA': #RGBAモードの場合
+            #        image = image.convert('RGB') #RGBモードへ変更
+            #     image.thumbnail((300, 300))  # 画像を300x300にリサイズ
+            #     buffer = io.BytesIO()
+            #     image.save(buffer, format='JPEG')  # JPEG形式で保存
+            #     post.image = InMemoryUploadedFile(buffer, None, 'thumb.jpg', 'image/jpeg',
+            #                                         buffer.getbuffer().nbytes, None)
             post.updated_date = timezone.now()
             post.published_date = timezone.now()
             post.save()
