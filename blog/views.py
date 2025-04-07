@@ -6,7 +6,8 @@ from django.shortcuts import redirect
 from django.contrib.auth.models import User
 
 def post_list(request):
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    posts = Post.objects.order_by('-updated_date')
+
     return render(request, 'blog/post_list.html', {'posts': posts})
 
 def post_detail(request, pk):
@@ -22,7 +23,10 @@ def post_detail(request, pk):
                 # 認証されていない場合は特定のユーザーを割り当て（例：ユーザー名が"guest"のユーザー）
                 comments.author, created = User.objects.get_or_create(username="guest")
             comments.title = post.title
+            # ポストを更新する
+            post.updated_date = timezone.now()
             comments.created_date = timezone.now()
+            post.save()
             comments.save()
             return redirect('post_detail', pk=post.pk)
     else:
