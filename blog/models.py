@@ -12,7 +12,7 @@ class Post(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
     updated_date = models.DateTimeField(blank=True, null=True)
-    # image = models.ImageField(upload_to='img/', null=True, blank=True)  # 画像を保存するディレクトリを指定
+    image = models.ImageField(upload_to='img/', null=True, blank=True)  # 画像を保存するディレクトリを指定
 
     def publish(self):
         self.published_date = timezone.now()
