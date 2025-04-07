@@ -1,9 +1,11 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from .models import Post, Comments, GasolineOwada
 from .forms import PostForm, CommentsForm, GasolineOwadaForm
-from django.shortcuts import redirect
 from django.contrib.auth.models import User
+from PIL import Image
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import io
 
 def post_list(request):
     posts = Post.objects.order_by('-updated_date')
@@ -35,7 +37,7 @@ def post_detail(request, pk):
 
 def post_new(request):
     if request.method == "POST":
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
             if request.user.is_authenticated:
@@ -43,6 +45,16 @@ def post_new(request):
             else:
                 # 認証されていない場合は特定のユーザーを割り当て（例：ユーザー名が"guest"のユーザー）
                 post.author, created = User.objects.get_or_create(username="guest")
+            if 'image' in request.FILES:
+                image = Image.open(request.FILES['image'])
+                if image.mode == 'RGBA': #RGBAモードの場合
+                   image = image.convert('RGB') #RGBモードへ変更
+                image.thumbnail((300, 300))  # 画像を300x300にリサイズ
+                buffer = io.BytesIO()
+                image.save(buffer, format='JPEG')  # JPEG形式で保存
+                post.image = InMemoryUploadedFile(buffer, None, 'thumb.jpg', 'image/jpeg',
+                                                    buffer.getbuffer().nbytes, None)
+            post.updated_date = timezone.now()
             post.published_date = timezone.now()
             post.save()
             return redirect('post_detail', pk=post.pk)
