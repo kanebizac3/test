@@ -12,7 +12,7 @@ urlpatterns = [
     path('top/analytic', views.analytic, name='analytic'),
     path('policy', views.policy, name='policy'),
     path('term', views.term, name='term'),
-    path('mission_promise', views.mission_promise, name="mission_promise"),
+    path('mission_promise', views.mission_promise, name="mission_promise"),   
 ]
 
 if settings.DEBUG:

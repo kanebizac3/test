@@ -93,3 +93,4 @@ def term(request):
 
 def mission_promise(request):
     return render(request, 'blog/mission.html', {})
+

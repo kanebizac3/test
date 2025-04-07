@@ -8,7 +8,7 @@
             </div>
             <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
             {% if post.image %}
-            <img src="{{ post.image.url }}" alt="{{ post.title }}" style="width: 100px; height: auto;">{% endif %}
+            <img src="{{ post.image.url }}" alt="{{ post.title }}" style="width: auto; height: 80px;">{% endif %}
             <!-- <div class="post_list_contents"><p>{{ post.text|linebreaksbr }}</p></div> -->
         </div>
     {% endfor %}
