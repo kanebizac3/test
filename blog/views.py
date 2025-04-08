@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import io
+from django.http import HttpResponse
 
 def post_list(request):
     posts = Post.objects.order_by('-updated_date')
@@ -16,7 +17,7 @@ def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     comments = Comments.objects.filter(title=post.title).order_by('created_date')
     if request.method == "POST":
-        form = CommentsForm(request.POST)
+        form = CommentsForm(request.POST, request.FILES)
         if form.is_valid():
             comments = form.save(commit=False)
             if request.user.is_authenticated:
@@ -24,6 +25,16 @@ def post_detail(request, pk):
             else:
                 # 認証されていない場合は特定のユーザーを割り当て（例：ユーザー名が"guest"のユーザー）
                 comments.author, created = User.objects.get_or_create(username="guest")
+            if 'image' in request.FILES:
+                image = Image.open(request.FILES['image'])
+                if image.mode != 'RGB': #RGBAモードの場合
+                   image = image.convert('RGB') #RGBモードへ変更
+                image.thumbnail((300, 300))  # 画像を300x300にリサイズ
+                buffer = io.BytesIO()
+                image.save(buffer, format='JPEG')  # JPEG形式で保存
+                comments.image = InMemoryUploadedFile(buffer, None, 'thumb.jpg', 'image/jpeg',
+                                                    buffer.getbuffer().nbytes, None)
+
             comments.title = post.title
             # ポストを更新する
             post.updated_date = timezone.now()
@@ -94,3 +105,18 @@ def term(request):
 def mission_promise(request):
     return render(request, 'blog/mission.html', {})
 
+def like_post_view(request, post_id, comment_id):
+    if request.method == 'POST':
+        comment = get_object_or_404(Comments, id=comment_id)
+        post = get_object_or_404(Post, id=post_id)
+
+        if comment.good == None:
+            comment.good = 0
+        comment.good +=1 
+        comment.save()
+        # いいね処理
+        # 例: ユーザーがいいね済みでないか確認し、いいねを追加/削除する
+        # ...    
+        return redirect('post_detail', pk=post.id)
+    else:
+        return HttpResponse('いいね！は POST リクエストのみ受け付けます', status=405)

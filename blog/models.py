@@ -13,6 +13,7 @@ class Post(models.Model):
     published_date = models.DateTimeField(blank=True, null=True)
     updated_date = models.DateTimeField(blank=True, null=True)
     image = models.ImageField(upload_to='img/', null=True, blank=True)  # 画像を保存するディレクトリを指定
+    good = models.PositiveIntegerField(null=True, blank=True, verbose_name="評価")
 
     def publish(self):
         self.published_date = timezone.now()
@@ -27,6 +28,8 @@ class Comments(models.Model):
     title = models.CharField(max_length=200)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
+    image = models.ImageField(upload_to='img/', null=True, blank=True)  # 画像を保存するディレクトリを指定
+    good = models.PositiveIntegerField(null=True, blank=True, verbose_name="評価")
 
     def publish(self):
         self.save()

@@ -29,15 +29,20 @@
                 </h5>
             </div>
             <div class="comment_contents">
-            
-
             <p>{{ text|urlize }}</p>
                 <h5 class="comment_text">{{ comment.text|urlize|linebreaksbr }}</h5>
+            {% if comment.image %}
+            <img src="{{ comment.image.url }}" alt="{{ comment.title }}" style="width: auto; height: 80px;">{% endif %}
+    
+            <form action="{% url 'like_post_url' post_id=post.id comment_id=comment.id %}" method ="POST">{% csrf_token %}
+                <button type="submit" name="like_button" value="1" class="save btn btn-default">👍{% if comment.good != None %}+{{comment.good}}{% endif %}</button>
+            </form>
+            <br/>
             </div>
         {% endfor %}
         
         <h2>Add a comment</h2>
-        <form method="POST" class="post-form">{% csrf_token %}
+        <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="save btn btn-default">投稿</button>
         </form>
