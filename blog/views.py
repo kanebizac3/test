@@ -7,6 +7,7 @@ from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import io
 from django.http import HttpResponse
+from django.urls import reverse
 
 def post_list(request):
     posts = Post.objects.order_by('-updated_date')
@@ -116,7 +117,8 @@ def like_post_view(request, post_id, comment_id):
         comment.save()
         # いいね処理
         # 例: ユーザーがいいね済みでないか確認し、いいねを追加/削除する
+        anchor = str(comment.id)
         # ...    
-        return redirect('post_detail', pk=post.id)
+        return redirect(reverse('post_detail', kwargs={"pk" : post.pk})+f'#comment-{anchor}')
     else:
         return HttpResponse('いいね！は POST リクエストのみ受け付けます', status=405)

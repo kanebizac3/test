@@ -17,7 +17,7 @@
     <div class="comment">
         <h2>Comments</h2>
         {% for comment in comments %}
-            <div class="comment_data">
+            <div class="comment_data" id="comment-{{ comment.id }}">
                 <h5>{{ forloop.counter }}, &ensp;
                 {% if comment.author != 'shohei' %}
                 匿名
