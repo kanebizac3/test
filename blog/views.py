@@ -17,6 +17,7 @@ def post_list(request):
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     comments = Comments.objects.filter(title=post.title).order_by('created_date')
+    liked_comments = request.session.get('liked_comments', [])
     if request.method == "POST":
         form = CommentsForm(request.POST, request.FILES)
         if form.is_valid():
@@ -45,7 +46,7 @@ def post_detail(request, pk):
             return redirect('post_detail', pk=post.pk)
     else:
         form = CommentsForm()    
-    return render(request, 'blog/post_detail.html', {'post': post, 'comments': comments, 'form': form})
+    return render(request, 'blog/post_detail.html', {'post': post, 'comments': comments, 'form': form, 'liked_comments': liked_comments})
 
 def post_new(request):
     if request.method == "POST":
@@ -117,6 +118,19 @@ def like_post_view(request, post_id, comment_id):
         comment.save()
         # いいね処理
         # 例: ユーザーがいいね済みでないか確認し、いいねを追加/削除する
+
+        liked_comments = request.session.get('liked_comments', [])
+
+        if comment.id not in liked_comments:
+            # いいね処理
+            # 例: comment.good += 1; comment.save()
+            liked_comments.append(comment.id)
+            request.session['liked_comments'] = liked_comments
+            request.session.modified = True  # セッションが変更されたことを明示的に通知
+            print(f"コメント {comment.id} にいいね！")
+        else:
+            print(f"コメント {comment.id} は既にいいね済みです。")
+
         anchor = str(comment.id)
         # ...    
         return redirect(reverse('post_detail', kwargs={"pk" : post.pk})+f'#comment-{anchor}')
