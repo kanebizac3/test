@@ -144,7 +144,7 @@ from django.db.models import Q
 def search_post(request):
     query = request.GET.get('q', '')
     category_id = request.GET.get('category', '')
-    posts = Post.objects.all().order_by('-created_date')
+    posts = Post.objects.all().order_by('-updated_date')
     categories = Category.objects.all()
 
     if query:
