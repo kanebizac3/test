@@ -1,8 +1,6 @@
 {% extends 'blog/base.html' %}
 {% load static %}
 
-
-
 {% block head %}
 <meta name="viewport" content="width=device-width, initial-scale=1">
 {% endblock %}
@@ -48,13 +46,12 @@
     
 {% endblock %}
 
-
 {% block content %}
 
 <div class="bg-gray-100 text-gray-800">
     <div class="max-w-screen-md mx-auto px-4 py-10 text-[18px] sm:text-base">
         <!-- 🔍 検索バー -->
-        <form method="get" class="mb-10 flex items-center">
+        <form method="get" class="mb-10 flex items-center" action="#search_result">
             <input type="text" name="q" value="{{ query }}" 
                    placeholder="投稿を検索..."
                    class="w-full px-8 py-6 rounded-l-full shadow bg-white text-[20px] sm:text-base border border-gray-300 focus:border-purple-500 focus:outline-none">
@@ -88,15 +85,25 @@
         </div>
 
         <!-- 📝 投稿一覧 -->
-        <div class="mt-8">
+        <div class="mt-8" id="search_result">
             <p class="text-[20px] sm:text-xl font-semibold mb-4">投稿一覧</p>
             <div class="space-y-8">
                 {% for post in posts %}
-                    <div class="bg-white border border-gray-300 rounded-2xl p-8 shadow-lg hover:shadow-xl">
-                        <h3 class="text-[22px] font-bold text-gray-800 text-left">{{ post.title }}</h3>
-                        <p class="text-[14px] text-gray-500 mt-3 text-right">{{ post.updated_date|date:"Y/n/j" }}</p>
-                        <!-- <p class="text-[28px] mt-5 text-gray-700 leading-relaxed text-center">{{ post.text|truncatewords:30 }}</p> -->
-                    </div>
+                <div class="bg-white border border-gray-300 rounded-2xl p-8 shadow-lg hover:shadow-xl flex items-center relative">
+                    <!-- リンクで投稿ボックスを囲む -->
+                    <a href="{% url 'post_detail' post.pk %}" class="flex items-center w-full">
+                        <!-- 画像の表示 -->
+                        {% if post.image %}
+                            <img src="{{ post.image.url }}" alt="{{ post.title }}" class="w-24 h-24 mr-6 object-cover rounded-lg">
+                        {% endif %}
+                        <!-- 投稿タイトル -->
+                        <div>
+                            <h3 class="text-[20px] font-bold text-gray-800 text-left">{{ post.title }}</h3>
+                        </div>
+                    </a>
+                    <!-- 日付を右下に配置 -->
+                    <p class="absolute bottom-0 right-3 text-[10px] text-gray-500">updated at {{ post.updated_date|date:"Y/n/j" }}</p>
+                </div>
                 {% empty %}
                     <p class="text-center text-gray-500 text-[18px]">該当する投稿が見つかりませんでした。</p>
                 {% endfor %}
@@ -111,6 +118,13 @@
         const categoriesContainer = document.getElementById('categories');
         categoriesContainer.classList.toggle('hidden');
     }
+
+    // 検索フォーム送信後にスムーズにスクロールする
+    document.querySelector('form').addEventListener('submit', function() {
+        document.getElementById('search_result').scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
 </script>
-                                             
+
 {% endblock %}
