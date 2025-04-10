@@ -14,6 +14,7 @@ urlpatterns = [
     path('term', views.term, name='term'),
     path('mission_promise', views.mission_promise, name="mission_promise"), 
     path('post/<int:post_id>/comment/<int:comment_id>/like/', views.like_post_view, name='like_post_url'),
+    path('post/search', views.search_post, name='search_post')
 ]
 
 if settings.DEBUG:

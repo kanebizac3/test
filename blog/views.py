@@ -136,3 +136,27 @@ def like_post_view(request, post_id, comment_id):
         return redirect(reverse('post_detail', kwargs={"pk" : post.pk})+f'#comment-{anchor}')
     else:
         return HttpResponse('いいね！は POST リクエストのみ受け付けます', status=405)
+    
+
+from .models import Category
+from django.db.models import Q
+
+def search_post(request):
+    query = request.GET.get('q', '')
+    category_id = request.GET.get('category', '')
+    posts = Post.objects.all().order_by('-created_date')
+    categories = Category.objects.all()
+
+    if query:
+        posts = posts.filter(Q(title__icontains=query) | Q(text__icontains=query))
+    
+    if category_id:
+        posts = posts.filter(category_id=category_id)
+
+    context = {
+        'posts': posts,
+        'categories': categories,
+        'query': query,
+        'selected_category': int(category_id) if category_id else None
+    }
+    return render(request, 'blog/post_search.html', context)

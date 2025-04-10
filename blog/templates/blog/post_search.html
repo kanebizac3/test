@@ -1,0 +1,116 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+
+
+{% block head %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% endblock %}
+
+{% block script %}
+<script src="https://cdn.tailwindcss.com"></script>
+{% endblock %}
+
+<!-- カスタムCSS -->
+{% block style %}
+    body {
+        font-family: 'Noto Sans JP', sans-serif;
+        background-color: #f9f9f9;
+    }
+
+    .category-card {
+        transition: all 0.3s ease;
+    }
+
+    .category-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-input {
+        border: 2px solid #ddd;
+        transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+        border-color: #6b46c1;
+        outline: none;
+    }
+
+    .topic-card {
+        transition: all 0.2s ease;
+    }
+
+    .topic-card:hover {
+        border-color: #6b46c1;
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+{% endblock %}
+
+
+{% block content %}
+
+<div class="bg-gray-100 text-gray-800">
+    <div class="max-w-screen-md mx-auto px-4 py-10 text-[18px] sm:text-base">
+        <!-- 🔍 検索バー -->
+        <form method="get" class="mb-10 flex items-center">
+            <input type="text" name="q" value="{{ query }}" 
+                   placeholder="投稿を検索..."
+                   class="w-full px-8 py-6 rounded-l-full shadow bg-white text-[20px] sm:text-base border border-gray-300 focus:border-purple-500 focus:outline-none">
+            <button type="submit" 
+                   class="px-4 py-3 bg-orange-200 text-gray rounded-r-full shadow hover:bg-orange-300 transition duration-300">
+               検索
+           </button>
+        </form>
+
+        <!-- 🧭 カテゴリ表示/非表示ボタン -->
+        <div class="flex justify-between items-center mb-4">
+            <p class="text-[20px] sm:text-xl font-semibold">カテゴリ</p>
+            <button onclick="toggleCategories()" class="text-sm text-gray-500 hover:text-purple-600">
+                非表示
+            </button>
+        </div>
+
+        <!-- 🧭 カテゴリ一覧 -->
+        <div id="categories" class="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-10 text-center">
+            {% for category in categories %}
+                <a href="?category={{ category.id }}"
+                   class="category-card flex flex-col items-center bg-white p-6 rounded-2xl text-[20px] sm:text-sm text-gray-700 
+                          shadow-lg hover:shadow-xl hover:text-purple-600 transition 
+                          {% if selected_category == category.id %} border-4 border-purple-500 {% endif %}">
+                    {% if category.icon %}
+                        <img src="{{ category.icon.url }}" alt="{{ category.name }}" class="w-16 h-16 mb-3 sm:w-8 sm:h-8" />
+                    {% endif %}
+                    {{ category.name }}
+                </a>
+            {% endfor %}
+        </div>
+
+        <!-- 📝 投稿一覧 -->
+        <div class="mt-8">
+            <p class="text-[20px] sm:text-xl font-semibold mb-4">投稿一覧</p>
+            <div class="space-y-8">
+                {% for post in posts %}
+                    <div class="bg-white border border-gray-300 rounded-2xl p-8 shadow-lg hover:shadow-xl">
+                        <h3 class="text-[22px] font-bold text-gray-800 text-left">{{ post.title }}</h3>
+                        <p class="text-[14px] text-gray-500 mt-3 text-right">{{ post.updated_date|date:"Y/n/j" }}</p>
+                        <!-- <p class="text-[28px] mt-5 text-gray-700 leading-relaxed text-center">{{ post.text|truncatewords:30 }}</p> -->
+                    </div>
+                {% empty %}
+                    <p class="text-center text-gray-500 text-[18px]">該当する投稿が見つかりませんでした。</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+    function toggleCategories() {
+        const categoriesContainer = document.getElementById('categories');
+        categoriesContainer.classList.toggle('hidden');
+    }
+</script>
+                                             
+{% endblock %}

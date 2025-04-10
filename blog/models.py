@@ -4,6 +4,12 @@ from django.utils import timezone
 from django import forms
 from django.core.validators import RegexValidator
 
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    icon = models.ImageField(upload_to='category_icons/', null=True, blank=True)
+
+    def __str__(self):
+        return self.name
 
 class Post(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -14,6 +20,8 @@ class Post(models.Model):
     updated_date = models.DateTimeField(blank=True, null=True)
     image = models.ImageField(upload_to='img/', null=True, blank=True)  # 画像を保存するディレクトリを指定
     good = models.PositiveIntegerField(null=True, blank=True, verbose_name="評価")
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
+
 
     def publish(self):
         self.published_date = timezone.now()

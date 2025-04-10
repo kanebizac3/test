@@ -4,10 +4,6 @@
     <head>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8021009005741518"
         crossorigin="anonymous"></script>
-        {% block head %}
-        <title>Nakajima Channnel ~西淀川区中島の情報サイト&掲示板~</title>
-        <meta name="description" content="西淀川区中島のあらゆる情報をアップロードしています。また、住民の皆様が交流することにより、集まった情報をわかりやすい形で提供することにより、住民の皆様の生活の向上に取り組んでいます。">
-        {% endblock %}
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <link href='https://fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
@@ -15,11 +11,19 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap" rel="stylesheet">
+        {% block head %}
+        <title>Nakajima Channnel ~西淀川区中島の情報サイト&掲示板~</title>
+        <meta name="description" content="西淀川区中島のあらゆる情報をアップロードしています。また、住民の皆様が交流することにより、集まった情報をわかりやすい形で提供することにより、住民の皆様の生活の向上に取り組んでいます。">
+        {% endblock %}
         <style>
             .page-header h5 {
                 font-family: 'Hachi Maru Pop', cursive;
             }
+            {% block style %}
+            {% endblock %}
         </style>
+        {% block script %}
+        {% endblock %}
     </head>
     <body>
         <div class="page-header">
