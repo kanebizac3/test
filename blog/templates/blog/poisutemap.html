@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>ポイ捨てマップ</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+    <style>
+        #mapid { height: 500px; } /* 地図の高さ */
+    </style>
+</head>
+<body>
+    <h1>ポイ捨てマップ</h1>
+    <div id="mapid"></div>
+
+    <h2>現在地を取得して投稿</h2>
+    <button id="getLocationButton">現在地を取得</button>
+
+    <div>
+        <form method="POST" class="post-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="save btn btn-default">投稿</button>
+        </form>
+    </div>
+
+    <h2>投稿されたゴミの場所</h2>
+    <div>
+        {% for poi in poi_sute_data %}
+            <div class="poisute">
+                <div class="date">
+                    報告日時: {{ poi.reported_at|date:"Y/n/j" }}
+                </div>
+                {% if poi.image %}
+                    <img src="{{ poi.image.url }}" alt="ゴミ" style="width: auto; height: 80px;">
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" crossorigin=""></script>
+    <script src="{% static 'script/get_location.js' %}"></script>
+    <script>
+        // Leaflet地図の初期化
+        var map = L.map('mapid').setView([34.7032526, 135.4268819], 16); // 大阪の初期位置とズームレベル
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // DjangoのAPIからゴミのデータを取得して地図に表示
+        fetch('/api/poi_sute_data/')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(item => {
+                    let popupContent = `報告日時: ${new Date(item.reported_at).toLocaleString()}<br>詳細: ${item.description}`;
+                    if (item.image_url) {
+                        popupContent += `<br><img src="${item.image_url}" alt="ゴミの画像" style="width:100px; height:auto;">`; // サイズ調整はCSSで
+                    }
+                    L.marker([item.latitude, item.longitude])
+                        .addTo(map)
+                        .bindPopup(popupContent);
+                });
+            });
+        // 「現在地を取得」ボタンのイベントリスナー設定
+        document.addEventListener('DOMContentLoaded', function() {
+            const getLocationButton = document.getElementById('getLocationButton');
+            if (getLocationButton) {
+                getLocationButton.addEventListener('click', getLocation); // get_location.js の関数を呼び出す
+            }
+        });
+    </script>
+</body>
+</html>

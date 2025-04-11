@@ -1,13 +1,16 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from .models import Post, Comments, GasolineOwada
-from .forms import PostForm, CommentsForm, GasolineOwadaForm
+from .models import Post, Comments, GasolineOwada, PoiSute
+from .forms import PostForm, CommentsForm, GasolineOwadaForm, PoiSuteForm
 from django.contrib.auth.models import User
 from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import io
 from django.http import HttpResponse
 from django.urls import reverse
+from django.http import JsonResponse  # ここを追加
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 def post_list(request):
     posts = Post.objects.order_by('-updated_date')
@@ -160,3 +163,71 @@ def search_post(request):
         'selected_category': int(category_id) if category_id else None
     }
     return render(request, 'blog/post_search.html', context)
+
+def map_view(request):
+    poi_sute_data = PoiSute.objects.all()
+    latitude = request.session.get('current_latitude')
+    longitude = request.session.get('current_longitude')
+    print("test", latitude)
+
+    if request.method == "POST":
+        form = PoiSuteForm(request.POST, request.FILES)
+        if form.is_valid():
+            poisute = form.save(commit=False)
+            if 'image' in request.FILES:
+                image = Image.open(request.FILES['image'])
+                if image.mode != 'RGB':
+                    image = image.convert('RGB')
+                image.thumbnail((300, 300))
+                buffer = io.BytesIO()
+                image.save(buffer, format='JPEG')
+                poisute.image = InMemoryUploadedFile(buffer, None, 'thumb.jpg', 'image/jpeg',
+                                                    buffer.getbuffer().nbytes, None)
+            poisute.latitude = form.cleaned_data.get('latitude') or latitude
+            poisute.longitude = form.cleaned_data.get('longitude') or longitude
+            poisute.save()
+        context = {'poi_sute_data': poi_sute_data, "form": form}
+        return render(request, 'blog/poisutemap.html', context)
+    else:
+        form = PoiSuteForm(initial={
+            'latitude': latitude,
+            'longitude': longitude})
+    context = {'poi_sute_data': poi_sute_data, "form": form}
+    return render(request, 'blog/poisutemap.html', context)
+
+from django.conf import settings
+
+def get_poi_sute_data(request):
+    poi_sute_data = PoiSute.objects.all().values('latitude', 'longitude', 'description', 'reported_at', 'image')
+    data_list = []
+    for item in poi_sute_data:
+        image_url = None
+        if item['image']:
+            image_url = settings.MEDIA_URL + str(item['image'])
+            print(image_url)
+        data_list.append({
+            'latitude': item['latitude'],
+            'longitude': item['longitude'],
+            'description': item['description'],
+            'reported_at': item['reported_at'],
+            'image_url': image_url,  # 画像の URL を追加
+        })
+    return JsonResponse(data_list, safe=False)
+
+@csrf_exempt
+def save_location(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            latitude = data.get('latitude')
+            longitude = data.get('longitude')
+            # 取得した緯度経度をデータベースに保存するなどの処理
+                        # リダイレクト先のURLを生成
+            map_url = reverse('map_view')
+
+            print(f"Latitude: {latitude}, Longitude: {longitude}")
+            return JsonResponse({'status': 'success', 'message': 'Location saved successfully.', 'redirect_url': map_url})
+        except json.JSONDecodeError:
+            return JsonResponse({'status': 'error', 'message': 'Invalid JSON data.'}, status=400)
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=405)

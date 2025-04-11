@@ -14,7 +14,10 @@ urlpatterns = [
     path('term', views.term, name='term'),
     path('mission_promise', views.mission_promise, name="mission_promise"), 
     path('post/<int:post_id>/comment/<int:comment_id>/like/', views.like_post_view, name='like_post_url'),
-    path('post/search', views.search_post, name='search_post')
+    path('post/search', views.search_post, name='search_post'),
+    path('map_view', views.map_view, name='map_view'),
+    path('api/poi_sute_data/', views.get_poi_sute_data, name='get_poi_sute_data'),
+    path('save_location/', views.save_location, name='save_location'),
 ]
 
 if settings.DEBUG:
