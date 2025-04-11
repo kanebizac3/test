@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 {% load static %}
 <html>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
     <title>ポイ捨てマップ</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
     crossorigin=""/>
-    <style>
-        #mapid { height: 500px; } /* 地図の高さ */
+    <link rel="stylesheet" href="{% static 'css/poisute.css' %}">  <style>
+        /* 既存のインラインスタイルは削除するか、style.css (poisute.css) に移動 */
+        #mapid { /* height: 500px; */ }
+        div > div > .poisute img { /* width: auto; height: 80px; */ }
     </style>
 </head>
 <body>
@@ -33,8 +36,7 @@
                     報告日時: {{ poi.reported_at|date:"Y/n/j" }}
                 </div>
                 {% if poi.image %}
-                    <img src="{{ poi.image.url }}" alt="ゴミ" style="width: auto; height: 80px;">
-                {% endif %}
+                    <img src="{{ poi.image.url }}" alt="ゴミ" > {% endif %}
             </div>
         {% endfor %}
     </div>
@@ -56,7 +58,7 @@
                 data.forEach(item => {
                     let popupContent = `報告日時: ${new Date(item.reported_at).toLocaleString()}<br>詳細: ${item.description}`;
                     if (item.image_url) {
-                        popupContent += `<br><img src="${item.image_url}" alt="ゴミの画像" style="width:100px; height:auto;">`; // サイズ調整はCSSで
+                        popupContent += `<br><img src="${item.image_url}" alt="ゴミの画像" class="popup-image">`; // クラスを追加
                     }
                     L.marker([item.latitude, item.longitude])
                         .addTo(map)
