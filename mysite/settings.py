@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'blog.apps.BlogConfig',
+    'gomimon.apps.GomimonConfig',
 ]
 
 MIDDLEWARE = [

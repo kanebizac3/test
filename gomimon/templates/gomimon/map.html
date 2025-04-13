@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <title>ポイ捨てマップ</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+    <link rel="stylesheet" href="{% static 'css/poisute.css' %}">
+    <style>
+        #mapid { height: 500px; } /* 地図の高さ */
+        .hidden { display: none; }
+        #uploadForm { margin-top: 20px; }
+        #message-container { margin-top: 10px; font-weight: bold; }
+        .error { color: red; }
+        .success { color: green; }
+    </style>
+</head>
+<body>
+    <h1>ポイ捨てを投稿</h1>
+    <div id="mapid"></div>
+
+    <div id="uploadFormContainer">
+        <form method="POST" enctype="multipart/form-data" id="uploadForm">
+            {% csrf_token %}
+            <p><label for="{{ form.image.id_for_label }}">ゴミの画像:</label> {{ form.image }}</p>
+            <p><label for="{{ form.description.id_for_label }}">詳細:</label> {{ form.description }}</p>
+            <input type="hidden" name="latitude" id="latitudeInput">
+            <input type="hidden" name="longitude" id="longitudeInput">
+            <button type="submit" class="save btn btn-default">投稿</button>
+        </form>
+        <div id="message-container"></div>
+        <div id="errors-container"></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" crossorigin=""></script>
+    <script src="{% static 'script/get_location.js' %}"></script>
+    <script src="{% static 'script/map.js' %}"></script>
+</body>
+</html>
