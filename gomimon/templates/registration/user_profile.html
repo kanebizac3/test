@@ -1,7 +1,205 @@
-{% if user.is_authenticated %}
-  <p>現在のポイント: {{ user.profile.points }}</p>
-{% else %}
-  <p>ログインしてポイントを確認してください。</p>
-{% endif %}
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ポイントと回収ログ</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #333;
+        }
 
-<a href = "{% url 'map' %}"">マップへ戻る</a>
+        .container {
+            width: 90%;
+            max-width: 600px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .points {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .login-prompt {
+            color: #6c757d;
+        }
+
+        .collected-items-container {
+            margin-top: 20px;
+            border-top: 1px solid #ddd;
+            padding-top: 20px;
+        }
+
+        h2 {
+            color: #17a2b8;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .collected-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .collected-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-name {
+            flex-grow: 1;
+        }
+
+        .item-date {
+            color: #777;
+            font-size: 0.9em;
+        }
+
+        .actions {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 5px;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .logout-button {
+            background-color: #dc3545;
+        }
+
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+
+        .back-button {
+            background-color: #6c757d;
+        }
+
+        .back-button:hover {
+            background-color: #5a6268;
+        }
+
+        /* モバイル対応 */
+        @media (max-width: 480px) {
+            .container {
+                width: 95%;
+                padding: 15px;
+                margin-top: 15px;
+                margin-bottom: 15px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+                margin-bottom: 15px;
+            }
+
+            .user-info {
+                padding: 10px;
+                margin-bottom: 15px;
+            }
+
+            .points {
+                font-size: 1.1em;
+            }
+
+            h2 {
+                font-size: 1.4em;
+                margin-bottom: 10px;
+            }
+
+            .button {
+                padding: 8px 15px;
+                font-size: 0.9em;
+                margin: 3px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ポイントと回収ログ</h1>
+
+        <div class="user-info">
+            {% if user.is_authenticated %}
+                <p>現在のポイント: <span class="points">{{ user.profile.points }}</span></p>
+            {% else %}
+                <p class="login-prompt">ログインしてポイントを確認してください。</p>
+            {% endif %}
+        </div>
+
+        <div class="collected-items-container">
+            <h2>最近の回収</h2>
+            {% if collected_items %}
+                {% for item in collected_items %}
+                    <div class="collected-item">
+                        <span class="item-name">{{ item.garbage_type }}</span>
+                        <span class="item-date">{{ item.collected_at|date:"Y-m-d H:i" }}</span>
+                    </div>
+                {% empty %}
+                    <p>まだゴミを回収していません。</p>
+                {% endfor %}
+            {% else %}
+                <p>回収ログの取得に失敗しました。</p>
+            {% endif %}
+        </div>
+
+        <div class="actions">
+          <a href="{% url 'map' %}" class="button back-button">マップへ戻る</a>
+          {% if user.is_authenticated %}
+          <form method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button type="submit" class="button logout-button">ログアウト</button>
+          </form>
+          {% else %}
+          <a href="{% url 'login' %}" class="button">ログイン</a>
+          {% endif %}
+        </div>
+    </div>
+</body>
+</html>
