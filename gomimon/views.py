@@ -81,3 +81,37 @@ def save_location(request):
             return JsonResponse({'status': 'error', 'message': 'Invalid JSON data.'}, status=400)
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method.'}, status=405)
+    
+# ---ユーザー登録----
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm  # デフォルトのユーザー作成フォームも利用可能
+from .forms import UserRegistrationForm
+from django.contrib.auth import login
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # 登録後、自動的にログインさせる場合
+            return redirect('registration_success')  # 登録成功後のリダイレクト先
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'registration/register.html', {'form': form})
+
+def registration_success(request):
+    return render(request, 'registration/registration_success.html')
+
+
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def some_action(request):
+    request.user.profile.add_points(50)  # 50ポイント加算
+    return redirect('some_success_url')
+
+def user_profile(request):
+    return render(request, 'registration/user_profile.html')
+
+def gomimon(request):
+    return render(request, 'gomimon/gomimon.html')

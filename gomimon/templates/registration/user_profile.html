@@ -1,0 +1,7 @@
+{% if user.is_authenticated %}
+  <p>現在のポイント: {{ user.profile.points }}</p>
+{% else %}
+  <p>ログインしてポイントを確認してください。</p>
+{% endif %}
+
+<a href = "{% url 'map' %}"">マップへ戻る</a>

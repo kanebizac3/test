@@ -14,3 +14,29 @@ class Map(models.Model):
 
     def __str__(self):
         return f"ポイ捨て報告 at ({self.latitude}, {self.longitude}) on {self.reported_at}"
+
+
+# ---------ユーザーポイント機能--------
+from django.contrib.auth.models import User
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    points = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.user.username}'s Profile"
+
+    def add_points(self, amount):
+        self.points += amount
+        self.save()
+
+    def subtract_points(self, amount):
+        if self.points >= amount:
+            self.points -= amount
+            self.save()
+            return True
+        return False
+
+    class Meta:
+        verbose_name = "ユーザープロフィール"
+        verbose_name_plural = "ユーザープロフィール"

@@ -15,10 +15,87 @@
         #message-container { margin-top: 10px; font-weight: bold; }
         .error { color: red; }
         .success { color: green; }
+
+        /* 短く横一列のゲーム的なボタンのスタイル */
+        .button-container {
+            display: flex;
+            gap: 10px; /* ボタン間のスペース */
+            margin-top: 15px; /* 「ポイ捨てを投稿」との間隔 */
+            justify-content: center; /* ボタンを中央に配置 (必要に応じて) */
+        }
+
+        .button-link {
+            display: inline-block;
+            padding: 8px 15px; /* 縦のpaddingを減らす */
+            background-color: #4CAF50; /* 緑色をベース */
+            color: white;
+            border: none;
+            border-radius: 5px; /* 角を少し小さく */
+            text-decoration: none;
+            font-size: 14px; /* 文字サイズを少し小さく */
+            font-weight: bold;
+            text-align: center;
+            white-space: nowrap; /* 文字を折り返さない */
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* 影を少し弱く */
+            transition: background-color 0.3s ease, transform 0.2s ease; /* ホバー時のアニメーション */
+            cursor: pointer;
+        }
+
+        .button-link:hover {
+            background-color: #45a049; /* ホバー時、少し暗い緑色 */
+            transform: scale(1.02); /* ホバー時の拡大を少し小さく */
+        }
+
+        .button-link:active {
+            transform: scale(0.98); /* クリック時の縮小を少し小さく */
+            box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.3); /* クリック時の影を少し弱く */
+        }
+
+        /* 各ボタンに個別の色をつける (オプション) */
+        .button-link:nth-child(1) { /* ログイン */
+            background-color: #007bff;
+        }
+
+        .button-link:nth-child(1):hover {
+            background-color: #0056b3;
+        }
+
+        .button-link:nth-child(2) { /* ゴミモン */
+            background-color: #ffc107; /* 黄色 */
+            color: #333;
+        }
+
+        .button-link:nth-child(2):hover {
+            background-color: #d89e06;
+        }
+
+        .button-link:nth-child(3) { /* ポイント */
+            background-color: #dc3545; /* 赤色 */
+        }
+
+        .button-link:nth-child(3):hover {
+            background-color: #c82333;
+        }
+
+        .button-link:nth-child(4) { /* マップ */
+            background-color: #6c757d; /* グレー */
+        }
+
+        .button-link:nth-child(4):hover {
+            background-color: #5a6268;
+        }
     </style>
 </head>
 <body>
     <h1>ポイ捨てを投稿</h1>
+
+    <div class="button-container">
+        <a href="{% url 'login' %}" class="button-link">ログイン</a>
+        <a href="{% url 'gomimon' %}" class="button-link">ゴミモン</a>
+        <a href="{% url 'user_profile' %}" class="button-link">ポイント</a>
+        <a href="{% url 'map' %}" class="button-link">マップ</a>
+    </div>
+
     <div id="mapid"></div>
 
     <div id="uploadFormContainer">

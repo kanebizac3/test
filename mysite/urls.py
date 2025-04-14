@@ -21,5 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blog.urls')),
     path('gomimon/', include('gomimon.urls')),
-
+    path('accounts/', include('django.contrib.auth.urls'))
 ]
