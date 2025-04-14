@@ -3,7 +3,7 @@
 <html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
-    <title>ポイ捨てマップ</title>
+    <title>ゴミモン</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
     crossorigin=""/>
@@ -84,10 +84,17 @@
         .button-link:nth-child(4):hover {
             background-color: #5a6268;
         }
+        /* モバイルデバイス (画面幅が 480px 以下の場合など) */
+        @media (max-width: 480px) {
+            #mapid {
+                height: 250px; /* モバイル時の高さ (適宜調整) */
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>ポイ捨てを投稿</h1>
+    <h1>ゴミモンdeポイ活</h1>
+    <h5 style="text-align: center;">ポイ捨て写真でポイントためてゴミモンを育てよう</h5>
 
     <div class="button-container">
         <a href="{% url 'login' %}" class="button-link">ログイン</a>
