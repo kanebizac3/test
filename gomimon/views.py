@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import MapForm
-from .models import Map
+from .models import Map, UserProfile
 from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import io
@@ -41,7 +41,17 @@ def submit_map_data(request):
             if latitude and longitude:
                 map_obj.latitude = latitude
                 map_obj.longitude = longitude
+                if request.user.is_authenticated:
+                    map_obj.author = request.user
+                            # ポイントを加算
+                try:
+                    user_profile = UserProfile.objects.get(user=request.user)
+                    user_profile.add_points(1)
+                except UserProfile.DoesNotExist:
+                    # UserProfile が存在しない場合のエラーハンドリング (通常はありえないはず)
+                    print(f"Error: UserProfile not found for user {request.user.username}")
                 map_obj.save()
+            
                 return JsonResponse({'status': 'success', 'message': '投稿が完了しました。', 'redirect_url': reverse('map')})
             else:
                 return JsonResponse({'status': 'error', 'message': '位置情報が取得できませんでした。'}, status=400)

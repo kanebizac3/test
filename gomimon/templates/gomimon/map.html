@@ -109,6 +109,7 @@
         <form method="POST" enctype="multipart/form-data" id="uploadForm">
             {% csrf_token %}
             <p><label for="{{ form.image.id_for_label }}">ゴミの画像:</label> {{ form.image }}</p>
+            <p><label for="{{ form.category.id_for_label }}">種類:</label> {{ form.category }}</p>
             <p><label for="{{ form.description.id_for_label }}">詳細:</label> {{ form.description }}</p>
             <input type="hidden" name="latitude" id="latitudeInput">
             <input type="hidden" name="longitude" id="longitudeInput">
