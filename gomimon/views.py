@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.conf import settings
+from django.contrib import messages
 
 def test(request):
     return render(request, 'gomimon/test.html',)
@@ -134,10 +135,15 @@ def gomimon(request):
     return render(request, 'gomimon/gomimon.html')
 
 @login_required
+
 def buy_egg(request):
     if request.method == 'POST':
         profile = get_object_or_404(UserProfile, user=request.user)
-        if profile.points >= 10:
+        has_egg = Egg.objects.filter(user=request.user).exists()  # ユーザーが卵を持っているか確認
+
+        if has_egg:
+            messages.warning(request, "あなたは既に卵を持っています。")
+        elif profile.points >= 10:
             profile.points -= 10
             profile.save()
             # 新しい卵を作成してユーザーに紐付ける
@@ -151,3 +157,52 @@ def buy_egg(request):
             # ポイントが足りない場合の処理 (例: エラーメッセージを表示)
             pass  # TODO: ポイント不足のエラーメッセージ処理
     return redirect('user_profile')  # POSTリクエスト以外の場合はポイントログページへリダイレクト
+
+
+# ------------戦闘
+
+from django.shortcuts import render
+from django.http import JsonResponse
+from .game_logic import Monster, Battle
+
+def start_battle_view(request):
+    kansey = Monster("カンペット", 100, 20, 5)
+    putirin = Monster("じゃあくなこころ", 80, 15, 2)
+    request.session['battle_state'] = {
+        'monster1_hp': kansey.hp,
+        'monster2_hp': putirin.hp,
+        'log': [],
+        'turn': 0,
+        'monster1_name': kansey.name,
+        'monster2_name': putirin.name,
+    }
+    return render(request, 'gomimon/battle_log.html')
+
+def next_turn_view(request):
+    battle_state = request.session.get('battle_state')
+    if not battle_state or not (battle_state['monster1_hp'] > 0 and battle_state['monster2_hp'] > 0):
+        return JsonResponse({'game_over': True, 'winner': battle_state.get('winner')})
+
+    monster1 = Monster(battle_state['monster1_name'], battle_state['monster1_hp'], 20, 5)
+    monster2 = Monster(battle_state['monster2_name'], battle_state['monster2_hp'], 15, 2)
+    battle = Battle(monster1, monster2)
+    battle.turn = battle_state['turn']
+    battle.log = battle_state['log']
+
+    turn_log = battle.simulate_turn()
+    battle_state['log'].extend(turn_log)
+    battle_state['monster1_hp'] = battle.monster1.hp
+    battle_state['monster2_hp'] = battle.monster2.hp
+    battle_state['turn'] = battle.turn
+    request.session['battle_state'] = battle_state
+
+    game_over = not (battle.monster1.is_alive() and battle.monster2.is_alive())
+    winner = None
+    if game_over:
+        winner = battle.monster1.name if not battle.monster2.is_alive() else battle.monster2.name
+
+    battle_state['winner'] = winner
+    request.session['battle_state'] = battle_state
+
+    return JsonResponse({'log': turn_log, 'game_over': game_over, 'winner': winner})
+

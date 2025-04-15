@@ -8,9 +8,9 @@ fetch('/gomimon/api/map_data/')
     .then(response => response.json())
     .then(data => {
         data.forEach(item => {
-            let popupContent = `報告日時: ${new Date(item.reported_at).toLocaleString()}<br>詳細: ${item.description}`;
+            let popupContent = `報告日時: ${new Date(item.reported_at).toLocaleString()}<br>種類: ${item.category}`;
             if (item.image_url) {
-                popupContent += `<br><img src="${item.image_url}" alt="ゴミの画像" class="popup-image">`;
+                popupContent += `<br><img src="${item.image_url}" alt="ゴミの画像" style="max-width: 40px; max-height: 40px;" class="popup-image">`;
             }
             L.marker([item.latitude, item.longitude])
                 .addTo(map)
