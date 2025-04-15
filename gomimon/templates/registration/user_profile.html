@@ -173,33 +173,79 @@
             {% endif %}
         </div>
 
-        <div class="collected-items-container">
-            <h2>最近の回収</h2>
-            {% if collected_items %}
-                {% for item in collected_items %}
-                    <div class="collected-item">
-                        <span class="item-name">{{ item.garbage_type }}</span>
-                        <span class="item-date">{{ item.collected_at|date:"Y-m-d H:i" }}</span>
-                    </div>
-                {% empty %}
-                    <p>まだゴミを回収していません。</p>
-                {% endfor %}
-            {% else %}
-                <p>回収ログの取得に失敗しました。</p>
-            {% endif %}
-        </div>
 
         <div class="actions">
           <a href="{% url 'map' %}" class="button back-button">マップへ戻る</a>
           {% if user.is_authenticated %}
-          <form method="post" action="{% url 'logout' %}">
-              {% csrf_token %}
-              <button type="submit" class="button logout-button">ログアウト</button>
-          </form>
+              <button id="buyEggButton" class="button">ポイントで卵を購入</button>
+              <form id="buyEggForm" method="post" action="{% url 'buy_egg' %}" style="display: none;">
+                  {% csrf_token %}
+                  <input type="hidden" name="user_id" value="{{ user.id }}">
+              </form>
+              <form method="post" action="{% url 'logout' %}">
+                  {% csrf_token %}
+                  <button type="submit" class="button logout-button">ログアウト</button>
+              </form>
           {% else %}
-          <a href="{% url 'login' %}" class="button">ログイン</a>
+              <a href="{% url 'login' %}" class="button">ログイン</a>
           {% endif %}
+      </div>
+
+      <div id="buyEggModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center;">
+        <div style="background-color: white; padding: 20px; border-radius: 8px; text-align: center;">
+            <p>10ポイントを消費して卵を購入しますか？</p>
+            <button id="confirmBuyEgg" class="button">はい</button>
+            <button id="cancelBuyEgg" class="button">いいえ</button>
         </div>
-    </div>
+      </div>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const buyEggButton = document.getElementById('buyEggButton');
+            const buyEggModal = document.getElementById('buyEggModal');
+            const confirmBuyEgg = document.getElementById('confirmBuyEgg');
+            const cancelBuyEgg = document.getElementById('cancelBuyEgg');
+            const buyEggForm = document.getElementById('buyEggForm');
+
+            if (buyEggButton && buyEggModal && confirmBuyEgg && cancelBuyEgg && buyEggForm) {
+                buyEggButton.addEventListener('click', function() {
+                    buyEggModal.style.display = 'flex';
+                });
+
+                cancelBuyEgg.addEventListener('click', function() {
+                    buyEggModal.style.display = 'none';
+                });
+
+                confirmBuyEgg.addEventListener('click', function() {
+                    // フォームを送信して卵を購入する処理を実行
+                    buyEggForm.submit();
+                    buyEggModal.style.display = 'none'; // ポップアップを閉じる
+                });
+            }
+        });
+    </script>
+
+    <style>
+        .modal {
+            z-index: 10; /* 他の要素より前面に表示 */
+        }
+    </style>
+        <div class="collected-items-container">
+          <h2>最近の回収</h2>
+          {% if items %}
+              {% for item in items %}
+                  <div class="collected-item">
+                      <span class="item-name">{{ item.reported_at }}</span>
+                      <span class="item-date">{{ item.category }}</span>
+                  </div>
+              {% empty %}
+                  <p>まだゴミを回収していません。</p>
+              {% endfor %}
+          {% else %}
+              <p>回収ログの取得に失敗しました。</p>
+          {% endif %}
+      </div>
+
+
+  </div>  
 </body>
 </html>

@@ -50,3 +50,9 @@ class UserProfile(models.Model):
     class Meta:
         verbose_name = "ユーザープロフィール"
         verbose_name_plural = "ユーザープロフィール"
+
+class Egg(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='eggs')
+    created_at = models.DateTimeField(auto_now_add=True)
+    # 卵の種類、ステータスなど、必要に応じてフィールドを追加
+    # 例: name = models.CharField(max_length=100)

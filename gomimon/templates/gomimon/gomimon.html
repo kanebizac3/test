@@ -2,9 +2,9 @@
 {% load static %}
 <html>
 <head>
-    <title>ゴミモン図鑑</title>
+    <title>ゴミモン</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/gomimon.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'css/gomimon.css' %}"> -->
     <style>
         body {
             font-family: sans-serif;
@@ -204,7 +204,7 @@
     </style>
 </head>
 <body>
-    <h1>ゴミモン図鑑</h1>
+    <h1>ゴミモン</h1>
 
     <div class="button-container">
         <a href="{% url 'login' %}" class="button-link">ログイン</a>
@@ -213,11 +213,13 @@
         <a href="{% url 'map' %}" class="button-link">マップ</a>
     </div>
 
+    <h2>メイン</h2>
+
     <div class="gomimon-container">
         <div class="gomimon-image-container">
-            <img src="{% static 'img/te.jpeg' %}" alt="ゴミモンの画像" class="gomimon-image">
+            <img src="{% static 'img/cansy.png' %}" alt="ゴミモンの画像" class="gomimon-image">
         </div>
-        <div class="gomimon-name">カンシー</div>
+        <div class="gomimon-name">カンペット</div>
         <div class="gomimon-level">Lv. 12</div>
         <div class="status-text">HP</div>
         <div class="status-bar">
@@ -225,28 +227,17 @@
         </div>
         <div class="gomimon-type">妖精</div>
         <div class="gomimon-type">金属</div>
-        </div>
+    </div>
 
-    <h2>捕まえたゴミモン一覧</h2>
-    <div class="gomimon-list-container">
+    <h2>サブ</h2>
+
+    <h2>所持卵</h2>
         <div class="gomimon-card">
             <div class="gomimon-card-image-container">
-                <img src="{% static 'images/gomimon_placeholder_small.png' %}" alt="プチリン" class="gomimon-card-image">
+                <img src="{% static 'img/egg001.png' %}" alt="ゴミモンの卵" class="gomimon-card-image">
             </div>
-            <div class="gomimon-card-name">プチリン</div>
+            <div class="gomimon-card-name">卵</div>
         </div>
-        <div class="gomimon-card">
-            <div class="gomimon-card-image-container">
-                <img src="{% static 'images/gomimon_placeholder_small.png' %}" alt="カラクン" class="gomimon-card-image">
-            </div>
-            <div class="gomimon-card-name">カラクン</div>
-        </div>
-        <div class="gomimon-card">
-            <div class="gomimon-card-image-container">
-                <img src="{% static 'images/gomimon_placeholder_small.png' %}" alt="ガスゴン" class="gomimon-card-image">
-            </div>
-            <div class="gomimon-card-name">ガスゴン</div>
-        </div>
-        </div>
+    </div>
 </body>
 </html>

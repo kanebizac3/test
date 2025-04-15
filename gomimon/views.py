@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import MapForm
-from .models import Map, UserProfile
+from .models import Map, UserProfile, Egg
 from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import io
@@ -121,7 +121,33 @@ def some_action(request):
     return redirect('some_success_url')
 
 def user_profile(request):
-    return render(request, 'registration/user_profile.html')
+    items = Map.objects.filter(author=request.user).order_by('-reported_at')
+    total = Map.objects.count()
+    three_items = items.all()[:3]
+    print(three_items)
+
+    return render(request, 'registration/user_profile.html', {"items":three_items, "total":total,})
 
 def gomimon(request):
+
+
     return render(request, 'gomimon/gomimon.html')
+
+@login_required
+def buy_egg(request):
+    if request.method == 'POST':
+        profile = get_object_or_404(UserProfile, user=request.user)
+        if profile.points >= 10:
+            profile.points -= 10
+            profile.save()
+            # 新しい卵を作成してユーザーに紐付ける
+            egg = Egg.objects.create(user=request.user)
+            egg.save()
+            # ここで卵の種類や初期ステータスなどを設定することもできます
+            # 例: egg.name = "ノーマルな卵"; egg.save()
+            return redirect('user_profile')  # 購入後にポイントログページへリダイレクト
+        else:
+            print("ポイントが足りません")
+            # ポイントが足りない場合の処理 (例: エラーメッセージを表示)
+            pass  # TODO: ポイント不足のエラーメッセージ処理
+    return redirect('user_profile')  # POSTリクエスト以外の場合はポイントログページへリダイレクト
