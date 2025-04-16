@@ -53,9 +53,13 @@ def submit_map_data(request):
                         # UserProfile が存在しない場合のエラーハンドリング (通常はありえないはず)
                         print(f"Error: UserProfile not found for user {request.user.username}")
 
-                    if random.random() < 0.1: # 10%の確率で敵と遭遇
-                        print("test")
-                        return JsonResponse({'status': 'success', 'message': '投稿が完了しました。', 'redirect_url': reverse('start_battle')})
+                    if random.random() < 0.5: # 10%の確率で敵と遭遇
+                        if UserGomimon.objects.filter(user=request.user).exists():
+                            print("test")
+                            return JsonResponse({'status': 'success', 'message': '投稿が完了しました。', 'redirect_url': reverse('start_battle')})
+                        else:
+                            return JsonResponse({'status': 'success', 'message': '投稿が完了しました。', 'redirect_url': reverse('map')})
+
                     else:
 
                         return JsonResponse({'status': 'success', 'message': '投稿が完了しました。', 'redirect_url': reverse('map')})
@@ -204,7 +208,7 @@ def start_battle_view(request):
     battle_gomimon = UserGomimon.objects.get(user=request.user)
     kansey = Monster(battle_gomimon.gomimon_name, battle_gomimon.gomimon_hp, battle_gomimon.gomimon_atack, battle_gomimon.gomimon_defence)
     print(battle_gomimon.gomimon_name, battle_gomimon.gomimon_hp, battle_gomimon.gomimon_atack, battle_gomimon.gomimon_defence)
-    putirin = Monster("じゃあくなこころ", 10, 3, 1)
+    putirin = Monster("じゃあくなこころ", 10, 5, 1)
     request.session['battle_state'] = {
         'monster1_hp': kansey.hp,
         'monster2_hp': putirin.hp,
