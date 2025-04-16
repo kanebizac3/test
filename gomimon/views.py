@@ -159,12 +159,15 @@ def gomimon(request):
             has_egg = False
         
 
-    context = {
-        'user_gomimon': user_gomimon,
-        'has_egg': has_egg,
-        'hp_percentage':hp_percentage,
-    }
-    return render(request, 'gomimon/gomimon.html', context)
+        context = {
+            'user_gomimon': user_gomimon,
+            'has_egg': has_egg,
+            'hp_percentage':hp_percentage,
+        }
+        return render(request, 'gomimon/gomimon.html', context)
+    else:
+        return render(request, 'gomimon/error.html')
+
 @login_required
 
 def buy_egg(request):

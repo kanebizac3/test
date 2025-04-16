@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ユーザー登録が必要です</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #d32f2f; /* 目立つ赤色 */
+            margin-bottom: 20px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .button-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #1976d2; /* 青色のボタン */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-link:hover {
+            background-color: #1565c0;
+        }
+
+        .secondary-link {
+            display: block;
+            margin-top: 10px;
+            color: #777;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+
+        .secondary-link:hover {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ユーザー登録が必要です</h1>
+        <p>この機能を利用するには、ユーザー登録が必要です。</p>
+        <p>まだアカウントをお持ちでない場合は、以下のボタンから登録してください。</p>
+        <a href="{% url 'register' %}" class="button-link">新規登録</a>
+        <p>すでにアカウントをお持ちの場合は、<a href="{% url 'login' %}" class="secondary-link">こちらからログイン</a>してください。</p>
+    </div>
+</body>
+</html>
