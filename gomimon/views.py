@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from django.conf import settings
 from django.contrib import messages
+import random
 
 def test(request):
     return render(request, 'gomimon/test.html',)
@@ -52,8 +53,13 @@ def submit_map_data(request):
                     # UserProfile が存在しない場合のエラーハンドリング (通常はありえないはず)
                     print(f"Error: UserProfile not found for user {request.user.username}")
                 map_obj.save()
+
+                if random.random() < 0.1: # 10%の確率で敵と遭遇
+                    print("test")
+                    return JsonResponse({'status': 'success', 'message': '投稿が完了しました。', 'redirect_url': reverse('start_battle')})
+                else:
             
-                return JsonResponse({'status': 'success', 'message': '投稿が完了しました。', 'redirect_url': reverse('map')})
+                    return JsonResponse({'status': 'success', 'message': '投稿が完了しました。', 'redirect_url': reverse('map')})
             else:
                 return JsonResponse({'status': 'error', 'message': '位置情報が取得できませんでした。'}, status=400)
         else:

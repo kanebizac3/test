@@ -4,7 +4,7 @@
 <head>
     <title>ゴミモン</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="{% static 'css/gomimon.css' %}"> -->
+    <link rel="stylesheet" href="{% static 'css/gomimon.css' %}">
     <style>
         body {
             font-family: sans-serif;
@@ -201,7 +201,10 @@
             font-size: 16px;
             font-weight: bold;
         }
+        
     </style>
+    <link rel="stylesheet" href="{% static 'css/gomimon.css' %}">
+
 </head>
 <body>
     <h1>ゴミモン</h1>
@@ -216,8 +219,11 @@
     <h2>メイン</h2>
 
     <div class="gomimon-container">
-        <div class="gomimon-image-container">
-            <img src="{% static 'img/cansy1.png' %}" alt="ゴミモンの画像" class="gomimon-image">
+        <div class="gomimon-image-wrapper" style="position: relative; width: 150px; height: 150px; margin: 0 auto;">
+            <div class="gomimon-image-container">
+                <img id="main-gomimon-image" src="{% static 'img/cansy1.png' %}" alt="ゴミモンの画像" class="gomimon-image">
+            </div>
+            <div class="speech-bubble" id="main-gomimon-speech-bubble"></div>
         </div>
         <div class="gomimon-name">カンペット</div>
         <div class="gomimon-level">Lv. 12</div><a href = "{% url 'start_battle' %}">テスト戦闘</a>
@@ -228,16 +234,86 @@
         <div class="gomimon-type">妖精</div>
         <div class="gomimon-type">金属</div>
     </div>
-
+    
     <h2>サブ</h2>
-
+    
     <h2>所持卵</h2>
-        <div class="gomimon-card">
-            <div class="gomimon-card-image-container">
-                <img src="{% static 'img/egg001.png' %}" alt="ゴミモンの卵" class="gomimon-card-image">
+    <div class="gomimon-card">
+        <div class="gomimon-card-image-container" style="position: relative;">
+            <img src="{% static 'img/egg001.png' %}" alt="ゴミモンの卵" class="gomimon-card-image" id="egg-gomimon-image">
             </div>
-            <div class="gomimon-card-name">卵</div>
-        </div>
+        <div class="gomimon-card-name">卵</div>
     </div>
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const mainGomimonImage = document.getElementById('main-gomimon-image');
+    const mainGomimonSpeechBubble = document.getElementById('main-gomimon-speech-bubble');
+
+    const trashFacts = [
+    "古い紙をリサイクルすると、新しい紙を作るより、ずーっとエネルギーのむだがないんだって！へえー！",
+    "プラスチックは、なかなか土にかえらないんだ。何百年も地球に残るって、びっくりだよね！",
+    "おうちの生ゴミをコンポストにすると、野菜が元気に育つ肥料になるんだって！すごいね！",
+    "リサイクルのマークを覚えておくと、ゴミを分けるのが簡単になるよ！",
+    "ちょっとしたゴミでも、ポイ捨てしちゃうと、地球がどんどん汚れちゃうんだ。",
+    "日本のゴミしょりの技術は、世界でもすごく上手なんだって！かっこいいね！",
+    "食べられるものを捨てるのは、もったいない！食べ物を大切にすると、地球も喜ぶよ。",
+    "つめかえの製品を選ぶと、プラスチックのゴミが少なくなるんだって！",
+    "ゴミの分け方は、住んでいる場所で違うんだ。ちゃんと調べてから捨てようね！",
+    "３つのＲ！リデュース（へらす）、リユース（くりかえし使う）、リサイクル（また使う）。これをすればゴミが減るよ！",
+    "アルミ缶は、リサイクルするときのエネルギーが、とっても少ないんだって！",
+    "着なくなった服は、リサイクルショップに持って行くと、誰かがまた着てくれるかも！",
+    "ガラスびんは、何回もリサイクルできるんだ！大切な資源だね！",
+    "古いテレビや冷蔵庫には、大切な金属が入っているから、ちゃんとリサイクルしよう。",
+    "牛乳パックも、リサイクルすると、トイレットペーパーになるんだって！",
+    "油でよごれたびんは、かるく洗ってからリサイクルに出そうね。",
+    "スプレーかんは、中身をぜんぶ出して、きをつけて捨てようね！（住んでいるところでやり方が違うよ！）",
+    "ダンボールは、ぺったんこにたたんで出すと、場所をとらないよ。",
+    "ペットボトルのふたとラベルも、ちゃんと分けてリサイクルしようね！",
+    "使いすてライターは、危なくないように、住んでいる町のルールで捨ててね。",
+    "インクのカートリッジは、回収ボックスに入れてリサイクルできるんだ。",
+    "古い電池には、体に良くないものが入っていることがあるから、分けて回収してもらおう。",
+    "蛍光灯も、体に良くないものが入っているから、ちゃんとリサイクルしてね。",
+    "大きいゴミ（粗大ゴミ）は、捨てる前に市役所とかに連絡するんだよ。",
+    "引っ越しのときとか、ゴミがたくさん出るときは、ちゃんと計画して捨てようね。",
+    "お店や会社から出るゴミは、おうちのゴミと捨て方が違うんだ。",
+    "ポイ捨ては、悪いことだよ！絶対にやめようね！",
+    "地域のゴミひろいに行くのも、地球をきれいにするお手伝いになるよ。",
+    "地球にやさしい材料でできたものを選ぶと、ゴミが少なくてすむね。",
+    "ぼくたちの未来のために、ゴミのことをもっと考えて、地球を大切にしよう！",
+    "ポイ捨てされたゴミは、風でとんで、街をきたなくしてしまうんだ。",
+    "ゴミが道に落ちていると、みんなが気持ちよく歩けなくなっちゃうよね。",
+    "ポイ捨てされたゴミは、雨で川や海に流れ込んで、お魚さんたちが困っちゃうんだ。",
+    "小さいゴミでも、たくさん落ちていると、大きなゴミの山になっちゃうんだよ。",
+    "動物たちが、ポイ捨てされたゴミを間違って食べちゃうと、病気になっちゃうことがあるんだ。",
+    "ポイ捨てされたゴミは、街の景色をわるくして、遊び場もつまらなくしちゃうんだ。",
+    "ゴミを拾う人の手間が増えて、もっと大切なことに時間を使えなくなっちゃうんだ。",
+    "ポイ捨てが多い街は、なんだか危ない感じがして、みんなが安心して暮らせなくなっちゃうかも。",
+    "ポイ捨てされたゴミは、ながいあいだ自然にかえらないで、ずっと残ってしまうんだ。",
+    "みんながポイ捨てをやめて、ゴミをきちんと捨てれば、ずっときれいな街でいられるんだよ。",
+    "ぼくたちがこの街のためにできることの一つがゴミを拾うこと。ゴミを拾ってボクを大事に育ててね"
+    ];
+
+    function getRandomFact() {
+        return trashFacts[Math.floor(Math.random() * trashFacts.length)];
+    }
+
+    function showSpeechBubble(element, text, duration = 10000) {
+        element.textContent = text;
+        element.classList.add('show-speech-bubble');
+        setTimeout(() => {
+            element.classList.remove('show-speech-bubble');
+        }, duration);
+    }
+
+    if (mainGomimonImage) {
+        mainGomimonImage.addEventListener('click', function() {
+            showSpeechBubble(mainGomimonSpeechBubble, getRandomFact());
+        });
+    }
+
+});
+</script>
+
 </html>
