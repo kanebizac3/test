@@ -135,11 +135,28 @@ def user_profile(request):
 
     return render(request, 'registration/user_profile.html', {"items":three_items, "total":total,})
 
+
+
 def gomimon(request):
+    user_gomimon = None
+    has_egg = False
+    if request.user.is_authenticated:
+        try:
+            user_gomimon = UserGomimon.objects.get(user=request.user)
+        except UserGomimon.DoesNotExist:
+            user_gomimon = None
+        
+        try:
+            Egg.objects.get(user=request.user)
+            has_egg = True
+        except Egg.DoesNotExist:
+            has_egg = False
 
-
-    return render(request, 'gomimon/gomimon.html')
-
+    context = {
+        'user_gomimon': user_gomimon,
+        'has_egg': has_egg,
+    }
+    return render(request, 'gomimon/gomimon.html', context)
 @login_required
 
 def buy_egg(request):
@@ -212,3 +229,31 @@ def next_turn_view(request):
 
     return JsonResponse({'log': turn_log, 'game_over': game_over, 'winner': winner})
 
+
+from .models import UserGomimon 
+def hatch_gomimon(request):
+    user = request.user  # 現在のユーザーを取得
+
+    if not user.is_authenticated:
+        return redirect('login')  # ログインしていない場合はログインページへリダイレクト
+
+    has_gomimon = UserGomimon.objects.filter(user=user).exists()
+
+    if has_gomimon:
+        return render(request, 'gomimon/hatch_gomimon.html', {'has_gomimon': True})
+    else:
+        # ここで新しいゴミモンをユーザーに追加する処理を行う
+        # 例：ランダムなゴミモンを生成
+        possible_gomimons = ['cansy1',] # 例としてのゴミモン画像ファイル名
+        hatched_image = random.choice(possible_gomimons)
+        hatched_name = "カンペット" # 例としての名前
+
+        new_gomimon = UserGomimon(user=user, gomimon_name=hatched_name, gomimon_image=hatched_image)
+        new_gomimon.save()
+        hatched_image_url = f"img/{hatched_image}.png" 
+        
+        return render(request, 'gomimon/hatch_gomimon.html', {
+            'has_gomimon': False,
+            'hatched_name': hatched_name,
+            'hatched_image_url': hatched_image_url,
+        })

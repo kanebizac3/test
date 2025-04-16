@@ -56,3 +56,13 @@ class Egg(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     # 卵の種類、ステータスなど、必要に応じてフィールドを追加
     # 例: name = models.CharField(max_length=100)
+
+class UserGomimon(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    gomimon_name = models.CharField(max_length=100)
+    gomimon_image = models.CharField(max_length=100)
+    # 他のゴミモンに関する情報 (レベル、HPなど)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.gomimon_name} (オーナー: {self.user.username})"

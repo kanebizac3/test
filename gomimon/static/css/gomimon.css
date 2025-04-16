@@ -1,3 +1,199 @@
+body {
+    font-family: sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ゲーム的なボタンのスタイル (map.htmlから流用し調整) */
+.button-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: center;
+    width: 100%;
+    max-width: 600px;
+    flex-wrap: wrap; /* ボタンが収まらない場合に折り返す */
+}
+
+.button-link {
+    display: inline-block;
+    padding: 10px 15px; /* 左右のpaddingを少し減らす */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px; /* 文字サイズを少し小さく */
+    font-weight: bold;
+    text-align: center;
+    white-space: nowrap;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+    flex-grow: 1; /* ボタンの幅を均等に広げる */
+    min-width: 80px; /* ボタンの最小幅を設定 */
+}
+
+.button-link:hover {
+    transform: scale(1.05);
+}
+
+.button-link:active {
+    transform: scale(0.95);
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* 各ボタンに個別の色をつける */
+.button-link:nth-child(1) { /* ログイン */
+    background-color: #007bff;
+}
+
+.button-link:nth-child(1):hover {
+    background-color: #0056b3;
+}
+
+.button-link:nth-child(2) { /* ゴミモン */
+    background-color: #ffc107; /* 黄色 */
+    color: #333;
+}
+
+.button-link:nth-child(2):hover {
+    background-color: #d89e06;
+}
+
+.button-link:nth-child(3) { /* ポイント */
+    background-color: #28a745; /* 緑 */
+}
+
+.button-link:nth-child(3):hover {
+    background-color: #1e7e34;
+}
+
+.button-link:nth-child(4) { /* マップ */
+    background-color: #6c757d; /* グレー */
+}
+
+.button-link:nth-child(4):hover {
+    background-color: #5a6268;
+}
+
+.gomimon-container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+}
+
+.gomimon-image-container {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 15px;
+    background-color: #eee; /* 画像がない場合のplaceholder */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gomimon-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.gomimon-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.gomimon-level {
+    font-size: 16px;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.status-bar {
+    background-color: #ddd;
+    border-radius: 5px;
+    height: 20px;
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.status-bar-fill {
+    background-color: #4CAF50;
+    height: 100%;
+    border-radius: 5px;
+    width: 65%; /* 例としてのHP */
+}
+
+.status-text {
+    font-size: 14px;
+    color: #333;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+.gomimon-type {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #f9a825;
+    color: white;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+/* ゴミモン一覧 */
+.gomimon-list-container {
+    width: 90%;
+    max-width: 800px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.gomimon-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    text-align: center;
+}
+
+.gomimon-card-image-container {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 5px;
+    background-color: #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gomimon-card-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+
+.gomimon-card-name {
+    font-size: 16px;
+    font-weight: bold;
+}
+
 .gomimon-container {
     position: relative; /* speech-bubble の absolute 配置の基準 */
     background-color: #fff;
@@ -66,4 +262,41 @@
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-top: 10px solid rgba(255, 255, 255, 0.8);
+}
+
+/* ... 既存のスタイル ... */
+
+/* 卵の吹き出しスタイル */
+#egg-gomimon-speech-bubble {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: black !important;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 0.8em;
+    white-space: normal;
+    z-index: 21; /* 他の吹き出しより前面に表示 */
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: auto;
+    max-width: 150px;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#egg-gomimon-speech-bubble.show-speech-bubble {
+    opacity: 1 !important;
+}
+
+#egg-gomimon-speech-bubble button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
 }

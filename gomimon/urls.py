@@ -19,6 +19,7 @@ urlpatterns = [
     path('buy_egg/', views.buy_egg, name='buy_egg'),
     path('battle/', views.start_battle_view, name='start_battle'),
     path('battle/next_turn/', views.next_turn_view, name='next_turn'),
+    path('hatch/', views.hatch_gomimon, name='hatch_gomimon'),
 ]
 
 if settings.DEBUG:
