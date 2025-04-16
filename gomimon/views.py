@@ -24,7 +24,6 @@ def map(request):
 @csrf_exempt
 def submit_map_data(request):
     if request.method == "POST":
-        print("1")
         form = MapForm(request.POST, request.FILES)
         if form.is_valid():
             map_obj = form.save(commit=False)
@@ -46,23 +45,23 @@ def submit_map_data(request):
                 if request.user.is_authenticated:
                     map_obj.author = request.user
                             # ポイントを加算
-                try:
-                    user_profile = UserProfile.objects.get(user=request.user)
-                    user_profile.add_points(1)
-                except UserProfile.DoesNotExist:
-                    # UserProfile が存在しない場合のエラーハンドリング (通常はありえないはず)
-                    print(f"Error: UserProfile not found for user {request.user.username}")
-                map_obj.save()
-                
-                if random.random() < 0.1 : # 10%の確率で敵と遭遇
-                    user_gomimon = UserGomimon.objects.get(user=request.user)
-                    print("user")
-                    if user_gomimon.gomimon_hp != 0 :
+                    try:
+                        user_profile = UserProfile.objects.get(user=request.user)
+                        user_profile.add_points(1)
+                        map_obj.save()
+                    except UserProfile.DoesNotExist:
+                        # UserProfile が存在しない場合のエラーハンドリング (通常はありえないはず)
+                        print(f"Error: UserProfile not found for user {request.user.username}")
+
+                    if random.random() < 0.1: # 10%の確率で敵と遭遇
+                        print("test")
                         return JsonResponse({'status': 'success', 'message': '投稿が完了しました。', 'redirect_url': reverse('start_battle')})
                     else:
+
                         return JsonResponse({'status': 'success', 'message': '投稿が完了しました。', 'redirect_url': reverse('map')})
                 else:
-            
+                    map_obj.save()
+                    # ユーザーが認証されていない場合の処理
                     return JsonResponse({'status': 'success', 'message': '投稿が完了しました。', 'redirect_url': reverse('map')})
             else:
                 return JsonResponse({'status': 'error', 'message': '位置情報が取得できませんでした。'}, status=400)
@@ -132,13 +131,15 @@ def some_action(request):
     return redirect('some_success_url')
 
 def user_profile(request):
-    items = Map.objects.filter(author=request.user).order_by('-reported_at')
-    total = Map.objects.count()
-    three_items = items.all()[:3]
-    print(three_items)
+    if request.user.is_authenticated:
+        items = Map.objects.filter(author=request.user).order_by('-reported_at')
+        total = Map.objects.count()
+        three_items = items.all()[:3]
+        print(three_items)
 
-    return render(request, 'registration/user_profile.html', {"items":three_items, "total":total,})
-
+        return render(request, 'registration/user_profile.html', {"items":three_items, "total":total,})
+    else:
+        return render(request, 'gomimon/error.html')
 
 
 def gomimon(request):
