@@ -150,6 +150,7 @@ def gomimon(request):
             hp_percentage = user_gomimon.gomimon_hp/user_gomimon.gomimon_maxhp*100
         except UserGomimon.DoesNotExist:
             user_gomimon = None
+            hp_percentage = None
         
         try:
             Egg.objects.get(user=request.user)
