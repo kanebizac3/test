@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import MapForm
-from .models import Map, UserProfile, Egg
+from .models import Map, UserProfile, Egg, UserGomimon
 from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import io
@@ -53,10 +53,14 @@ def submit_map_data(request):
                     # UserProfile が存在しない場合のエラーハンドリング (通常はありえないはず)
                     print(f"Error: UserProfile not found for user {request.user.username}")
                 map_obj.save()
-
-                if random.random() < 0.1: # 10%の確率で敵と遭遇
-                    print("test")
-                    return JsonResponse({'status': 'success', 'message': '投稿が完了しました。', 'redirect_url': reverse('start_battle')})
+                
+                if random.random() < 0.1 : # 10%の確率で敵と遭遇
+                    user_gomimon = UserGomimon.objects.get(user=request.user)
+                    print("user")
+                    if user_gomimon.gomimon_hp != 0 :
+                        return JsonResponse({'status': 'success', 'message': '投稿が完了しました。', 'redirect_url': reverse('start_battle')})
+                    else:
+                        return JsonResponse({'status': 'success', 'message': '投稿が完了しました。', 'redirect_url': reverse('map')})
                 else:
             
                     return JsonResponse({'status': 'success', 'message': '投稿が完了しました。', 'redirect_url': reverse('map')})
@@ -143,6 +147,7 @@ def gomimon(request):
     if request.user.is_authenticated:
         try:
             user_gomimon = UserGomimon.objects.get(user=request.user)
+            hp_percentage = user_gomimon.gomimon_hp/user_gomimon.gomimon_maxhp*100
         except UserGomimon.DoesNotExist:
             user_gomimon = None
         
@@ -151,10 +156,12 @@ def gomimon(request):
             has_egg = True
         except Egg.DoesNotExist:
             has_egg = False
+        
 
     context = {
         'user_gomimon': user_gomimon,
         'has_egg': has_egg,
+        'hp_percentage':hp_percentage,
     }
     return render(request, 'gomimon/gomimon.html', context)
 @login_required
@@ -186,14 +193,20 @@ def buy_egg(request):
 
 from django.shortcuts import render
 from django.http import JsonResponse
-from .game_logic import Monster, Battle
+from .game_logic import Monster, Battle, level_up_gomimon, get_level_from_experience_exponential
 
 def start_battle_view(request):
-    kansey = Monster("カンペット", 100, 20, 5)
-    putirin = Monster("じゃあくなこころ", 80, 15, 2)
+    battle_gomimon = UserGomimon.objects.get(user=request.user)
+    kansey = Monster(battle_gomimon.gomimon_name, battle_gomimon.gomimon_hp, battle_gomimon.gomimon_atack, battle_gomimon.gomimon_defence)
+    print(battle_gomimon.gomimon_name, battle_gomimon.gomimon_hp, battle_gomimon.gomimon_atack, battle_gomimon.gomimon_defence)
+    putirin = Monster("じゃあくなこころ", 10, 3, 1)
     request.session['battle_state'] = {
         'monster1_hp': kansey.hp,
         'monster2_hp': putirin.hp,
+        'monster1_ak': kansey.attack,
+        'monster2_ak': putirin.attack,
+        'monster1_df': kansey.defense,
+        'monster2_df': putirin.defense,                
         'log': [],
         'turn': 0,
         'monster1_name': kansey.name,
@@ -206,8 +219,8 @@ def next_turn_view(request):
     if not battle_state or not (battle_state['monster1_hp'] > 0 and battle_state['monster2_hp'] > 0):
         return JsonResponse({'game_over': True, 'winner': battle_state.get('winner')})
 
-    monster1 = Monster(battle_state['monster1_name'], battle_state['monster1_hp'], 20, 5)
-    monster2 = Monster(battle_state['monster2_name'], battle_state['monster2_hp'], 15, 2)
+    monster1 = Monster(battle_state['monster1_name'], battle_state['monster1_hp'], battle_state['monster1_ak'], battle_state['monster1_df'])
+    monster2 = Monster(battle_state['monster2_name'], battle_state['monster2_hp'], battle_state['monster2_ak'], battle_state['monster2_df'])
     battle = Battle(monster1, monster2)
     battle.turn = battle_state['turn']
     battle.log = battle_state['log']
@@ -223,14 +236,34 @@ def next_turn_view(request):
     winner = None
     if game_over:
         winner = battle.monster1.name if not battle.monster2.is_alive() else battle.monster2.name
+        user_gomimon = UserGomimon.objects.get(user=request.user)
+        user_gomimon.gomimon_hp = battle.monster1.hp
+        user_gomimon.save()
+        
 
     battle_state['winner'] = winner
     request.session['battle_state'] = battle_state
 
+    if winner is battle.monster1.name:
+
+        user_profile = UserProfile.objects.get(user=request.user)
+        user_profile.add_points(1)
+        user_gomimon = UserGomimon.objects.get(user=request.user)
+        user_gomimon.gomimon_hp = battle.monster1.hp
+        user_gomimon.gomimon_exp += 1
+        user_gomimon.save()
+        turn_log.append(str(user_profile.user)+"は１ポイントを獲得しました。")
+        turn_log.append(str(user_gomimon.gomimon_name)+"は経験値を１ポイントを獲得しました。")
+        if get_level_from_experience_exponential(user_gomimon.gomimon_exp, base_exp=10)>user_gomimon.gomimon_level:
+            user_gomimon = level_up_gomimon(user_gomimon)
+            turn_log.append(str(user_gomimon.gomimon_name)+"は"+str(user_gomimon.gomimon_level)+
+                            "にレベルアップしました。")
+        user_gomimon.save()
+
     return JsonResponse({'log': turn_log, 'game_over': game_over, 'winner': winner})
 
 
-from .models import UserGomimon 
+
 def hatch_gomimon(request):
     user = request.user  # 現在のユーザーを取得
 
@@ -249,8 +282,22 @@ def hatch_gomimon(request):
         hatched_name = "カンペット" # 例としての名前
 
         new_gomimon = UserGomimon(user=user, gomimon_name=hatched_name, gomimon_image=hatched_image)
+        new_gomimon.gomimon_atack=random.randint(3,5)
+        new_gomimon.gomimon_defence=random.randint(1, 3)
+        new_gomimon.gomimon_level=1
+        new_gomimon.gomimon_maxhp=random.randint(20, 30)
+        new_gomimon.gomimon_exp=5
+        new_gomimon.gomimon_hp=new_gomimon.gomimon_maxhp
+
         new_gomimon.save()
         hatched_image_url = f"img/{hatched_image}.png" 
+
+        try:
+            egg = Egg.objects.get(user=user)
+            egg.delete()
+            has_egg = False # 削除したのでFalseにする
+        except:
+            pass
         
         return render(request, 'gomimon/hatch_gomimon.html', {
             'has_gomimon': False,

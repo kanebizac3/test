@@ -33,13 +33,14 @@
             <a href = "{% url 'start_battle' %}">テスト戦闘</a>
             <div class="status-text">HP</div>
             <div class="status-bar">
-                <div class="status-bar-fill" style="width: 80%;"></div>
+                <div class="status-bar-fill" style="width: {{ hp_percentage }}%;"></div>
             </div>
             <div class="gomimon-type">ノーマル</div>
         {% else %}
             <p>まだゴミモンを所有していません。</p>
             <p>卵を孵化させてゴミモンをゲットしよう！</p>
             <p>卵は10ポイントで購入可能です。ポイントページへGO</p>
+            <p>ポイ捨てゴミの投稿で１ポイントゲットできます。</p>
         {% endif %}
     </div>
     

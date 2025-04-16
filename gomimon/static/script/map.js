@@ -1,7 +1,47 @@
-var map = L.map('mapid').setView([34.7032526, 135.4268819], 16);
+var defaultLat = 34.7032526;
+var defaultLng = 135.4268819;
+var defaultZoom = 16;
+
+function changeMarkerIcon(marker, newImageUrl) {
+    // 新しいアイコンを作成
+    var newIcon = L.icon({
+      iconUrl: newImageUrl,
+      iconSize: [25, 41], // 画像のサイズに合わせて調整
+      iconAnchor: [12, 41], // アイコンのどの点がマーカーの位置に対応するか
+      popupAnchor: [1, -34] // ポップアップを開く位置
+    });
+  
+    // マーカーのアイコンを新しいアイコンに設定
+    marker.setIcon(newIcon);
+  }
+  
+  // 例：既存のマーカーの変数名が `blueMarker` だとする
+  // 新しい画像のURLを `new_marker_icon.png` とする
+  var blueMarker; // あなたの青い印のマーカーの変数
+
+var map = L.map('mapid').setView([defaultLat, defaultLng], defaultZoom);
+
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
 }).addTo(map);
+
+function onLocationFound(e) {
+    var radius = e.accuracy / 2;
+    L.marker(e.latlng).addTo(map)
+        .bindPopup("あなたの現在地 (精度: " + radius + " メートル)").openPopup();
+    L.circle(e.latlng, radius).addTo(map);
+    map.setView(e.latlng, 16); // ユーザーの位置情報が見つかったら中心を移動
+}
+
+function onLocationError(error) {
+    console.error("位置情報の取得に失敗しました:", error.message);
+    // デフォルトの座標をすでに setView しているので、ここでは何もしないか、
+    // エラーメッセージを表示するなどの処理を追加できます。
+}
+
+map.locate({setView: false, maxZoom: 16}); // 初回ロード時に位置情報の取得を試みる
+map.on('locationfound', onLocationFound);
+map.on('locationerror', onLocationError);
 
 // 初期ロード時に地図にデータを表示する処理
 fetch('/gomimon/api/map_data/')

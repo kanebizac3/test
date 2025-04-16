@@ -61,7 +61,14 @@ class UserGomimon(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     gomimon_name = models.CharField(max_length=100)
     gomimon_image = models.CharField(max_length=100)
-    # 他のゴミモンに関する情報 (レベル、HPなど)
+    gomimon_level = models.IntegerField(null=True)
+    gomimon_atack = models.IntegerField(null=True)
+    gomimon_defence = models.IntegerField(null=True)
+    gomimon_maxhp = models.IntegerField(null=True)
+    gomimon_hp = models.IntegerField(null=True)
+    gomimon_element = models.CharField(default="ノーマル", max_length=10, null=True)
+    gomimon_skill = models.CharField(max_length=30, blank=True, null=True)
+    gomimon_exp = models.IntegerField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
