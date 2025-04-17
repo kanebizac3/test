@@ -2,10 +2,10 @@ import random
 from .models import UserGomimon
 
 class Monster:
-    def __init__(self, name, hp, attack, defense=0):
+    def __init__(self, name, hp, maxhp, attack, defense=0):
         self.name = name
         self.hp = hp
-        self.max_hp = hp
+        self.maxhp = maxhp
         self.attack = attack
         self.defense = defense
 
@@ -18,7 +18,7 @@ class Monster:
         self.hp -= damage
         if self.hp < 0:
             self.hp = 0
-        return f"{self.name} は {damage} のダメージを受けた。残りHP: {self.hp}/{self.max_hp}"
+        return f"{self.name} は {damage} のダメージを受けた。残りHP: {self.hp}/{self.maxhp}"
 
     def is_alive(self):
         return self.hp > 0
@@ -30,12 +30,9 @@ class Battle:
         self.log = []
         self.turn = 0
 
-    def simulate_turn(self):
+    def simulate_turnA(self, attacker, defender):
         self.turn += 1
         turn_log = [f"-- ターン {self.turn} --"]
-
-        attacker, defender = (self.monster1, self.monster2) if random.random() < 0.5 else (self.monster2, self.monster1)
-
         damage, attack_result = attacker.attack_target(defender)
         turn_log.append(attack_result)
         damage_result = defender.take_damage(damage)
@@ -44,7 +41,11 @@ class Battle:
         if not defender.is_alive():
             turn_log.append(f"{attacker.name} の勝利！")
             return turn_log
+        
+        return turn_log
 
+    def simulate_turnB(self, attacker, defender):
+        turn_log = []
         attacker, defender = defender, attacker
         damage, attack_result = attacker.attack_target(defender)
         turn_log.append(attack_result)

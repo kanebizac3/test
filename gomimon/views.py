@@ -206,9 +206,9 @@ from .game_logic import Monster, Battle, level_up_gomimon, get_level_from_experi
 
 def start_battle_view(request):
     battle_gomimon = UserGomimon.objects.get(user=request.user)
-    kansey = Monster(battle_gomimon.gomimon_name, battle_gomimon.gomimon_hp, battle_gomimon.gomimon_atack, battle_gomimon.gomimon_defence)
-    print(battle_gomimon.gomimon_name, battle_gomimon.gomimon_hp, battle_gomimon.gomimon_atack, battle_gomimon.gomimon_defence)
-    putirin = Monster("じゃあくなこころ", 10, 5, 1)
+    kansey = Monster(battle_gomimon.gomimon_name, battle_gomimon.gomimon_hp, battle_gomimon.gomimon_maxhp, battle_gomimon.gomimon_atack, battle_gomimon.gomimon_defence)
+    print(battle_gomimon.gomimon_name, battle_gomimon.gomimon_hp, battle_gomimon.gomimon_atack, battle_gomimon.gomimon_defence, battle_gomimon.gomimon_maxhp)
+    putirin = Monster("じゃあくなこころ", 10, 10, 5, 1 )
     request.session['battle_state'] = {
         'monster1_hp': kansey.hp,
         'monster2_hp': putirin.hp,
@@ -220,21 +220,40 @@ def start_battle_view(request):
         'turn': 0,
         'monster1_name': kansey.name,
         'monster2_name': putirin.name,
+        'monster1_max_hp': kansey.maxhp,
+        'monster2_max_hp': putirin.maxhp,
+        'attack': 1,
+        'attacker':0
     }
-    return render(request, 'gomimon/battle_log.html')
+    return render(request, 'gomimon/battle_log.html',{
+        'battle_state': request.session['battle_state']
+    })
 
 def next_turn_view(request):
     battle_state = request.session.get('battle_state')
     if not battle_state or not (battle_state['monster1_hp'] > 0 and battle_state['monster2_hp'] > 0):
         return JsonResponse({'game_over': True, 'winner': battle_state.get('winner')})
 
-    monster1 = Monster(battle_state['monster1_name'], battle_state['monster1_hp'], battle_state['monster1_ak'], battle_state['monster1_df'])
-    monster2 = Monster(battle_state['monster2_name'], battle_state['monster2_hp'], battle_state['monster2_ak'], battle_state['monster2_df'])
+    monster1 = Monster(battle_state['monster1_name'], battle_state['monster1_hp'], battle_state['monster1_max_hp'], battle_state['monster1_ak'], battle_state['monster1_df'])
+    monster2 = Monster(battle_state['monster2_name'], battle_state['monster2_hp'], battle_state['monster2_max_hp'], battle_state['monster2_ak'], battle_state['monster2_df'])
     battle = Battle(monster1, monster2)
     battle.turn = battle_state['turn']
     battle.log = battle_state['log']
-
-    turn_log = battle.simulate_turn()
+    
+    if battle_state["attack"] % 2 != 0:
+        attacker, defender = (monster1, monster2) if random.random() < 0.5 else (monster2, monster1)
+        if attacker is monster1:
+            battle_state["attacker"] = 0
+        else:
+            battle_state["attacker"] = 1
+        turn_log = battle.simulate_turnA(attacker, defender)
+    else:
+        if battle_state["attacker"] == 0:
+            turn_log = battle.simulate_turnB(monster1, monster2)
+        else:
+            turn_log = battle.simulate_turnB(monster2, monster1)
+        
+    battle_state["attack"] += 1
     battle_state['log'].extend(turn_log)
     battle_state['monster1_hp'] = battle.monster1.hp
     battle_state['monster2_hp'] = battle.monster2.hp
@@ -269,7 +288,15 @@ def next_turn_view(request):
                             "にレベルアップしました。")
         user_gomimon.save()
 
-    return JsonResponse({'log': turn_log, 'game_over': game_over, 'winner': winner})
+    return JsonResponse({
+    'log': turn_log,
+    'game_over': game_over,
+    'winner': winner,
+    'hp_monster1': battle.monster1.hp,
+    'hp_monster2': battle.monster2.hp,
+    
+    })
+
 
 
 
