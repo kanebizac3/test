@@ -300,3 +300,13 @@ body {
     cursor: pointer;
     font-size: 0.9em;
 }
+
+.monster-stats {
+    font-size: 0.9em;
+    color: #333;
+    text-align: center;
+    margin-top: 6px;
+}
+.monster-stats p {
+    margin: 2px 0;
+}

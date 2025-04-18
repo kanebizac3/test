@@ -223,7 +223,9 @@ def start_battle_view(request):
         'monster1_max_hp': kansey.maxhp,
         'monster2_max_hp': putirin.maxhp,
         'attack': 1,
-        'attacker':0
+        'attacker':0,
+        'monster1_img': battle_gomimon.gomimon_image,
+        'monster2_img': "jaaku.jpg"
     }
     return render(request, 'gomimon/battle_log.html',{
         'battle_state': request.session['battle_state']
@@ -313,9 +315,16 @@ def hatch_gomimon(request):
     else:
         # ここで新しいゴミモンをユーザーに追加する処理を行う
         # 例：ランダムなゴミモンを生成
-        possible_gomimons = ['cansy1',] # 例としてのゴミモン画像ファイル名
-        hatched_image = random.choice(possible_gomimons)
-        hatched_name = "カンペット" # 例としての名前
+        possible_gomimons = [
+            ["001_can.png", "カーン"],
+            ["002_pack.png", "パックン"],
+            ["003_suigara.png", "スイガラン"],
+            ["004_bottle.png", "ボートル"],
+            ["005_bin.png", "ビーン"]
+            ] # 例としてのゴミモン画像ファイル名
+        choice = random.choice(possible_gomimons)
+        hatched_image = choice[0]
+        hatched_name = choice[1] # 例としての名前
 
         new_gomimon = UserGomimon(user=user, gomimon_name=hatched_name, gomimon_image=hatched_image)
         new_gomimon.gomimon_atack=random.randint(3,5)
@@ -326,7 +335,7 @@ def hatch_gomimon(request):
         new_gomimon.gomimon_hp=new_gomimon.gomimon_maxhp
 
         new_gomimon.save()
-        hatched_image_url = f"img/{hatched_image}.png" 
+        hatched_image_url = f"img/{hatched_image}" 
 
         try:
             egg = Egg.objects.get(user=user)
@@ -340,3 +349,11 @@ def hatch_gomimon(request):
             'hatched_name': hatched_name,
             'hatched_image_url': hatched_image_url,
         })
+    
+@login_required
+def release_gomimon(request):
+    if request.method == 'POST':
+        user_gomimon = UserGomimon.objects.filter(user=request.user).first()
+        if user_gomimon:
+            user_gomimon.delete()
+    return redirect('gomimon')  # ゴミモン画面へ戻る

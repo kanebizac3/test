@@ -21,7 +21,7 @@ urlpatterns = [
     path('battle/next_turn/', views.next_turn_view, name='next_turn'),
     path('hatch/', views.hatch_gomimon, name='hatch_gomimon'),
     path('error/', views.gomimon, name='error'),
-
+    path('release_gomimon/', views.release_gomimon, name='release_gomimon'),
 ]
 
 if settings.DEBUG:

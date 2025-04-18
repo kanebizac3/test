@@ -124,13 +124,13 @@
         <div class="monster-images">
     <div class="monster-section">
         <div class="monster-image-container" id="monster1-image-container">
-            <img id="monster1-image" src="{% static 'img/cansy1.png' %}" alt="{{ battle_state.monster1_name }}" class="monster-image">
+            <img id="monster1-image" src="{% static 'img/' %}{{battle_state.monster1_img}}" alt="{{ battle_state.monster1_name }}" class="monster-image">
         </div>
         <div class="hp-bar"><div id="hp-monster1" class="hp-fill" style="background-color: #4caf50;"></div></div>
     </div>
     <div class="monster-section">
         <div class="monster-image-container" id="monster2-image-container">
-            <img id="monster2-image" src="{% static 'img/jaaku.jpg' %}" alt="{{ battle_state.monster2_name }}" class="monster-image">
+            <img id="monster2-image" src="{% static 'img/' %}{{battle_state.monster2_img}}" alt="{{ battle_state.monster2_name }}" class="monster-image">
         </div>
         <div class="hp-bar"><div id="hp-monster2" class="hp-fill" style="background-color: #4caf50;"></div></div>
     </div>
@@ -167,25 +167,41 @@
         }
 
         function updateHPBars(hp1, hp2) {
-    const width1 = Math.max(0, (hp1 / maxHP1) * 100);
-    const width2 = Math.max(0, (hp2 / maxHP2) * 100);
-    monster1HPBar.style.width = width1 + '%';
-    monster2HPBar.style.width = width2 + '%';
+            const width1 = Math.max(0, (hp1 / maxHP1) * 100);
+            const width2 = Math.max(0, (hp2 / maxHP2) * 100);
+            monster1HPBar.style.width = width1 + '%';
+            monster2HPBar.style.width = width2 + '%';
 
-    function getHPColor(percent) {
-        if (percent > 66) return '#4caf50';  // 緑
-        if (percent > 33) return '#ff9800';  // オレンジ
-        return '#f44336';                    // 赤
-    }
+            function getHPColor(percent) {
+                if (percent > 66) return '#4caf50';  // 緑
+                if (percent > 33) return '#ff9800';  // オレンジ
+                return '#f44336';                    // 赤
+            }
 
-    monster1HPBar.style.backgroundColor = getHPColor(width1);
-    monster2HPBar.style.backgroundColor = getHPColor(width2);
-}
+            monster1HPBar.style.backgroundColor = getHPColor(width1);
+            monster2HPBar.style.backgroundColor = getHPColor(width2);
+        }
 
         function triggerAttackAnimation(attacker) {
-            const target = attacker === allyName ? monster1ImageContainer : monster2ImageContainer;
-            gsap.fromTo(target, { x: 0 }, { x: attacker === allyName ? -20 : 20, yoyo: true, repeat: 3, duration: 0.1 });
+            const target = attacker === allyName ? monster2ImageContainer : monster1ImageContainer;
+            gsap.fromTo(target, { x: 0 }, {
+                x: attacker === allyName ? -20 : 20,
+                yoyo: true,
+                repeat: 3,
+                duration: 0.1
+            });
+            gsap.to(target, {
+                boxShadow: '0 0 20px 8px red',
+                duration: 0.1,
+                yoyo: true,
+                repeat: 1,
+                onComplete: () => {
+                    target.style.boxShadow = '0 0 10px rgba(0,0,0,0.2)'; // 元に戻す
+                }
+            });
+
         }
+    
 
         nextTurnButton.addEventListener('click', () => {
             fetch('next_turn/')
@@ -211,3 +227,4 @@
     </script>
 </body>
 </html>
+

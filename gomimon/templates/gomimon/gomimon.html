@@ -24,18 +24,29 @@
         {% if user_gomimon %}
             <div class="gomimon-image-wrapper">
                 <div class="gomimon-image-container">
-                    <img id="main-gomimon-image" src="{% static 'img/' %}{{ user_gomimon.gomimon_image }}.png" alt="{{ user_gomimon.gomimon_name }}の画像" class="gomimon-image">
+                    <img id="main-gomimon-image" src="{% static 'img/' %}{{ user_gomimon.gomimon_image }}" alt="{{ user_gomimon.gomimon_name }}の画像" class="gomimon-image">
                     <div class="speech-bubble" id="main-gomimon-speech-bubble"></div>
                 </div>
             </div>
             <div class="gomimon-name">{{ user_gomimon.gomimon_name }}</div>
             <div class="gomimon-level">Lv. 1</div>
             <a href = "{% url 'start_battle' %}">テスト戦闘</a>
-            <div class="status-text">HP</div>
+              
+            <div class="status-text">HP : {{ user_gomimon.gomimon_hp }} / {{ user_gomimon.gomimon_maxhp }}</div>
             <div class="status-bar">
                 <div class="status-bar-fill" style="width: {{ hp_percentage }}%;"></div>
             </div>
-            <div class="gomimon-type">ノーマル</div>
+            <div class="monster-stats">
+                <p>攻撃力: {{ user_gomimon.gomimon_atack }}</p>
+                <p>防御力: {{ user_gomimon.gomimon_defence }}</p>
+                <div class="gomimon-type">ノーマル</div>
+            </div>
+
+            <form method="post" action="{% url 'release_gomimon' %}" onsubmit="return confirm('本当に逃がしますか？この操作は元に戻せません。');">
+                {% csrf_token %}
+                <button type="submit" class="button-link" style="background-color: #dc3545; color: white;">逃がす</button>
+            </form>
+            
         {% else %}
             <p>まだゴミモンを所有していません。</p>
             <p>卵を孵化させてゴミモンをゲットしよう！</p>
