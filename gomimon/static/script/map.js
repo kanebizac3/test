@@ -50,7 +50,7 @@ fetch('/gomimon/api/map_data/')
         data.forEach(item => {
             let popupContent = `報告日時: ${new Date(item.reported_at).toLocaleString()}<br>種類: ${item.category}`;
             if (item.image_url) {
-                popupContent += `<br><img src="${item.image_url}" alt="ゴミの画像" style="max-width: 40px; max-height: 40px;" class="popup-image">`;
+                popupContent += `<br><img src="${item.image_url}" alt="ゴミの画像" style="max-width: 40px; max-height: 40px; cursor:pointer;" class="clickable-popup-image">`;
             }
             L.marker([item.latitude, item.longitude])
                 .addTo(map)
@@ -152,3 +152,14 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
+document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('clickable-popup-image')) {
+        const overlay = document.getElementById('image-popup-overlay');
+        const popupImg = document.getElementById('popup-image');
+        popupImg.src = e.target.src;
+        overlay.style.display = 'flex';
+    } else if (e.target.id === 'image-popup-overlay') {
+        e.target.style.display = 'none';
+    }
+});

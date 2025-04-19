@@ -73,3 +73,19 @@ class UserGomimon(models.Model):
 
     def __str__(self):
         return f"{self.gomimon_name} (オーナー: {self.user.username})"
+    
+class GomimonType(models.TextChoices):
+    BURNABLE = 'burnable', '燃えるゴミ'
+    NONBURNABLE = 'nonburnable', '燃えないゴミ'
+    CAN = 'can', '資源ごみ（缶）'
+    PET = 'pet', '資源ごみ（ペット）'
+    
+class Gomimon(models.Model):
+    name = models.CharField(max_length=50)
+    image = models.ImageField(upload_to='gomimon_images/', blank=True)
+    gomimon_type = models.CharField(max_length=20, choices=GomimonType.choices)
+    hp = models.IntegerField()
+    attack = models.IntegerField()
+    defense = models.IntegerField()
+    skill = models.CharField(max_length=100)
+    skill_effect = models.TextField(blank=True)

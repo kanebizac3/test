@@ -22,6 +22,8 @@ urlpatterns = [
     path('hatch/', views.hatch_gomimon, name='hatch_gomimon'),
     path('error/', views.gomimon, name='error'),
     path('release_gomimon/', views.release_gomimon, name='release_gomimon'),
+    path('secret/create_gomimon/', views.create_gomimon, name='create_gomimon'),
+
 ]
 
 if settings.DEBUG:

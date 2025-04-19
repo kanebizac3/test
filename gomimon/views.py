@@ -17,7 +17,7 @@ def test(request):
 
 def map(request):
     form = MapForm()
-    map = Map.objects.all().values('latitude', 'longitude', 'description', 'reported_at', 'image')
+    map = Map.objects.all().values('latitude', 'longitude', 'description', 'reported_at', 'image', 'category')
     context = {"form": form, "map_data":map}
     return render(request, 'gomimon/map.html', context)
 
@@ -75,7 +75,7 @@ def submit_map_data(request):
         return JsonResponse({'status': 'error', 'message': 'POSTリクエストのみ受け付けます。'}, status=405)
 
 def get_map_data(request):
-    map_data = Map.objects.all().values('latitude', 'longitude', 'description', 'reported_at', 'image')
+    map_data = Map.objects.all().values('latitude', 'longitude', 'description', 'reported_at', 'image', 'category')
     data_list = []
     for item in map_data:
         image_url = None
@@ -87,6 +87,7 @@ def get_map_data(request):
             'longitude': item['longitude'],
             'description': item['description'],
             'reported_at': item['reported_at'],
+            'category': item['category'],
             'image_url': image_url,  # 画像の URL を追加
         })
     return JsonResponse(data_list, safe=False)
@@ -357,3 +358,23 @@ def release_gomimon(request):
         if user_gomimon:
             user_gomimon.delete()
     return redirect('gomimon')  # ゴミモン画面へ戻る
+
+from .models import Gomimon
+@login_required
+def create_gomimon(request):
+    if request.method == 'POST':
+        # バリデーションと保存
+        gomimon = Gomimon(
+            name=request.POST['name'],
+            image=request.FILES.get('image'),
+            gomimon_type=request.POST['type'],
+            hp=int(request.POST['hp']),
+            attack=int(request.POST['attack']),
+            defense=int(request.POST['defense']),
+            skill=request.POST['skill'],
+            skill_effect=request.POST['skill_effect'],
+        )
+        gomimon.save()
+        return redirect('gomimon')
+    return render(request, 'gomimon/create_gomimon.html')
+
