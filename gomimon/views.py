@@ -31,7 +31,7 @@ def submit_map_data(request):
                 image = Image.open(request.FILES['image'])
                 if image.mode != 'RGB':
                     image = image.convert('RGB')
-                image.thumbnail((300, 300))
+                image.thumbnail((500, 500))
                 buffer = io.BytesIO()
                 image.save(buffer, format='JPEG')
                 map_obj.image = InMemoryUploadedFile(buffer, None, 'thumb.jpg', 'image/jpeg',

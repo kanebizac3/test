@@ -163,3 +163,10 @@ document.addEventListener('click', function (e) {
         e.target.style.display = 'none';
     }
 });
+
+const form = document.querySelector('form');
+const uploadingMessage = document.getElementById('uploading-message');
+
+form.addEventListener('submit', function() {
+  uploadingMessage.style.display = 'block';
+});
