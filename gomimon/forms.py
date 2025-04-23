@@ -5,7 +5,7 @@ class MapForm(forms.ModelForm):
 
     class Meta:
         model = Map
-        fields = ('latitude', 'longitude', 'image', 'description','reported_at',"category")
+        fields = ('latitude', 'longitude', 'image', 'description','reported_at',"category", "picking")
         widgets = {
             'latitude': forms.NumberInput(attrs={'readonly': 'readonly'}),
             'longitude': forms.NumberInput(attrs={'readonly': 'readonly'}),

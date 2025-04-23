@@ -28,7 +28,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 function onLocationFound(e) {
     var radius = e.accuracy / 2;
     L.marker(e.latlng).addTo(map)
-        .bindPopup("あなたの現在地 (精度: " + radius + " メートル)").openPopup();
+        .bindPopup("あなたの現在地 (精度: " + radius.toFixed(1) + " メートル)").openPopup();
     L.circle(e.latlng, radius).addTo(map);
     map.setView(e.latlng, 16); // ユーザーの位置情報が見つかったら中心を移動
 }

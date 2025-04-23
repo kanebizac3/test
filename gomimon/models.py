@@ -11,6 +11,8 @@ class Map(models.Model):
         ('snack', 'お菓子の袋'),
         ('other', 'その他'),
     ]
+    STATUS_CHOICES = [("picked", "回収済み"),
+              ("not_picked", "未回収")]
 
     latitude = models.FloatField()
     longitude = models.FloatField()
@@ -19,7 +21,8 @@ class Map(models.Model):
     image = models.ImageField(upload_to='poisute_img/', null=True, blank=True)  # 画像を保存するディレクトリを指定
     category = models.CharField(max_length=100, choices=CATEGORY_CHOICES, null=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reported_maps', null=True, blank=True)
-    
+    picking = models.CharField(max_length=10, choices=STATUS_CHOICES, null=True, blank=True)
+    good = models.IntegerField(null=True, blank=True)
     # 必要に応じて他のフィールド（ゴミの種類、写真など）を追加
 
     def __str__(self):

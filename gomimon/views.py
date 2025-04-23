@@ -17,7 +17,7 @@ def test(request):
 
 def map(request):
     form = MapForm()
-    map = Map.objects.all().values('latitude', 'longitude', 'description', 'reported_at', 'image', 'category')
+    map = Map.objects.all().values('latitude', 'longitude', 'description', 'reported_at', 'image', 'category', 'picking')
     context = {"form": form, "map_data":map}
     return render(request, 'gomimon/map.html', context)
 
@@ -53,7 +53,7 @@ def submit_map_data(request):
                         # UserProfile が存在しない場合のエラーハンドリング (通常はありえないはず)
                         print(f"Error: UserProfile not found for user {request.user.username}")
 
-                    if random.random() < 0.5: # 10%の確率で敵と遭遇
+                    if random.random() < 0.1: # 10%の確率で敵と遭遇
                         if UserGomimon.objects.filter(user=request.user).exists():
                             print("test")
                             return JsonResponse({'status': 'success', 'message': '投稿が完了しました。', 'redirect_url': reverse('start_battle')})
