@@ -3,40 +3,52 @@
 {% load static %}
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ゴミモン作成ページ</title>
     <style>
         body {
             font-family: 'Noto Sans JP', sans-serif;
-            padding: 40px;
+            padding: 20px; /* モバイルではpaddingを少し小さく */
             background: #f0f8ff;
         }
         .form-container {
             background: white;
-            padding: 20px;
-            max-width: 600px;
-            margin: auto;
-            border-radius: 12px;
-            box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+            padding: 15px; /* モバイルではpaddingを少し小さく */
+            max-width: 100%; /* モバイルでは最大幅を100%に */
+            margin: 20px auto; /* 上下のmarginを追加して見やすく */
+            border-radius: 8px; /* 角を少し丸く */
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1); /* 影を少し弱く */
         }
         h2 {
             text-align: center;
+            margin-bottom: 20px; /* 下のmarginを追加 */
         }
         label {
             display: block;
-            margin-top: 10px;
+            margin-top: 15px; /* 上のmarginを少し大きく */
         }
         input, select, textarea, button {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
+            width: calc(100% - 16px); /* 左右のpadding分を引く */
+            padding: 10px; /* paddingを少し大きく */
+            margin-top: 8px; /* 上のmarginを少し大きく */
             border: 1px solid #ccc;
             border-radius: 5px;
+            box-sizing: border-box; /* widthにpaddingとborderを含める */
+        }
+        textarea {
+            min-height: 100px; /* 最低限の高さを設定 */
         }
         button {
             background: #007bff;
             color: white;
             font-weight: bold;
-            margin-top: 20px;
+            margin-top: 25px; /* 上のmarginを少し大きく */
+            padding: 12px; /* paddingを少し大きく */
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            opacity: 0.9;
         }
     </style>
 </head>
@@ -52,14 +64,10 @@
                 <input type="file" name="image">
             </label>
             <label>属性:
-                <select name="type">
-                    <option value="burnable">燃えるゴミ</option>
-                    <option value="nonburnable">燃えないゴミ</option>
-                    <option value="bulky">粗大ゴミ</option>
-                    <option value="can">資源ごみ（缶）</option>
-                    <option value="pet">資源ごみ（ペット）</option>
-                    <option value="cardboard">資源ごみ（段ボール）</option>
-                    <option value="paper">資源ごみ（紙）</option>
+                <select name="gomimon_type">
+                    {% for choice in form.fields.gomimon_type.choices %}
+                        <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                    {% endfor %}
                 </select>
             </label>
             <label>HP:

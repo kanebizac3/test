@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import MapForm
+from .forms import MapForm, CreateGomimonForm
 from .models import Map, UserProfile, Egg, UserGomimon
 from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -359,22 +359,34 @@ def release_gomimon(request):
             user_gomimon.delete()
     return redirect('gomimon')  # ゴミモン画面へ戻る
 
-from .models import Gomimon
-@login_required
+def save_photo(request):
+    if 'image' in request.FILES:
+        image = Image.open(request.FILES.get('image'))
+        if image.mode != 'RGB':
+            image = image.convert('RGB')
+        image.thumbnail((500, 500))
+        buffer = io.BytesIO()
+        image.save(buffer, format='JPEG')
+        img = InMemoryUploadedFile(buffer, None, 'thumb.jpg', 'image/jpeg',
+                                            buffer.getbuffer().nbytes, None)
+        return img
+    return None
+
 def create_gomimon(request):
     if request.method == 'POST':
-        # バリデーションと保存
-        gomimon = Gomimon(
-            name=request.POST['name'],
-            image=request.FILES.get('image'),
-            gomimon_type=request.POST['type'],
-            hp=int(request.POST['hp']),
-            attack=int(request.POST['attack']),
-            defense=int(request.POST['defense']),
-            skill=request.POST['skill'],
-            skill_effect=request.POST['skill_effect'],
-        )
-        gomimon.save()
-        return redirect('gomimon')
-    return render(request, 'gomimon/create_gomimon.html')
+        form = CreateGomimonForm(request.POST, request.FILES)
+        if form.is_valid():
+            compressed_image = save_photo(request)
+            if compressed_image:
+                gomimon = form.save(commit=False)
+                gomimon.image = compressed_image
+                gomimon.save()
+            else:
+                form.save() # 画像がアップロードされなかった場合はそのまま保存
+
+            return redirect('create_gomimon')  # 'gomimon_list' は一覧ページのURL名
+    else:
+        form = CreateGomimonForm()
+
+    return render(request, 'gomimon/create_gomimon.html', {'form': form})
 

@@ -79,6 +79,11 @@ class GomimonType(models.TextChoices):
     NONBURNABLE = 'nonburnable', '燃えないゴミ'
     CAN = 'can', '資源ごみ（缶）'
     PET = 'pet', '資源ごみ（ペット）'
+    BIN = 'bin', '資源ごみ（びん）'
+    PLASTIC = 'plastic', 'プラスチック'
+    PAPER = 'paper', '資源ごみ（紙類）'
+    BIG = "big",  '粗大ゴミ'
+    TOXIC = "toxic", "有害ゴミ"
     
 class Gomimon(models.Model):
     name = models.CharField(max_length=50)

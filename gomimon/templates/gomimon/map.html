@@ -70,11 +70,11 @@
         }
 
         .button-link:nth-child(3) { /* ポイント */
-            background-color: #dc3545; /* 赤色 */
+            background-color: #28c347; /* 赤色 */
         }
 
         .button-link:nth-child(3):hover {
-            background-color: #c82333;
+            background-color: #05850f;
         }
 
         .button-link:nth-child(4) { /* マップ */
@@ -97,12 +97,15 @@
     <h5 style="text-align: center;">ポイ捨て写真でポイントためてゴミモンを育てよう</h5>
 
     <div class="button-container">
-        <a href="{% url 'login' %}" class="button-link">ログイン</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="button-link">ログアウト</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="button-link">ログイン</a>
+        {% endif %}        
         <a href="{% url 'gomimon' %}" class="button-link">ゴミモン</a>
         <a href="{% url 'user_profile' %}" class="button-link">ポイント</a>
         <a href="{% url 'map' %}" class="button-link">マップ</a>
     </div>
-
     <div id="mapid"></div>
 
     <div id="uploadFormContainer">

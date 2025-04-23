@@ -9,10 +9,14 @@
 
 </head>
 <body>
-    <h1>ゴミモン</h1>
+    <h1>{{ user.username }}のゴミモン</h1>
 
     <div class="button-container">
-        <a href="{% url 'login' %}" class="button-link">ログイン</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="button-link">ログアウト</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="button-link">ログイン</a>
+        {% endif %}        
         <a href="{% url 'gomimon' %}" class="button-link">ゴミモン</a>
         <a href="{% url 'user_profile' %}" class="button-link">ポイント</a>
         <a href="{% url 'map' %}" class="button-link">マップ</a>

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Map
+from .models import Map, Gomimon
 
 class MapForm(forms.ModelForm):
 
@@ -39,3 +39,14 @@ class UserRegistrationForm(forms.Form):
         if commit:
             user.save()
         return user
+    
+
+
+from .models import Gomimon, GomimonType
+
+class CreateGomimonForm(forms.ModelForm):
+    gomimon_type = forms.ChoiceField(choices=GomimonType.choices)
+
+    class Meta:
+        model = Gomimon
+        fields = ('name', 'image', 'gomimon_type', 'hp', 'attack', 'defense', 'skill', 'skill_effect')
