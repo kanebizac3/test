@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import MapForm, CreateGomimonForm
-from .models import Map, UserProfile, Egg, UserGomimon, Gomimon
+from .models import Map, UserProfile, Egg, UserGomimon, Gomimon, GomimonType
 from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import io
@@ -206,7 +206,8 @@ from django.http import JsonResponse
 from .game_logic import Monster, Battle, level_up_gomimon, get_level_from_experience_exponential
 
 def get_random_dark_gomimon():
-    dark_gomimon_qs = Gomimon.objects.filter(gomimon_type='DARK')
+    from .models import Gomimon, GomimonType
+    dark_gomimon_qs = Gomimon.objects.filter(gomimon_type=GomimonType.DARK)
     if dark_gomimon_qs.exists():
         return random.choice(list(dark_gomimon_qs))
     return None  # 該当なしの場合
@@ -216,6 +217,9 @@ def start_battle_view(request):
     kansey = Monster(battle_gomimon.gomimon_name, battle_gomimon.gomimon_hp, battle_gomimon.gomimon_maxhp, battle_gomimon.gomimon_atack, battle_gomimon.gomimon_defence)
     print(battle_gomimon.gomimon_name, battle_gomimon.gomimon_hp, battle_gomimon.gomimon_atack, battle_gomimon.gomimon_defence, battle_gomimon.gomimon_maxhp)
     opponent = get_random_dark_gomimon()
+    if opponent is None:
+        messages.error(request, "闇属性のゴミモンが見つかりませんでした。")
+        return redirect('gomimon') 
     print(opponent)
     print(opponent.image.url)
     putirin = Monster(opponent.name, opponent.hp , opponent.hp, opponent.attack, opponent.defense)
