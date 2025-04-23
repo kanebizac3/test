@@ -11,17 +11,17 @@ body {
 /* ゲーム的なボタンのスタイル (map.htmlから流用し調整) */
 .button-container {
     display: flex;
-    gap: 10px;
+    gap: 5px;
     margin-top: 20px;
     justify-content: center;
     width: 100%;
     max-width: 600px;
-    flex-wrap: wrap; /* ボタンが収まらない場合に折り返す */
+    /* flex-wrap: wrap; ボタンが収まらない場合に折り返す */
 }
 
 .button-link {
     display: inline-block;
-    padding: 10px 15px; /* 左右のpaddingを少し減らす */
+    padding: 8px 10px; /* 左右のpaddingを少し減らす */
     color: white;
     border: none;
     border-radius: 8px;
@@ -30,11 +30,11 @@ body {
     font-weight: bold;
     text-align: center;
     white-space: nowrap;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
     transition: background-color 0.3s ease, transform 0.2s ease;
     cursor: pointer;
-    flex-grow: 1; /* ボタンの幅を均等に広げる */
-    min-width: 80px; /* ボタンの最小幅を設定 */
+    /* flex-grow: 1; ボタンの幅を均等に広げる */
+    /* min-width: 80px; ボタンの最小幅を設定 */
 }
 
 .button-link:hover {
@@ -43,7 +43,7 @@ body {
 
 .button-link:active {
     transform: scale(0.95);
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.3);
 }
 
 /* 各ボタンに個別の色をつける */

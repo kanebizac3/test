@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import MapForm, CreateGomimonForm
-from .models import Map, UserProfile, Egg, UserGomimon
+from .models import Map, UserProfile, Egg, UserGomimon, Gomimon
 from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import io
@@ -205,11 +205,20 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from .game_logic import Monster, Battle, level_up_gomimon, get_level_from_experience_exponential
 
+def get_random_dark_gomimon():
+    dark_gomimon_qs = Gomimon.objects.filter(gomimon_type='DARK')
+    if dark_gomimon_qs.exists():
+        return random.choice(list(dark_gomimon_qs))
+    return None  # 該当なしの場合
+
 def start_battle_view(request):
     battle_gomimon = UserGomimon.objects.get(user=request.user)
     kansey = Monster(battle_gomimon.gomimon_name, battle_gomimon.gomimon_hp, battle_gomimon.gomimon_maxhp, battle_gomimon.gomimon_atack, battle_gomimon.gomimon_defence)
     print(battle_gomimon.gomimon_name, battle_gomimon.gomimon_hp, battle_gomimon.gomimon_atack, battle_gomimon.gomimon_defence, battle_gomimon.gomimon_maxhp)
-    putirin = Monster("じゃあくなこころ", 10, 10, 5, 1 )
+    opponent = get_random_dark_gomimon()
+    print(opponent)
+    print(opponent.image.url)
+    putirin = Monster(opponent.name, opponent.hp , opponent.hp, opponent.attack, opponent.defense)
     request.session['battle_state'] = {
         'monster1_hp': kansey.hp,
         'monster2_hp': putirin.hp,
@@ -226,7 +235,7 @@ def start_battle_view(request):
         'attack': 1,
         'attacker':0,
         'monster1_img': battle_gomimon.gomimon_image,
-        'monster2_img': "jaaku.jpg"
+        'monster2_img': opponent.image.url,
     }
     return render(request, 'gomimon/battle_log.html',{
         'battle_state': request.session['battle_state']
@@ -390,3 +399,14 @@ def create_gomimon(request):
 
     return render(request, 'gomimon/create_gomimon.html', {'form': form})
 
+@login_required
+def heal_gomimon(request):
+    if request.method == 'POST':
+        profile = UserProfile.objects.get(user=request.user)
+        gomimon = UserGomimon.objects.get(user=request.user)
+        if profile.points >= 5:
+            profile.points -= 5
+            gomimon.gomimon_hp += 30  # 最大HPに回復
+            profile.save()
+            gomimon.save()
+    return redirect('user_profile')  # 体力確認ページにリダイレクト（適宜変更）

@@ -182,6 +182,29 @@
                   {% csrf_token %}
                   <input type="hidden" name="user_id" value="{{ user.id }}">
               </form>
+              <button id="healGomimonButton" class="button" style="background-color: #28a745;">ゴミモンの体力を回復</button>
+              <form id="healGomimonForm" method="post" action="{% url 'heal_gomimon' %}" style="display: none;">
+                  {% csrf_token %}
+              </form>
+              <div id="healModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center;">
+                <div style="background-color: white; padding: 20px; border-radius: 8px; text-align: center;">
+                    <p>5ポイントを消費してゴミモンの体力を30ポイント回復しますか？</p>
+                    <button id="confirmHeal" class="button">はい</button>
+                    <button id="cancelHeal" class="button">いいえ</button>
+                </div>
+              </div>
+              <button id="exchangeButton" class="button" style="background-color: #6c757d;">
+                実商品と交換（募集中）
+              </button>
+              
+              <div id="exchangeModal" class="modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center;">
+                <div style="background-color: white; padding: 20px; border-radius: 8px; text-align: center;">
+                  <p>現在、実際の商品との交換機能は準備中です。今後のアップデートをお楽しみに！</p>
+                  <button id="closeExchangeModal" class="button">閉じる</button>
+                </div>
+              </div>
+
               <form method="post" action="{% url 'logout' %}">
                   {% csrf_token %}
                   <button type="submit" class="button logout-button">ログアウト</button>
@@ -221,7 +244,42 @@
                     buyEggModal.style.display = 'none'; // ポップアップを閉じる
                 });
             }
+            const healGomimonButton = document.getElementById('healGomimonButton');
+            const healModal = document.getElementById('healModal');
+            const confirmHeal = document.getElementById('confirmHeal');
+            const cancelHeal = document.getElementById('cancelHeal');
+            const healGomimonForm = document.getElementById('healGomimonForm');
+
+            if (healGomimonButton && healModal && confirmHeal && cancelHeal && healGomimonForm) {
+                healGomimonButton.addEventListener('click', function() {
+                    healModal.style.display = 'flex';
+                });
+
+                cancelHeal.addEventListener('click', function() {
+                    healModal.style.display = 'none';
+                });
+
+                confirmHeal.addEventListener('click', function() {
+                    healGomimonForm.submit();
+                    healModal.style.display = 'none';
+                });
+            }
+
         });
+        document.addEventListener('DOMContentLoaded', function() {
+            const exchangeBtn = document.getElementById('exchangeButton');
+            const exchangeModal = document.getElementById('exchangeModal');
+            const closeExchangeModal = document.getElementById('closeExchangeModal');
+
+            if (exchangeBtn && exchangeModal && closeExchangeModal) {
+                exchangeBtn.addEventListener('click', () => {
+                    exchangeModal.style.display = 'flex';
+                });
+                closeExchangeModal.addEventListener('click', () => {
+                    exchangeModal.style.display = 'none';
+                });
+            }
+        });    
     </script>
 
     <style>

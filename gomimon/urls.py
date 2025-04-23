@@ -23,8 +23,9 @@ urlpatterns = [
     path('error/', views.gomimon, name='error'),
     path('release_gomimon/', views.release_gomimon, name='release_gomimon'),
     path('secret/create_gomimon/', views.create_gomimon, name='create_gomimon'),
+    path('heal_gomimon/', views.heal_gomimon, name='heal_gomimon'),
 
-]
+    ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

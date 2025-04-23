@@ -84,6 +84,7 @@ class GomimonType(models.TextChoices):
     PAPER = 'paper', '資源ごみ（紙類）'
     BIG = "big",  '粗大ゴミ'
     TOXIC = "toxic", "有害ゴミ"
+    DARK = "dark", "闇"  #敵の属性
     
 class Gomimon(models.Model):
     name = models.CharField(max_length=50)
