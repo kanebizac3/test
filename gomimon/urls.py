@@ -24,6 +24,7 @@ urlpatterns = [
     path('release_gomimon/', views.release_gomimon, name='release_gomimon'),
     path('secret/create_gomimon/', views.create_gomimon, name='create_gomimon'),
     path('heal_gomimon/', views.heal_gomimon, name='heal_gomimon'),
+    path('api/good/<int:report_id>/', views.good_report, name='good_report'),
 
     ]
 

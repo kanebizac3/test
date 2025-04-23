@@ -9,105 +9,79 @@
     crossorigin=""/>
     <link rel="stylesheet" href="{% static 'css/map.css' %}">
     <style>
-        #mapid { height: 500px; } /* 地図の高さ */
+        #mapid { height: 500px; }
         .hidden { display: none; }
         #uploadForm { margin-top: 20px; }
         #message-container { margin-top: 10px; font-weight: bold; }
         .error { color: red; }
         .success { color: green; }
-
-        /* 短く横一列のゲーム的なボタンのスタイル */
-        .button-container {
-            display: flex;
-            gap: 5px; /* ボタン間のスペース */
-            margin-top: 15px; /* 「ポイ捨てを投稿」との間隔 */
-            justify-content: center; /* ボタンを中央に配置 (必要に応じて) */
-        }
-
-        .button-link {
-            display: inline-block;
-            padding: 8px 12px; /* 縦のpaddingを減らす */
-            background-color: #4CAF50; /* 緑色をベース */
+        .like-button {
+            background-color: #ff4d4d;
             color: white;
             border: none;
-            border-radius: 5px; /* 角を少し小さく */
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        .button-container {
+            display: flex;
+            gap: 5px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+        .button-link {
+            display: inline-block;
+            padding: 8px 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
             text-decoration: none;
-            font-size: 14px; /* 文字サイズを少し小さく */
+            font-size: 14px;
             font-weight: bold;
             text-align: center;
-            white-space: nowrap; /* 文字を折り返さない */
-            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* 影を少し弱く */
-            transition: background-color 0.3s ease, transform 0.2s ease; /* ホバー時のアニメーション */
+            white-space: nowrap;
+            box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease, transform 0.2s ease;
             cursor: pointer;
         }
-
         .button-link:hover {
-            background-color: #45a049; /* ホバー時、少し暗い緑色 */
-            transform: scale(1.02); /* ホバー時の拡大を少し小さく */
+            background-color: #45a049;
+            transform: scale(1.02);
         }
-
         .button-link:active {
-            transform: scale(0.98); /* クリック時の縮小を少し小さく */
-            box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.3); /* クリック時の影を少し弱く */
+            transform: scale(0.98);
+            box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.3);
         }
-
-        /* 各ボタンに個別の色をつける (オプション) */
-        .button-link:nth-child(1) { /* ログイン */
-            background-color: #007bff;
-        }
-
-        .button-link:nth-child(1):hover {
-            background-color: #0056b3;
-        }
-
-        .button-link:nth-child(2) { /* ゴミモン */
-            background-color: #ffc107; /* 黄色 */
-            color: #333;
-        }
-
-        .button-link:nth-child(2):hover {
-            background-color: #d89e06;
-        }
-
-        .button-link:nth-child(3) { /* ポイント */
-            background-color: #28c347; /* 赤色 */
-        }
-
-        .button-link:nth-child(3):hover {
-            background-color: #05850f;
-        }
-
-        .button-link:nth-child(4) { /* マップ */
-            background-color: #6c757d; /* グレー */
-        }
-
-        .button-link:nth-child(4):hover {
-            background-color: #5a6268;
-        }
-        /* モバイルデバイス (画面幅が 480px 以下の場合など) */
+        .button-link:nth-child(1) { background-color: #007bff; }
+        .button-link:nth-child(1):hover { background-color: #0056b3; }
+        .button-link:nth-child(2) { background-color: #ffc107; color: #333; }
+        .button-link:nth-child(2):hover { background-color: #d89e06; }
+        .button-link:nth-child(3) { background-color: #28c347; }
+        .button-link:nth-child(3):hover { background-color: #05850f; }
+        .button-link:nth-child(4) { background-color: #6c757d; }
+        .button-link:nth-child(4):hover { background-color: #5a6268; }
         @media (max-width: 480px) {
-            #mapid {
-                height: 250px; /* モバイル時の高さ (適宜調整) */
-            }
+            #mapid { height: 250px; }
         }
     </style>
 </head>
 <body>
     <h1>ゴミモンdeポイ活</h1>
     <h5 style="text-align: center;">ポイ捨て写真でポイントためてゴミモンを育てよう</h5>
-
     <div class="button-container">
         {% if user.is_authenticated %}
             <a href="{% url 'logout' %}" class="button-link">ログアウト</a>
         {% else %}
             <a href="{% url 'login' %}" class="button-link">ログイン</a>
-        {% endif %}        
+        {% endif %}
         <a href="{% url 'gomimon' %}" class="button-link">ゴミモン</a>
         <a href="{% url 'user_profile' %}" class="button-link">ポイント</a>
         <a href="{% url 'map' %}" class="button-link">マップ</a>
     </div>
     <div id="mapid"></div>
-
     <div id="uploadFormContainer">
         <form method="POST" enctype="multipart/form-data" id="uploadForm">
             {% csrf_token %}
@@ -119,19 +93,16 @@
             <input type="hidden" name="longitude" id="longitudeInput">
             <button type="submit" class="save btn btn-default">投稿</button>
         </form>
-        <div id="uploading-message" style="display:none; color:#007bff; margin-top:10px;">
-            アップロード中です…お待ちください。
-        </div>
+        <div id="uploading-message" style="display:none; color:#007bff; margin-top:10px; text-align:center;">アップロード中です…お待ちください。</div>
         <div id="message-container"></div>
         <div id="errors-container"></div>
         <div id="image-popup-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color: rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:9999;">
             <img id="popup-image" style="max-width:90%; max-height:90%; border-radius:12px;">
         </div>
-          
     </div>
-
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" crossorigin=""></script>
     <script src="{% static 'script/locate.js' %}"></script>
     <script src="{% static 'script/map.js' %}"></script>
+
 </body>
 </html>

@@ -45,21 +45,23 @@ map.on('locationerror', onLocationError);
 
 // 初期ロード時に地図にデータを表示する処理
 fetch('/gomimon/api/map_data/')
-    .then(response => response.json())
-    .then(data => {
-        data.forEach(item => {
-            let popupContent = `報告日時: ${new Date(item.reported_at).toLocaleString()}<br>種類: ${item.category}`;
-            if (item.image_url) {
-                popupContent += `<br><img src="${item.image_url}" alt="ゴミの画像" style="max-width: 40px; max-height: 40px; cursor:pointer;" class="clickable-popup-image">`;
-            }
-            L.marker([item.latitude, item.longitude])
-                .addTo(map)
-                .bindPopup(popupContent);
-        });
-    })
-    .catch(error => {
-        console.error('地図データの取得に失敗しました:', error);
+.then(response => response.json())
+.then(data => {
+    data.forEach(item => {
+        let popupContent = `報告日時: ${new Date(item.reported_at).toLocaleString()}<br>種類: ${item.category}`;
+        if (item.image_url) {
+            popupContent += `<br><img src="${item.image_url}" alt="ゴミの画像" style="max-width: 40px; max-height: 40px; cursor:pointer;" class="clickable-popup-image">`;
+        }
+        popupContent += `<br><button class="like-button" data-id="${item.id}">❤️ いいね</button> <span id="like-count-${item.id}">${item.good || 0}</span>`;
+
+        L.marker([item.latitude, item.longitude])
+            .addTo(map)
+            .bindPopup(popupContent);
     });
+})
+.catch(error => {
+    console.error('地図データの取得に失敗しました:', error);
+});
 
 document.addEventListener('DOMContentLoaded', function() {
     const uploadForm = document.getElementById('uploadForm');
@@ -169,4 +171,42 @@ const uploadingMessage = document.getElementById('uploading-message');
 
 form.addEventListener('submit', function() {
   uploadingMessage.style.display = 'block';
+});
+
+document.addEventListener('click', function(e) {
+    if (e.target && e.target.classList.contains('like-button') && !e.target.classList.contains('liked')) {
+        const button = e.target;
+        const id = button.getAttribute('data-id');
+
+        button.classList.add('liked');
+        button.textContent = '❤️ いいね済み'; // ボタンのテキストを変更 (オプション)
+
+        fetch(`/gomimon/api/good/${id}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById(`like-count-${id}`).textContent = data.good;
+                // 必要であれば、成功後にクラスを削除して再度押せるようにする処理を追加
+                // 例: setTimeout(() => { button.classList.remove('liked'); button.textContent = '❤️ いいね'; }, 3000);
+            } else {
+                console.error('いいね処理に失敗:', data);
+                button.classList.remove('liked'); // エラー発生時はクラスを削除して再度押せるように戻す
+                button.textContent = '❤️ いいね';
+                if (data.error) {
+                    alert(data.error);
+                }
+            }
+        })
+        .catch(error => {
+            console.error('いいね処理のエラー:', error);
+            button.classList.remove('liked'); // エラー発生時はクラスを削除して再度押せるように戻す
+            button.textContent = '❤️ いいね';
+            alert('いいね処理中にエラーが発生しました。');
+        });
+    }
 });

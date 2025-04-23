@@ -17,7 +17,7 @@ def test(request):
 
 def map(request):
     form = MapForm()
-    map = Map.objects.all().values('latitude', 'longitude', 'description', 'reported_at', 'image', 'category', 'picking')
+    map = Map.objects.all().values('id','latitude', 'longitude', 'description', 'reported_at', 'image', 'category', 'picking', 'good')
     context = {"form": form, "map_data":map}
     return render(request, 'gomimon/map.html', context)
 
@@ -75,7 +75,7 @@ def submit_map_data(request):
         return JsonResponse({'status': 'error', 'message': 'POSTリクエストのみ受け付けます。'}, status=405)
 
 def get_map_data(request):
-    map_data = Map.objects.all().values('latitude', 'longitude', 'description', 'reported_at', 'image', 'category')
+    map_data = Map.objects.all().values('id', 'latitude', 'longitude', 'description', 'reported_at', 'image', 'category', 'good')
     data_list = []
     for item in map_data:
         image_url = None
@@ -83,12 +83,14 @@ def get_map_data(request):
             image_url = settings.MEDIA_URL + str(item['image'])
             print(image_url)
         data_list.append({
+            'id' : item['id'],
             'latitude': item['latitude'],
             'longitude': item['longitude'],
             'description': item['description'],
             'reported_at': item['reported_at'],
             'category': item['category'],
             'image_url': image_url,  # 画像の URL を追加
+            'good':item['good']
         })
     return JsonResponse(data_list, safe=False)
 
@@ -414,3 +416,28 @@ def heal_gomimon(request):
             profile.save()
             gomimon.save()
     return redirect('user_profile')  # 体力確認ページにリダイレクト（適宜変更）
+
+
+import logging
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+
+logger = logging.getLogger(__name__)
+
+@require_POST
+def good_report(request, report_id):
+    from .models import Map
+    try:
+        Map = Map.objects.get(id=report_id)
+        if hasattr(Map, 'good'): # Map.good != None を hasattr(Map, 'good') に変更
+            Map.good += 1
+        else:
+            Map.good = 1
+        Map.save()
+        return JsonResponse({'success': True, 'good': Map.good})
+    except Map.DoesNotExist:
+        return JsonResponse({'success': False, 'error': '指定されたマップが存在しません'}, status=404)
+    except Exception as e:
+        logger.error(f"予期しないエラーが発生しました: {e}")
+        return JsonResponse({'success': False, 'error': '予期しないエラーが発生しました'}, status=500)

@@ -22,7 +22,7 @@ class Map(models.Model):
     category = models.CharField(max_length=100, choices=CATEGORY_CHOICES, null=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reported_maps', null=True, blank=True)
     picking = models.CharField(max_length=10, choices=STATUS_CHOICES, null=True, blank=True)
-    good = models.IntegerField(null=True, blank=True)
+    good = models.IntegerField(default=0, null=True, blank=True)
     # 必要に応じて他のフィールド（ゴミの種類、写真など）を追加
 
     def __str__(self):
