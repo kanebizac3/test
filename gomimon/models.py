@@ -18,10 +18,10 @@ class Map(models.Model):
     longitude = models.FloatField()
     reported_at = models.DateTimeField(default=timezone.now, null=True, blank=True)
     description = models.TextField(blank=True)
-    image = models.ImageField(upload_to='poisute_img/', null=True, blank=True)  # 画像を保存するディレクトリを指定
+    image = models.ImageField(upload_to='poisute_img/', null=True)  # 画像を保存するディレクトリを指定
     category = models.CharField(max_length=100, choices=CATEGORY_CHOICES, null=True, blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reported_maps', null=True, blank=True)
-    picking = models.CharField(max_length=10, choices=STATUS_CHOICES, null=True, blank=True)
+    picking = models.CharField(max_length=10, choices=STATUS_CHOICES, null=True)
     good = models.IntegerField(default=0, null=True, blank=True)
     # 必要に応じて他のフィールド（ゴミの種類、写真など）を追加
 
