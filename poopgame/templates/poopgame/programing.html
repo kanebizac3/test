@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>うんこプログラミングゲーム</title>
+  <link rel="stylesheet" href="{% static 'poopgame/css/programing.css' %}">
+</head>
+<body>
+  <h1>うんこをトイレまで運ぼう！</h1>
+
+  <!-- ゲームエリア -->
+  <div id="game-area">
+    <!-- 背景グリッド（CSSグリッド） -->
+    <div id="grid"></div>
+
+    <!-- プレイヤー画像 -->
+    <img id="player" src="{% static 'poopgame/img/human.jpeg' %}" alt="プレイヤー">
+
+    <!-- うんこ画像 -->
+    <img id="poop"   src="{% static 'poopgame/img/poop.jpeg'   %}" alt="うんこ">
+
+    <!-- 便器画像 -->
+    <img id="toilet" src="{% static 'poopgame/img/toilet.jpeg' %}" alt="便器">
+  </div>
+
+  <!-- プログラム入力エリア -->
+  <div id="program-area">
+    <div id="cmd-list">
+      <button data-cmd="前へ">前へ</button>
+      <button data-cmd="左向く">左向く</button>
+      <button data-cmd="右向く">右向く</button>
+      <button data-cmd="拾う">拾う</button>
+      <button data-cmd="入れる">入れる</button>
+      <button data-cmd="流す">流す</button>
+    </div>
+    <textarea id="program" rows="4" placeholder="ここにコマンドが並びます" readonly></textarea>
+    <div id="controls">
+      <button id="run">実行▶︎</button>
+      <button id="clear">クリア✖︎</button>
+    </div>
+  </div>
+
+  <script src="{% static 'poopgame/js/programing.js' %}"></script>
+</body>
+</html>

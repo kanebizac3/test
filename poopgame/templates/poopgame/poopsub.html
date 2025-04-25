@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>うんこ引き算ゲーム</title>
+  <link rel="stylesheet" href="{% static 'poopgame/css/poopsub.css' %}">
+</head>
+<body>
+  <h1>ぶりっと痛快 解ケツうんこ - 引き算</h1>
+
+  <p>
+    うんこが <strong id="initial">{{ original }}</strong> 個あります。  
+    <strong id="subtract">{{ subtract }}</strong> 個をお尻に戻すと、何個残る？
+  </p>
+
+  <div class="poop-container" id="poop-container">
+    {% for i in poop_indices %}
+      <!-- poop.png を使う場合 -->
+      <img src="{% static 'poopgame/img/poop.jpeg' %}" class="poop" alt="うんこ">
+    {% endfor %}
+  </div>
+
+  <div class="input-area">
+    <input type="number" id="answer" placeholder="こたえを入力">
+    <button onclick="checkAnswer()">けってい！</button>
+  </div>
+
+  <div id="result-message"></div>
+
+  <!-- お尻と便器の画像も使うならここでロード -->
+  <img id="butt" src="{% static 'poopgame/img/butt.jpeg' %}" alt="おしり" hidden>
+  <img id="toilet" src="{% static 'poopgame/img/toilet.jpeg' %}" alt="トイレ" hidden>
+
+  <script src="{% static 'poopgame/js/poopsub.js' %}"></script>
+</body>
+</html>

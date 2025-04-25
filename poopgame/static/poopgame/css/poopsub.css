@@ -1,0 +1,72 @@
+body {
+    text-align: center;
+    font-family: "Arial", sans-serif;
+    padding: 1em;
+  }
+  
+  .poop-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 1em 0;
+  }
+  
+  .poop {
+    width: 60px;
+    margin: 5px;
+    transition: transform 0.5s ease;
+  }
+  
+  .explode {
+    animation: explode 0.8s ease-out forwards;
+  }
+  
+  @keyframes explode {
+    0% { transform: scale(1); }
+    100% {
+      transform: translate(
+        calc(100px - 200px * random()), 
+        calc(100px - 200px * random())
+      ) rotate(720deg) scale(0);
+      opacity: 0;
+    }
+  }
+  
+  /* 既存スタイルに合わせて追加してください */
+
+#poop-container {
+    position: relative;        /* fart 用に必須 */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 320px;
+    margin: 0 auto 20px;
+  }
+  
+  .poop {
+    font-size: 40px;
+    margin: 4px;
+    transition: opacity 0.5s;
+  }
+  
+  /* 正解時に戻した分だけ薄くする */
+  .poop.removed {
+    opacity: 0.2;
+  }
+  
+  /* fart（お尻から噴き出す）エフェクト */
+  @keyframes fart {
+    from {
+      transform: translateY(0) rotate(0deg);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(-300px) rotate(720deg);
+      opacity: 0;
+    }
+  }
+  .poop.fart {
+    position: absolute;
+    animation: fart 1s ease-out forwards;
+  }
+  

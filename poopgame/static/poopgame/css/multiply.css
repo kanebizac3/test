@@ -1,0 +1,130 @@
+body {
+    font-family: sans-serif;
+    text-align: center;
+    background: #fffbe6;
+    padding: 1em;
+  }
+  
+  h1 {
+    margin-bottom: 0.5em;
+  }
+  
+  #poop-grid .row {
+    display: flex;
+    justify-content: center;
+    margin: 0.2em 0;
+  }
+  
+  .poop {
+    width: 40px;
+    height: auto;
+    margin: 2px;
+    transition: transform 1s ease-out, opacity 1s ease-out;
+  }
+  
+  .input-area {
+    margin-top: 1em;
+  }
+  
+  .input-area input {
+    width: 60%;
+    font-size: 1.2em;
+    text-align: center;
+    margin-bottom: 0.5em;
+  }
+  
+  .buttons button {
+    font-size: 1em;
+    padding: 0.5em;
+    margin: 0.2em;
+  }
+  
+ /* 正解メッセージのスタイル */
+ #correct-area {
+    display: none;
+    text-align: center;
+    margin: 1em 0;
+  }
+  #correct-area img {
+    width: 80px;
+    display: block;
+    margin: 0 auto 0.5em;
+  }
+  #correct-area h2 {
+    font-size: 1.5em;
+    color: #d32f2f;
+    margin: 0;
+    animation: pop 0.3s ease-out;
+  }
+  @keyframes pop {
+    0%   { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1);   opacity: 1; }
+  }
+
+  @keyframes explode-large {
+    0% {
+      transform: scale(1) translate(0, 0) rotate(0deg);
+      opacity: 1;
+      z-index: 2;
+    }
+    50% {
+      transform: scale(3) translate(var(--dx), var(--dy)) rotate(360deg);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(5) translate(var(--dx), var(--dy)) rotate(720deg);
+      opacity: 0;
+    }
+  }
+  
+  .poop.explode-large {
+    animation: explode-large 2s ease-out forwards;
+    /* 爆発中は他要素より前面に */
+    z-index: 10;
+  }
+
+  /* 間違いメッセージ */
+#wrong-message {
+    display: none;
+    font-size: 2rem;
+    color: #d32f2f;
+    text-align: center;
+    margin: 1em 0;
+    animation: pop 0.5s ease-out;
+  }
+  
+  /* 少年画像・オナラ画像 */
+  #wrong-boy,
+  #fart-img {
+    display: none;
+    width: 50%;
+    max-width: 200px;
+    margin: 0.5em auto;
+    animation: fadeIn 1s ease-out;
+  }
+  
+  /* ポップイン */
+  @keyframes pop {
+    0%   { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1);   opacity: 1; }
+  }
+  /* フェードイン */
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  
+  #next-question-area button {
+    font-size: 1.2em;
+    padding: 0.6em 1.2em;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 0.5em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  #next-question-area button:hover {
+    background-color: #388e3c;
+  }
+  

@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'blog.apps.BlogConfig',
     'gomimon.apps.GomimonConfig',
+    'poopgame.apps.PoopgameConfig',
+
 ]
 
 MIDDLEWARE = [

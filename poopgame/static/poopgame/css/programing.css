@@ -1,0 +1,97 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: sans-serif;
+  text-align: center;
+  background: #f0f8ff;
+  padding: 10px;
+}
+
+h1 {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+}
+
+/* ゲームエリア */
+#game-area {
+  position: relative;
+  width: 90vw;      /* モバイル最適化 */
+  max-width: 400px;
+  height: 90vw;
+  max-height: 400px;
+  margin: 0 auto 12px;
+  background: #e0f7fa;
+  border: 2px solid #0097a7;
+
+  display: grid;
+  grid-template: repeat(5, 1fr) / repeat(5, 1fr);
+}
+
+/* グリッドの罫線 */
+#game-area #grid {
+  grid-column: 1 / -1;
+  grid-row: 1 / -1;
+  display: grid;
+  grid-template: repeat(5, 1fr) / repeat(5, 1fr);
+}
+#grid div {
+  border: 1px solid #b2ebf2;
+}
+
+/* 画像要素（プレイヤー・うんこ・便器） */
+#player, #poop, #toilet {
+  position: absolute;
+  width: 18%;   /* セル1つ分＋マージン想定 */
+  height: auto;
+  z-index: 2;
+  transition:
+    transform 0.5s ease,
+    top       0.5s ease,
+    left      0.5s ease,
+    opacity   0.5s ease;
+}
+
+/* 便器は最前面の下右 */
+#toilet {
+  bottom: 2%;
+  right: 2%;
+  z-index: 1;
+}
+
+/* プログラム入力エリア */
+#program-area {
+  width: 90vw; max-width: 400px;
+  margin: 0 auto;
+}
+
+#cmd-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+#cmd-list button {
+  flex: 1 1 30%;
+  margin: 2px;
+  font-size: 0.9rem;
+  padding: 6px;
+  background: #ffcc80;
+  border: none;
+  border-radius: 4px;
+}
+
+#program {
+  width: 100%;
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+
+#controls button {
+  width: 48%;
+  font-size: 1rem;
+  padding: 6px;
+  margin: 2px 1%;
+  border: none;
+  border-radius: 4px;
+  background: #80deea;
+}

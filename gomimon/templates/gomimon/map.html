@@ -3,7 +3,21 @@
 <html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
-    <title>ゴミモン</title>
+    
+    <title>ゴミモン | ポイ捨てでポイントを貯めて、ゴミモンを育てよう！</title>
+    <meta name="description" content="ポイ捨てされたゴミの写真を投稿してポイントをゲット！集めたポイントで可愛いゴミモンを育成しよう。楽しく社会貢献できるポイ活アプリです。">
+    <meta name="keywords" content="ゴミ拾い, ポイ活, 環境保護, 社会貢献, ゲーム, アプリ, ゴミモンスター, 育成ゲーム, 位置情報ゲーム, マップ, SDGs, ゴミモン">
+    <meta name="author" content="nakajima-navi">
+    <meta property="og:title" content="ゴミモン | ポイ捨て写真の投稿でポイントを貯めて、ゴミモンを育てよう！">
+    <meta property="og:description" content="ポイ捨てされたゴミの写真を投稿してポイントをゲット！集めたポイントで可愛いゴミモンを育成しよう。楽しく社会貢献できるポイ活アプリです。">
+    <meta property="og:url" content="https://www.nakajima-navi.com/gomimon/map">
+    <meta property="og:image" content="{% static 'img/001_cam.png' %}">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ゴミモン | ポイ捨て写真でポイントを貯めて、ゴミモンを育てよう！">
+    <meta name="twitter:description" content="ポイ捨てされたゴミの写真を投稿してポイントをゲット！集めたポイントで可愛いゴミモンを育成しよう。楽しく社会貢献できるポイ活アプリです。">
+    <meta name="twitter:image" content="{% static 'img/001_cam.png' %}">
+    
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
     crossorigin=""/>
@@ -66,6 +80,9 @@
         @media (max-width: 480px) {
             #mapid { height: 250px; }
         }
+        footer {
+            font-size: x-small;
+        }
     </style>
 </head>
 <body>
@@ -105,4 +122,8 @@
     <script src="{% static 'script/map.js' %}"></script>
 
 </body>
+<footer style="background-color: #333; color: #fff; padding: 5px; text-align: center;">
+ <p>&copy; 2025 Gomimon by  <a href="{% url 'top' %}" style="color: #fff;">Nakajima-navi</a> | <a href="{% url 'policy' %}" style="color: #fff;">プライバシーポリシー</a> | <a href="{% url 'term' %}" style="color: #fff;">利用規約</a></p>
+</footer>
+
 </html>

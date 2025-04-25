@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>うんこ掛け算ゲーム</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="{% static 'poopgame/css/multiply.css' %}">
+</head>
+<body>
+  <h1>{{ rows }} × {{ cols }} のうんこをかぞえよう！</h1>
+
+  <div id="poop-grid">
+    {% for r in rows_range %}
+      <div class="row">
+        {% for c in cols_range %}
+          <img src="{% static 'poopgame/img/poop.jpeg' %}" class="poop" alt="うんこ">
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="input-area">
+
+    <div id="next-question-area" style="display:none; margin-top: 1em;">
+        <button onclick="goToNextQuestion()">次の問題へ</button>
+      </div>
+      <!-- 正解時に表示するエリア -->
+      <div id="correct-area">
+        <img src="{% static 'poopgame/img/butt.jpeg' %}" alt="おしり">
+        <h2>かいケツ！</h2>
+    </div>
+
+  <!-- 効果音（爆発音） -->
+  <audio id="explosion-sound" src="{% static 'poopgame/sounds/explosion.mp3' %}" preload="auto"></audio>
+
+  <!-- 間違え演出 -->
+  <div id="wrong-message">ぶっぶー</div>
+  <img id="fart-img" src="{% static 'poopgame/img/fart.jpeg' %}"           alt="オナラ">
+  <img id="wrong-boy" src="{% static 'poopgame/img/boy_with_poop.jpeg' %}" alt="うんこを被った少年">
+
+    <input type="text" id="answer" placeholder="答えを入力" readonly>
+    <div class="buttons">
+      {% for i in "1234567890" %}
+        <button onclick="addDigit('{{ i }}')">{{ i }}</button>
+      {% endfor %}
+      <button onclick="submitAnswer()">解ケツ！</button>
+      <button onclick="clearAnswer()">クリア</button>
+    </div>
+  </div>
+
+
+  <script>
+    const correctAnswer = {{ correct_answer }};
+  </script>
+  <script src="{% static 'poopgame/js/multiply.js' %}"></script>
+</body>
+</html>
