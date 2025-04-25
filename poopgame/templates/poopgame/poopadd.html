@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>うんこ足し算</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="{% static 'poopgame/css/poopadd.css' %}">
+  <script src="{% static 'poopgame/js/poopadd.js' %}" defer></script>
+</head>
+<body>
+  <div class="container">
+    <h1>うんこ足し算 💩</h1>
+
+    <div id="poop-area">
+      <div class="poops">
+        {% for _ in num1_list %}
+          <img src="{% static 'poopgame/img/poop.jpeg' %}" class="poop" alt="うんこ">
+        {% endfor %}
+      </div>
+      <div class="plus">＋</div>
+      <div class="poops">
+        {% for _ in num2_list %}
+          <img src="{% static 'poopgame/img/poop.jpeg' %}" class="poop" alt="うんこ">
+        {% endfor %}
+      </div>
+    </div>
+
+    {% if checked %}
+      {% if result %}
+        <div id="correct-area">
+          <img src="{% static 'poopgame/img/butt.jpeg' %}" alt="おしり">
+          <audio autoplay src="{% static 'poopgame/sounds/kirakira.mp3' %}"></audio>
+
+          <h2>かいケツ！</h2>
+        </div>
+      {% else %}
+        <div id="wrong-area">
+          <div id="wrong-message">ぶっぶー！{{ total }}です💩</div>
+          <img id="wrong-boy" src="{% static 'poopgame/img/boy_with_poop.jpeg' %}" alt="失敗した少年">
+          <img id="fart-img"    src="{% static 'poopgame/img/fart.jpeg' %}"      alt="オナラ">
+          <audio autoplay src="{% static 'poopgame/sounds/explosion.mp3' %}"></audio>
+        </div>
+      {% endif %}
+
+      <!-- ★解答後はここだけを表示★ -->
+      <form action="{% url 'poopadd' %}" id="next-form">
+        <button type="submit" id="next-button">✨ 次の問題へ ✨</button>
+      </form>
+
+    {% else %}
+      <!-- ★解答前はこのフォーム（数字パッド）だけを表示★ -->
+      <form method="post" action="{% url 'poopadd_check' %}" id="answer-form">
+        {% csrf_token %}
+        <input type="hidden" name="num1" value="{{ num1 }}">
+        <input type="hidden" name="num2" value="{{ num2 }}">
+        <input type="hidden" name="correct_answer" value="{{ total }}">
+
+        <div class="input-area">
+          <input type="text" id="answer" name="answer" placeholder="いくつ？" readonly>
+
+          <div class="num-pad">
+            {% for d in "1234567890" %}
+              <button type="button" onclick="addDigit('{{ d }}')">{{ d }}</button>
+            {% endfor %}
+            <button type="button" class="clear" onclick="clearAnswer()">C</button>
+            <button type="button" class="del"   onclick="deleteLast()">←</button>
+          </div>
+
+          <button type="submit" class="submit">こたえる！</button>
+        </div>
+      </form>
+    {% endif %}
+
+  </div>
+</body>
+</html>

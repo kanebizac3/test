@@ -39,3 +39,43 @@ def multiply(request):
         'rows_range': rows_range,
         'cols_range': cols_range,
     })
+
+
+def poopadd(request):
+    num1 = random.randint(1, 9)
+    num2 = random.randint(1, 9)
+    total = num1 + num2
+
+    # ここでリスト化して渡す
+    context = {
+        'num1': num1,
+        'num2': num2,
+        'total': total,
+        'num1_list': list(range(num1)),
+        'num2_list': list(range(num2)),
+        'checked': False,
+    }
+    return render(request, 'poopgame/poopadd.html', context)
+
+
+def poopadd_check(request):
+    if request.method == 'POST':
+        num1 = int(request.POST['num1'])
+        num2 = int(request.POST['num2'])
+        total = num1 + num2
+        user_answer = int(request.POST['answer'])
+        result = (user_answer == total)
+
+        context = {
+            'num1': num1,
+            'num2': num2,
+            'total': total,
+            'num1_list': list(range(num1)),
+            'num2_list': list(range(num2)),
+            'checked': True,
+            'user_answer': user_answer,
+            'result': result,
+        }
+        return render(request, 'poopgame/poopadd.html', context)
+    # GET で来た場合はリダイレクト
+    return redirect('poopadd')
