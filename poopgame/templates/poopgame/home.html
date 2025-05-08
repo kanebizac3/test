@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <title>うんこ学習ランド</title>
+  <link rel="stylesheet" href="{% static 'poopgame/css/home.css' %}">
+</head>
+<body>
+
+  <header>
+    <h1>💩 うんこ学習ランドへようこそ！</h1>
+    <p>今のうんPポイント：<span id="point-count">{{ unp_points }}</span> うんP</p>
+  </header>
+
+  <main>
+    <div class="game-menu">
+      <a href="{% url 'multiply' %}" class="game-btn poop-btn">✖ うんこかけ算</a>
+      <a href="{% url 'poopadd' %}" class="game-btn poop-btn">➕ うんこたし算</a>
+      <a href="{% url 'divide' %}" class="game-btn poop-btn">➗ うんこわり算</a>
+    </div>
+
+    <div class="poop-decoration">
+      <img src="{% static 'img/poop-smile.png' %}" alt="にこにこうんこ" class="floating-poop">
+      <img src="{% static 'img/poop-wink.png' %}" alt="ウィンクうんこ" class="floating-poop">
+      <img src="{% static 'img/poop-dance.gif' %}" alt="踊るうんこ" class="floating-poop">
+    </div>
+  </main>
+
+  <footer>
+    <p>© うんこ学習ランド</p>
+  </footer>
+
+</body>
+</html>

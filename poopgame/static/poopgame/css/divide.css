@@ -1,0 +1,114 @@
+/* reset */
+* { box-sizing: border-box; margin:0; padding:0; }
+body {
+  font-family: sans-serif;
+  background: #fffbe6;
+  text-align: center;
+  padding: 1em;
+}
+.container {
+  max-width: 400px; margin:0 auto;
+}
+
+/* タイトル・問題文 */
+h1 { font-size: 1.6rem; margin-bottom: 0.5em; }
+p.question {
+  font-size: 1.2rem;
+  margin-bottom: 0.8em;
+}
+
+/* うんこグリッド */
+#poop-grid .row {
+  display: flex; justify-content: center;
+  margin: 0.2em 0;
+}
+.poop {
+  width: 12vw; max-width: 40px;
+  margin: 0.1em;
+  transition: transform 1s ease, opacity 1s ease;
+}
+
+/* 入力欄 */
+#answer {
+  width: 80%; font-size: 1.2rem; text-align: center;
+  padding: 0.5em; margin-bottom: 0.5em;
+  border: 2px solid #ccc; border-radius: 0.3em;
+  background: #fafafa;
+}
+
+/* 数字パッド */
+.num-pad {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 0.4em; margin-bottom: 0.5em;
+}
+.num-pad button {
+  width: 60px; height: 60px; font-size: 1.1rem;
+  border:1px solid #bbb; border-radius:0.3em;
+  background:#fff; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:background 0.2s;
+}
+.num-pad button:hover { background:#eee; }
+.num-pad button.clear { background:#f88; color:#fff; }
+.num-pad button.del   { background:#faa; color:#fff; }
+
+/* こたえるボタン */
+button.submit {
+  width: 80%; font-size:1.2rem; padding:0.6em;
+  background:#4caf50; color:#fff; border:none;
+  border-radius:0.4em; cursor:pointer; margin-bottom:1em;
+  transition:background 0.2s;
+}
+button.submit:hover { background:#45a049; }
+
+/* 正解演出 */
+#correct-area img {
+  width: 20vw; max-width:80px; margin-bottom:0.5em;
+}
+#correct-area h2 {
+  font-size:1.5rem; color:#d32f2f;
+  animation:pop 0.3s ease-out;
+}
+
+/* 間違い演出 */
+#wrong-message {
+  font-size:2rem; color:#d32f2f; margin-bottom:0.5em;
+  animation:pop 0.5s ease-out;
+}
+#wrong-boy, #fart-img {
+  width:30vw; max-width:150px; margin:0.3em auto;
+  animation:fadeIn 1s ease-out;
+}
+
+/* 次へボタン */
+#next-button {
+  background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+  color:#fff; font-size:1.4rem; padding:0.6em 1.2em;
+  border:none; border-radius:2em;
+  box-shadow:0 4px 8px rgba(0,0,0,0.15); cursor:pointer;
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+#next-button:hover {
+  transform:scale(1.05);
+  box-shadow:0 6px 12px rgba(0,0,0,0.2);
+}
+
+/* アニメーション */
+@keyframes pop {
+  0% { transform:scale(0.5); opacity:0; }
+  100% { transform:scale(1); opacity:1; }
+}
+@keyframes fadeIn {
+  0% { opacity:0; }
+  100% { opacity:1; }
+}
+@keyframes flow {
+  to { transform:translateY(200px) scale(0.1); opacity:0; }
+}
+@keyframes explode-large {
+  0% { transform:scale(1) translate(0,0) rotate(0); opacity:1; }
+  50% { transform:scale(3) translate(var(--dx),var(--dy)) rotate(360deg); }
+  100% { transform:scale(5) translate(var(--dx),var(--dy)) rotate(720deg); opacity:0; }
+}
+.poop.flow          { animation:flow 1s ease-in forwards; }
+.poop.explode-large { animation:explode-large 2s ease-out forwards; z-index:10; }

@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>うんこかけ算</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  <link rel="stylesheet" href="{% static 'poopgame/css/poopmultiply.css' %}">
+  <script src="{% static 'poopgame/js/poopmultiply.js' %}" defer></script>
+</head>
+<body>
+  <h1>うんこかけ算 💩</h1>
+
+  <div id="poop-area">
+    <div class="row">
+      {% for _ in num1_list %}
+        <img src="{% static 'poopgame/img/poop.jpeg' %}" class="poop" alt="うんこ">
+      {% endfor %}
+    </div>
+    <div class="multiply-sign">×</div>
+    <div class="row">
+      {% for _ in num2_list %}
+        <img src="{% static 'poopgame/img/poop.jpeg' %}" class="poop" alt="うんこ">
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if checked %}
+    {% if result %}
+      <div class="result correct">
+        <img src="{% static 'poopgame/img/flush.jpeg' %}" alt="トイレに流れる">
+        <h2>かいケツ！💩💦</h2>
+        <audio autoplay src="{% static 'poopgame/sound/flush.mp3' %}"></audio>
+      </div>
+    {% else %}
+      <div class="result wrong">
+        <h2>ぶっぶー💥</h2>
+        <img src="{% static 'poopgame/img/explosion.jpeg' %}" alt="うんこ爆発">
+        <audio autoplay src="{% static 'poopgame/sound/bakuhatsu.mp3' %}"></audio>
+      </div>
+    {% endif %}
+    <form action="{% url 'poopmultiply2' %}">
+      <button class="next-button">つぎのもんだいへ</button>
+    </form>
+  {% endif %}
+
+  <form method="post" action="{% url 'poopmultiply2_check' %}" id="answer-form">
+    {% csrf_token %}
+    <input type="hidden" name="num1" value="{{ num1 }}">
+    <input type="hidden" name="num2" value="{{ num2 }}">
+    <input type="hidden" name="correct_answer" value="{{ total }}">
+
+    <div class="input-area">
+      <input type="text" id="answer" name="answer" placeholder="こたえは？" readonly>
+      <div class="num-pad">
+        {% for d in "1234567890" %}
+          <button type="button" onclick="addDigit('{{ d }}')">{{ d }}</button>
+        {% endfor %}
+        <button type="button" onclick="clearAnswer()">C</button>
+        <button type="button" onclick="deleteLast()">←</button>
+      </div>
+      <button type="submit" class="submit">こたえる！</button>
+    </div>
+  </form>
+</body>
+</html>

@@ -1,0 +1,72 @@
+body {
+    font-family: 'Rounded Mplus 1c', sans-serif;
+    background: #fff8dc;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+  
+  header {
+    background: #ffcc00;
+    padding: 20px;
+    font-size: 1.5rem;
+    color: #5c3300;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  #point-count {
+    font-weight: bold;
+    font-size: 2rem;
+    color: #c14400;
+  }
+  
+  .game-menu {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+  
+  .game-btn {
+    display: inline-block;
+    padding: 20px 40px;
+    font-size: 1.6rem;
+    border-radius: 20px;
+    color: white;
+    background-color: #9b59b6;
+    text-decoration: none;
+    box-shadow: 0 5px #6c3483;
+    transition: 0.2s;
+  }
+  
+  .game-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 3px #5b2c6f;
+  }
+  
+  .poop-btn {
+    background-color: #8d6e63;
+  }
+  
+  .poop-decoration {
+    margin-top: 40px;
+  }
+  
+  .floating-poop {
+    width: 80px;
+    margin: 10px;
+    animation: float 3s infinite ease-in-out;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+  }
+  
+  footer {
+    margin-top: 50px;
+    font-size: 0.9rem;
+    color: #999;
+  }
+  

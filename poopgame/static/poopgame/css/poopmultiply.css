@@ -1,0 +1,53 @@
+/* static/poopgame/css/poopmultiply.css */
+body {
+    font-family: "Arial", sans-serif;
+    text-align: center;
+    background-color: #fff9e6;
+    margin: 0;
+    padding: 0;
+  }
+  
+  h1 {
+    font-size: 2em;
+    margin: 1rem;
+  }
+  
+  .poop {
+    width: 40px;
+    height: auto;
+    margin: 4px;
+  }
+  
+  .multiply-sign {
+    font-size: 2em;
+    margin: 0.5rem;
+  }
+  
+  .input-area {
+    margin-top: 1rem;
+  }
+  
+  #answer {
+    font-size: 1.5em;
+    text-align: center;
+    width: 60%;
+    padding: 0.5em;
+    margin-bottom: 1rem;
+  }
+  
+  .num-pad button {
+    font-size: 1.2em;
+    margin: 4px;
+    padding: 0.5em 0.8em;
+    border-radius: 8px;
+  }
+  
+  .submit, .next-button {
+    font-size: 1.4em;
+    margin-top: 1rem;
+    background-color: #ffd700;
+    border: none;
+    padding: 0.5em 1.2em;
+    border-radius: 12px;
+  }
+  

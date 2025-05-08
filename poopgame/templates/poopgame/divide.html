@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>うんこ割り算</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <link rel="stylesheet" href="{% static 'poopgame/css/divide.css' %}">
+</head>
+<body data-checked="{{ checked|yesno:'true,false' }}" data-result="{{ result|yesno:'true,false' }}">
+<div class="container">
+    <h1>うんこ割り算 💩</h1>
+
+    <p class="question">
+      {{ total }} ÷ {{ groups }} ＝ なんこ？
+    </p>
+
+    <div id="poop-grid">
+      {% for r in rows_range %}
+        <div class="row">
+          {% for c in cols_range %}
+            <img src="{% static 'poopgame/img/poop.jpeg' %}" class="poop" alt="うんこ">
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if not checked %}
+      <form method="post" id="answer-form">
+        {% csrf_token %}
+        <input type="hidden" name="groups"    value="{{ groups }}">
+        <input type="hidden" name="per_group" value="{{ per_group }}">
+        <input type="hidden" name="total"     value="{{ total }}">
+        <input type="hidden" name="correct_answer" value="{{ correct_answer }}">
+
+        <input type="text" id="answer" name="answer" placeholder="いくつ？" readonly>
+
+        <div class="num-pad">
+          {% for d in "1234567890" %}
+            <button type="button">{{ d }}</button>
+          {% endfor %}
+          <button type="button" class="clear">C</button>
+          <button type="button" class="del">←</button>
+        </div>
+
+        <button type="submit" class="submit">こたえる！</button>
+      </form>
+    {% else %}
+      {% if result %}
+        <div id="correct-area">
+          <img src="{% static 'poopgame/img/butt.jpeg' %}" alt="おしり">
+          <h2>かいケツ！</h2>
+          <audio id="correct-sound" src="{% static 'poopgame/sounds/correct.mp3' %}" preload="auto"></audio>
+        </div>
+      {% else %}
+        <div id="wrong-area">
+          <div id="wrong-message">ぶっぶー</div>
+          <img id="wrong-boy" src="{% static 'poopgame/img/boy_with_poop.jpeg' %}" alt="うんこをかぶった少年">
+          <img id="fart-img"    src="{% static 'poopgame/img/fart.jpeg' %}"           alt="オナラ">
+          <audio id="wrong-sound" src="{% static 'poopgame/sounds/wrong.mp3' %}" preload="auto"></audio>
+        </div>
+      {% endif %}
+
+      <div id="next-btn-container">
+        <form action="{% url 'divide' %}">
+          <button type="submit" id="next-button">✨ 次の問題へ ✨</button>
+        </form>
+      </div>
+    {% endif %}
+  </div>
+
+  <script src="{% static 'poopgame/js/divide.js' %}"></script>
+</body>
+</html>
