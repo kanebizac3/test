@@ -207,4 +207,37 @@
     z-index: 5;
   }
   
-  
+  /* ホームへ戻るボタン */
+#home-button {
+  background: linear-gradient(135deg, #c1dfc4 0%, #deecdd 100%);
+  color: #333;
+  font-size: 1rem;
+  padding: 0.6em 1.2em;
+  border: none;
+  border-radius: 2em;
+  margin-top: 0.5em;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+#home-button:hover {
+  transform: scale(1.05);
+}
+
+/* 飛び散りアニメ */
+@keyframes explode-fly {
+  0% {
+    transform: scale(1) translate(0, 0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2) translate(var(--dx), var(--dy)) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.poop.explode-fly {
+  animation: explode-fly 1.5s ease-out forwards;
+  z-index: 10;
+}
+
+/* 流れるアニメ（すでに flow が定義済み） */

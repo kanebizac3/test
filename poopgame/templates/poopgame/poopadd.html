@@ -6,6 +6,36 @@
   <title>うんこ足し算</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="{% static 'poopgame/css/poopadd.css' %}">
+  <script>
+    const isChecked = {{ checked|yesno:"true,false" }};
+    const isCorrect = {{ result|yesno:"true,false" }};
+  </script>
+    <script>
+      function splitPoop1(num) {
+        const container = document.getElementById("poop-container1");
+        container.innerHTML = '';  // 中身を一旦消す
+  
+        for (let i = 0; i < num; i++) {
+          const img = document.createElement('img');
+          img.src = "{% static 'poopgame/img/poop.jpeg' %}";
+          img.alt = "うんこ";
+          img.className = "poop";
+          container.appendChild(img);
+        }
+      }
+      function splitPoop2(num) {
+        const container = document.getElementById("poop-container2");
+        container.innerHTML = '';  // 中身を一旦消す
+  
+        for (let i = 0; i < num; i++) {
+          const img = document.createElement('img');
+          img.src = "{% static 'poopgame/img/poop.jpeg' %}";
+          img.alt = "うんこ";
+          img.className = "poop";
+          container.appendChild(img);
+        }
+      }
+    </script>
   <script src="{% static 'poopgame/js/poopadd.js' %}" defer></script>
 </head>
 <body>
@@ -13,16 +43,20 @@
     <h1>うんこ足し算 💩</h1>
 
     <div id="poop-area">
-      <div class="poops">
-        {% for _ in num1_list %}
-          <img src="{% static 'poopgame/img/poop.jpeg' %}" class="poop" alt="うんこ">
-        {% endfor %}
+      <div class="poops" id="poop-container1">
+        <div class="plus">{{num1}}</div><img src="{% static 'poopgame/img/poop.jpeg' %}"
+        class="poop"
+        alt="まとめうんこ"
+        onclick="splitPoop1({{ num1 }})"
+        style="cursor: pointer;">
       </div>
       <div class="plus">＋</div>
-      <div class="poops">
-        {% for _ in num2_list %}
-          <img src="{% static 'poopgame/img/poop.jpeg' %}" class="poop" alt="うんこ">
-        {% endfor %}
+      <div class="poops" id="poop-container2">
+        <div class="plus">{{num2}}</div><img src="{% static 'poopgame/img/poop.jpeg' %}"
+        class="poop"
+        alt="まとめうんこ"
+        onclick="splitPoop2({{ num2 }})"
+        style="cursor: pointer;">
       </div>
     </div>
 
@@ -32,7 +66,7 @@
           <img src="{% static 'poopgame/img/butt.jpeg' %}" alt="おしり">
           <audio autoplay src="{% static 'poopgame/sounds/kirakira.mp3' %}"></audio>
 
-          <h2>かいケツ！</h2>
+          <h2>かいケツ！こたえは{{total}}</h2>
         </div>
       {% else %}
         <div id="wrong-area">
@@ -47,6 +81,15 @@
       <form action="{% url 'poopadd' %}" id="next-form">
         <button type="submit" id="next-button">✨ 次の問題へ ✨</button>
       </form>
+
+      <!-- 正解／不正解後の下に追加 -->
+      <form action="{% url 'home' %}">
+        <button type="submit" id="home-button">🏠 ホームに戻る</button>
+      </form>
+
+      <!-- 音声プレイヤー（再生はJSで制御） -->
+      <audio id="explode-sound" src="{% static 'poopgame/sounds/explosion.mp3' %}"></audio>
+      <audio id="flush-sound" src="{% static 'poopgame/sounds/flush.mp3' %}"></audio>
 
     {% else %}
       <!-- ★解答前はこのフォーム（数字パッド）だけを表示★ -->
@@ -74,4 +117,7 @@
 
   </div>
 </body>
+
+
+
 </html>

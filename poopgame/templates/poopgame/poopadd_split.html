@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>うんこ足し算（分割演出付き）</title>
+  <link rel="stylesheet" href="{% static 'poopgame/css/poopadd_split.css' %}">
+  <script src="{% static 'poopgame/js/poopadd_split.js' %}" defer></script>
+</head>
+<body>
+  <div class="container">
+    <h1>うんこ足し算 💩</h1>
+
+    <div id="poop-area">
+      <!-- 最初はまとめた画像（例：4うんこ画像） -->
+      <div id="group1" class="poop-group" onclick="splitGroup('group1', {{ num1 }})">
+        <img src="{% static 'poopgame/img/poop.jpeg' %}" alt="{{ num1 }}うんこ">
+      </div>
+      <div class="plus">＋</div>
+      <div id="group2" class="poop-group" onclick="splitGroup('group2', {{ num2 }})">
+        <img src="{% static 'poopgame/img/poop.jpeg' %}" alt="{{ num2 }}うんこ">
+      </div>
+    </div>
+
+    <!-- 分割用テンプレート -->
+    <template id="poop-template">
+      <img src="{% static 'poopgame/img/poop.jpeg' %}" class="poop" alt="うんこ">
+    </template>
+
+    <!-- 入力フォーム -->
+    <form method="post" action="{% url 'poopadd_check' %}" id="answer-form">
+      {% csrf_token %}
+      <input type="hidden" name="num1" value="{{ num1 }}">
+      <input type="hidden" name="num2" value="{{ num2 }}">
+      <input type="hidden" name="correct_answer" value="{{ total }}">
+      <div class="input-area">
+        <input type="text" id="answer" name="answer" placeholder="いくつ？" readonly>
+        <div class="num-pad">
+          {% for d in "1234567890" %}
+            <button type="button" onclick="addDigit('{{ d }}')">{{ d }}</button>
+          {% endfor %}
+          <button type="button" class="clear" onclick="clearAnswer()">C</button>
+          <button type="button" class="del" onclick="deleteLast()">←</button>
+        </div>
+        <button type="submit" class="submit">こたえる！</button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

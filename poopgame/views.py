@@ -22,22 +22,57 @@ def poopsub(request):
         'poop_indices': poop_indices,
     })
 
+# poopgame/views.py
+
+from django.shortcuts import render, redirect
+from .models import UnpPoint
+import random
+
 def multiply(request):
-    # 縦（rows）と横（cols）をランダムに決定
+    # GET: 新しい問題を表示
     rows = random.randint(2, 5)
     cols = random.randint(2, 5)
     total = rows * cols
+    return render(request, 'poopgame/multiply.html', {
+        'rows': rows,
+        'cols': cols,
+        'rows_range': range(rows),
+        'cols_range': range(cols),
+        # フラグ類は未チェックの状態
+        'checked': False,
+    })
 
-    # テンプレートでイテレートできるようにリスト化
-    rows_range = list(range(rows))
-    cols_range = list(range(cols))
+def multiply_check(request):
+    if request.method != 'POST':
+        return redirect('multiply')
+
+    # POSTデータ取得
+    rows = int(request.POST['rows'])
+    cols = int(request.POST['cols'])
+    correct = rows * cols
+    try:
+        user_answer = int(request.POST.get('answer', '').strip())
+    except ValueError:
+        user_answer = None
+
+    result = (user_answer == correct)
+
+    print("DEBUG multiply_check:", user_answer, correct, result)
+
+    # 正解なら1うんPを加算
+    if result and request.user.is_authenticated:
+        unp, _ = UnpPoint.objects.get_or_create(user=request.user)
+        unp.add_point(1)
 
     return render(request, 'poopgame/multiply.html', {
         'rows': rows,
         'cols': cols,
-        'correct_answer': total,
-        'rows_range': rows_range,
-        'cols_range': cols_range,
+        'rows_range': range(rows),
+        'cols_range': range(cols),
+        'checked': True,
+        'result': result,
+        'correct_answer': correct,
+        'user_answer': user_answer,
     })
 
 
@@ -63,8 +98,13 @@ def poopadd_check(request):
         num1 = int(request.POST['num1'])
         num2 = int(request.POST['num2'])
         total = num1 + num2
-        user_answer = int(request.POST['answer'])
-        result = (user_answer == total)
+        user_answer_raw = request.POST.get('answer', '').strip()
+        try:
+            user_answer = int(user_answer_raw)
+            result = (user_answer == total)
+        except ValueError:
+            user_answer = None
+            result = False
 
         # 正解したら1うんP加算
         if result and request.user.is_authenticated:
@@ -144,6 +184,11 @@ def divide(request):
             user_answer = None
 
         result = (user_answer == correct_answer)
+
+                # 正解したら1うんP加算
+        if result and request.user.is_authenticated:
+            unp, created = UnpPoint.objects.get_or_create(user=request.user)
+            unp.add_point(1)
 
         context = {
             'groups': groups,

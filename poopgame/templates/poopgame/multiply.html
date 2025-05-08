@@ -3,56 +3,113 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>うんこ掛け算ゲーム</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>うんこ掛け算 💩</title>
   <link rel="stylesheet" href="{% static 'poopgame/css/multiply.css' %}">
 </head>
-<body>
-  <h1>{{ rows }} × {{ cols }} のうんこをかぞえよう！</h1>
+<body data-checked="{{ checked|yesno:'true,false' }}" data-result="{{ result|yesno:'true,false' }}">
 
-  <div id="poop-grid">
-    {% for r in rows_range %}
-      <div class="row">
-        {% for c in cols_range %}
-          <img src="{% static 'poopgame/img/poop.jpeg' %}" class="poop" alt="うんこ">
-        {% endfor %}
-      </div>
-    {% endfor %}
-  </div>
 
-  <div class="input-area">
+  
+  <div class="container">
+    <h1>{{ rows }} × {{ cols }} のうんこをかぞえよう！</h1>
 
-    <div id="next-question-area" style="display:none; margin-top: 1em;">
-        <button onclick="goToNextQuestion()">次の問題へ</button>
-      </div>
-      <!-- 正解時に表示するエリア -->
-      <div id="correct-area">
-        <img src="{% static 'poopgame/img/butt.jpeg' %}" alt="おしり">
-        <h2>かいケツ！</h2>
-    </div>
-
-  <!-- 効果音（爆発音） -->
-  <audio id="explosion-sound" src="{% static 'poopgame/sounds/explosion.mp3' %}" preload="auto"></audio>
-
-  <!-- 間違え演出 -->
-  <div id="wrong-message">ぶっぶー</div>
-  <img id="fart-img" src="{% static 'poopgame/img/fart.jpeg' %}"           alt="オナラ">
-  <img id="wrong-boy" src="{% static 'poopgame/img/boy_with_poop.jpeg' %}" alt="うんこを被った少年">
-
-    <input type="text" id="answer" placeholder="答えを入力" readonly>
-    <div class="buttons">
-      {% for i in "1234567890" %}
-        <button onclick="addDigit('{{ i }}')">{{ i }}</button>
+    <div id="poop-grid">
+      {% for r in rows_range %}
+        <div class="row">
+          {% for c in cols_range %}
+            <img src="{% static 'poopgame/img/poop.jpeg' %}" class="poop" alt="うんこ">
+          {% endfor %}
+        </div>
       {% endfor %}
-      <button onclick="submitAnswer()">解ケツ！</button>
-      <button onclick="clearAnswer()">クリア</button>
     </div>
+
+    {% if not checked %}
+      <!-- 未解答時：ここが表示 -->
+      <form method="post" action="{% url 'multiply_check' %}" id="answer-form">
+        {% csrf_token %}
+        <input type="hidden" name="rows" value="{{ rows }}">
+        <input type="hidden" name="cols" value="{{ cols }}">
+
+        <div class="input-area">
+          <input type="text" id="answer" name="answer" placeholder="いくつ？" readonly>
+
+          <div class="num-pad">
+            {% for d in "1234567890" %}
+              <button type="button" onclick="addDigit('{{ d }}')">{{ d }}</button>
+            {% endfor %}
+            <button type="button" class="clear" onclick="clearAnswer()">C</button>
+            <button type="button" class="del"   onclick="deleteLast()">←</button>
+          </div>
+
+          <button type="submit" class="submit">かいケツ！</button>
+        </div>
+      </form>
+    {% else %}
+      <!-- 解答後：正解 or 不正解エリア -->
+      {% if result %}
+        <div id="correct-area">
+          <img src="{% static 'poopgame/img/butt.jpeg' %}" alt="おしり" />
+          <h2>かいケツ！💦</h2>
+          <!-- <audio autoplay src="{% static 'poopgame/sounds/flush.mp3' %}"></audio> -->
+        </div>
+      {% else %}
+        <div id="wrong-area">
+          <div id="wrong-message">ぶっぶー！ せいかいは {{ correct_answer }} です💩</div>
+          <img id="wrong-boy" src="{% static 'poopgame/img/boy_with_poop.jpeg' %}" alt="失敗した少年" />
+          <img id="fart-img"    src="{% static 'poopgame/img/fart.jpeg' %}"      alt="オナラ" />
+          <audio autoplay src="{% static 'poopgame/sounds/explosion.mp3' %}"></audio>
+        </div>
+      {% endif %}
+
+      <!-- 次の問題へ・ホームへ戻る -->
+      <div class="result-buttons">
+        <form action="{% url 'multiply' %}" style="display:inline;">
+          <button type="submit" class="next-button">✨ 次の問題へ ✨</button>
+        </form>
+        <form action="{% url 'home' %}" style="display:inline;">
+          <button type="submit" class="home-button">🏠 ホームへ戻る</button>
+        </form>
+      </div>
+    {% endif %}
+
   </div>
 
+  
 
-  <script>
-    const correctAnswer = {{ correct_answer }};
-  </script>
   <script src="{% static 'poopgame/js/multiply.js' %}"></script>
+  <!-- 解答後アニメーション -->
+  <script>
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // 解答済み判定：checked をサーバーサイドで渡すようにしてください。
+
+      const poops   = document.querySelectorAll('#poop-grid .poop');
+      const vw      = window.innerWidth;
+      const vh      = window.innerHeight;
+      window.multiplyData = {
+      checked: {{ checked|yesno:"true,false"|lower }},
+      result:  {{ result|yesno:"true,false"|lower }},
+      }
+
+      if (checked) {
+        if (result) {
+          // 正解: 流す animation
+          poops.forEach((p, i) => setTimeout(() => p.classList.add('flow'), i * 100));
+        } else {
+          // 不正解: 飛び散る animation
+          poops.forEach((p, i) => {
+            const dx = (Math.random() - 0.5) * vw * 1.2;
+            const dy = (Math.random() - 0.5) * vh * 1.2;
+            p.style.setProperty('--dx', `${dx}px`);
+            p.style.setProperty('--dy', `${dy}px`);
+            setTimeout(() => p.classList.add('explode-large'), i * 150);
+          });
+        }
+      }
+    });
+  </script>
 </body>
 </html>
+
+

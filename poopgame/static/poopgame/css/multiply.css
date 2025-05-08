@@ -128,3 +128,152 @@ body {
     background-color: #388e3c;
   }
   
+  /* 既存のスタイルはそのまま使い、以下を末尾に追加 */
+
+.container {
+  max-width: 400px;
+  margin: auto;
+}
+
+/* 入力エリア */
+.input-area {
+  margin-top: 1em;
+}
+
+/* 答え欄 */
+#answer {
+  width: 80%;
+  font-size: 1.2rem;
+  text-align: center;
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+  border: 2px solid #ccc;
+  border-radius: 0.3em;
+  background: #fafafa;
+}
+
+/* 数字パッド */
+.num-pad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.4em;
+  margin-bottom: 0.5em;
+}
+.num-pad button {
+  width: 60px;
+  height: 60px;
+  font-size: 1.1rem;
+  border: 1px solid #bbb;
+  border-radius: 0.3em;
+  background: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+.num-pad button:hover { background: #eee; }
+.num-pad button.clear { background: #f88; color: #fff; }
+.num-pad button.del   { background: #faa; color: #fff; }
+
+/* 解ケツ！ボタン */
+.submit {
+  width: 80%;
+  font-size: 1.2rem;
+  padding: 0.8em;
+  background: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 0.4em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.submit:hover {
+  background: #45a049;
+}
+
+/* 次の問題へ */
+.next-button {
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  color: #fff;
+  font-size: 1.4rem;
+  padding: 0.6em 1.2em;
+  border: none;
+  border-radius: 2em;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.next-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+/* 正解時：流れるアニメーション */
+@keyframes flow {
+  to {
+    transform: translateY(200px) scale(0.1);
+    opacity: 0;
+  }
+}
+.poop.flow {
+  animation: flow 1s ease-in forwards;
+  z-index: 5;
+}
+
+/* 不正解時：飛び散るアニメーション */
+@keyframes explode-large {
+  0% { transform: scale(1) translate(0,0) rotate(0deg); opacity:1; }
+  100% { transform: scale(5) translate(var(--dx), var(--dy)) rotate(720deg); opacity:0; }
+}
+.poop.explode-large {
+  animation: explode-large 1.5s ease-out forwards;
+  z-index: 10;
+}
+
+/* multiply.css の末尾に追加 */
+
+.home-button {
+  background: linear-gradient(135deg,#c1dfc4,#deecdd);
+  color: #333;
+  font-size: 1rem;
+  padding: 0.6em 1.2em;
+  border: none;
+  border-radius: 2em;
+  margin-left: 0.5em;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.home-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* ポップイン用キーフレーム */
+@keyframes pop {
+  0%   { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1);   opacity: 1; }
+}
+
+/* メッセージ共通 */
+.message-area {
+  text-align: center;
+  margin: 1em 0;
+}
+
+/* 正解メッセージ */
+#correct-area h2 {
+  font-size: 2rem;
+  color: #d32f2f;
+  margin: 0.5em 0 0;
+  animation: pop 0.3s ease-out;
+}
+
+/* 間違いメッセージ */
+#wrong-message {
+  font-size: 2rem;
+  color: #d32f2f;
+  margin: 0 0 0.5em;
+  animation: pop 0.5s ease-out;
+}

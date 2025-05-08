@@ -69,4 +69,19 @@ body {
     font-size: 0.9rem;
     color: #999;
   }
+
+  /* 踊るうんこだけに振り向きアニメ追加 */
+.floating-poop.poop-dance {
+    animation: danceTurn 2s infinite ease-in-out;
+  }
+  
+  /* 左右に振り向くアニメーション */
+  @keyframes danceTurn {
+    0%, 100% {
+      transform: scaleX(1);  /* 正常向き */
+    }
+    50% {
+      transform: scaleX(-1); /* 左右反転（振り向く） */
+    }
+  }
   

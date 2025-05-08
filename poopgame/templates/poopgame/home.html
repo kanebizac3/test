@@ -20,9 +20,9 @@
     <div class="game-menu">
 
 
-        <a href="{% url 'multiply' %}" class="game-btn poop-btn">✖ うんこかけ算</a>
+        <!-- <a href="{% url 'multiply' %}" class="game-btn poop-btn">✖ うんこかけ算</a> -->
         <a href="{% url 'poopadd' %}" class="game-btn poop-btn">➕ うんこたし算</a>
-        <a href="{% url 'divide' %}" class="game-btn poop-btn">➗ うんこわり算</a>
+        <!-- <a href="{% url 'divide' %}" class="game-btn poop-btn">➗ うんこわり算</a> -->
         {% if user.is_authenticated %}
         <form method="post" action="{% url 'poopgame_logout' %}" style="display: inline;">
           {% csrf_token %}
@@ -37,7 +37,7 @@
     <div class="poop-decoration">
       <img src="{% static 'poopgame/img/poop-smile.png' %}" alt="にこにこうんこ" class="floating-poop">
       <img src="{% static 'poopgame/img/poop-wink.png' %}" alt="ウィンクうんこ" class="floating-poop">
-      <img src="{% static 'poopgame/img/poop-dance.png' %}" alt="踊るうんこ" class="floating-poop">
+      <img src="{% static 'poopgame/img/poop-dance.png' %}" alt="踊るうんこ" class="floating-poop poop-dance">
     </div>
   </main>
 

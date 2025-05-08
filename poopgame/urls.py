@@ -6,6 +6,8 @@ urlpatterns = [
     path('programing', views.programing, name='poopgame_programing'),
     path('poopsub', views.poopsub, name='poopgame_poopsub'),
     path('multiply', views.multiply, name='multiply'),
+        # 追加：解答チェック用エンドポイント
+    path('multiply/check/', views.multiply_check, name='multiply_check'),
     path('poopadd/', views.poopadd, name='poopadd'),
     path('poopadd/check/', views.poopadd_check, name='poopadd_check'),
     path('multiply2/', views.poopmultiply2, name='poopmultiply2'),
