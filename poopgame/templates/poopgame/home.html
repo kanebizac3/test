@@ -4,32 +4,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, user-scalable=no">
-  <title>うんこ学習ランド</title>
+  <title>かいケツうんこ</title>
   <link rel="stylesheet" href="{% static 'poopgame/css/home.css' %}">
 </head>
 <body>
 
   <header>
-    <h1>💩 うんこ学習ランドへようこそ！</h1>
-    <p>今のうんPポイント：<span id="point-count">{{ unp_points }}</span> うんP</p>
+    <h1>ようこそ！ {{ user.username|default:"ゲスト" }} <br>🍑かいケツうんこへ💩</h1>
+    {% if user.is_authenticated %}
+      <p>今のうんP：<span id="point-count">{{ request.user.unppoint.point }}</span> うんP</p>
+    {% endif %}
   </header>
 
   <main>
     <div class="game-menu">
-      <a href="{% url 'multiply' %}" class="game-btn poop-btn">✖ うんこかけ算</a>
-      <a href="{% url 'poopadd' %}" class="game-btn poop-btn">➕ うんこたし算</a>
-      <a href="{% url 'divide' %}" class="game-btn poop-btn">➗ うんこわり算</a>
+
+
+        <a href="{% url 'multiply' %}" class="game-btn poop-btn">✖ うんこかけ算</a>
+        <a href="{% url 'poopadd' %}" class="game-btn poop-btn">➕ うんこたし算</a>
+        <a href="{% url 'divide' %}" class="game-btn poop-btn">➗ うんこわり算</a>
+        {% if user.is_authenticated %}
+        <form method="post" action="{% url 'poopgame_logout' %}" style="display: inline;">
+          {% csrf_token %}
+          <button type="submit" class="game-btn poop-btn">ログアウト</button>
+        </form>
+        {% else %}
+        <a href="{% url 'poopgame_login' %}" class="game-btn poop-btn">ログインする💩</a>
+      {% endif %}
+
     </div>
 
     <div class="poop-decoration">
-      <img src="{% static 'img/poop-smile.png' %}" alt="にこにこうんこ" class="floating-poop">
-      <img src="{% static 'img/poop-wink.png' %}" alt="ウィンクうんこ" class="floating-poop">
-      <img src="{% static 'img/poop-dance.gif' %}" alt="踊るうんこ" class="floating-poop">
+      <img src="{% static 'poopgame/img/poop-smile.png' %}" alt="にこにこうんこ" class="floating-poop">
+      <img src="{% static 'poopgame/img/poop-wink.png' %}" alt="ウィンクうんこ" class="floating-poop">
+      <img src="{% static 'poopgame/img/poop-dance.png' %}" alt="踊るうんこ" class="floating-poop">
     </div>
   </main>
 
   <footer>
-    <p>© うんこ学習ランド</p>
+    <p>© かいケツうんこ</p>
   </footer>
 
 </body>

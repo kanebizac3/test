@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
     path('programing', views.programing, name='poopgame_programing'),
@@ -11,4 +12,11 @@ urlpatterns = [
     path('multiply2/check/', views.poopmultiply2_check, name='poopmultiply2_check'),
     path('divide/',   views.divide,   name='divide'),
     path('home', views.home, name="home"),
+    path('register/', views.poopgame_register, name='poopgame_register'),
+    path('login/', LoginView.as_view(
+        template_name='poopgame/login.html',
+        redirect_authenticated_user=True
+    ), name='poopgame_login'),
+    path('poopgame_logout/', LogoutView.as_view(next_page='home'), name='poopgame_logout'),
+
 ]

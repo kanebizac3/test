@@ -205,12 +205,12 @@
                 </div>
               </div>
 
-              <form method="post" action="{% url 'logout' %}">
+              <form method="post" action="{% url 'gomimon_logout' %}">
                   {% csrf_token %}
                   <button type="submit" class="button logout-button">ログアウト</button>
               </form>
           {% else %}
-              <a href="{% url 'login' %}" class="button">ログイン</a>
+              <a href="{% url 'gomimon_login' %}" class="button">ログイン</a>
           {% endif %}
       </div>
 

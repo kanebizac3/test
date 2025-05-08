@@ -57,7 +57,7 @@ def poopadd(request):
     }
     return render(request, 'poopgame/poopadd.html', context)
 
-
+from .models import UnpPoint
 def poopadd_check(request):
     if request.method == 'POST':
         num1 = int(request.POST['num1'])
@@ -65,6 +65,11 @@ def poopadd_check(request):
         total = num1 + num2
         user_answer = int(request.POST['answer'])
         result = (user_answer == total)
+
+        # 正解したら1うんP加算
+        if result and request.user.is_authenticated:
+            unp, created = UnpPoint.objects.get_or_create(user=request.user)
+            unp.add_point(1)
 
         context = {
             'num1': num1,
@@ -173,3 +178,23 @@ def home(request):
     # 仮にセッションに保存されている場合（なければ0）
     unp_points = request.session.get('unp_points', 0)
     return render(request, 'poopgame/home.html', {'unp_points': unp_points})
+
+# ユーザー登録
+from django.contrib.auth import login
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+
+def poopgame_register(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('home')  # うんこアプリのホームへ
+    else:
+        form = UserCreationForm()
+    return render(request, 'poopgame/register.html', {'form': form})
+
+from django.contrib.auth.views import LogoutView
+from django.shortcuts import redirect
+

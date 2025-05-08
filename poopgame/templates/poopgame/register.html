@@ -1,0 +1,65 @@
+<!-- templates/poopgame/register.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>うんこ資本主義 - ユーザー登録</title>
+  <link rel="stylesheet" href="{% static 'poopgame/style.css' %}">
+  <style>
+    body {
+      font-family: "Arial", sans-serif;
+      background-color: #fff8dc;
+      text-align: center;
+      padding: 1em;
+    }
+    .container {
+      max-width: 400px;
+      margin: auto;
+      padding: 2em;
+      background: #fffaf0;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #aaa;
+    }
+    label {
+      display: block;
+      margin-top: 1em;
+      font-size: 1.2em;
+    }
+    input {
+      width: 100%;
+      padding: 0.7em;
+      font-size: 1em;
+      margin-top: 0.2em;
+    }
+    button {
+      margin-top: 1.5em;
+      padding: 0.8em 1.5em;
+      font-size: 1.2em;
+      background-color: #fbb03b;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+    }
+    .login-link {
+      margin-top: 1em;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>うんこ資本主義 💩</h1>
+    <h2>新しく登録する</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">登録する 💩</button>
+    </form>
+    <a href="{% url 'poopgame_login' %}" class="login-link">すでに登録済み？ログインはこちら</a>
+  </div>
+</body>
+</html>

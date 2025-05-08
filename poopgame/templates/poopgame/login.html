@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>うんこ王国 ログイン</title>
+  <link rel="stylesheet" href="{% static 'poopgame/css/styles.css' %}">
+  <style>
+    body.auth-page {
+      font-family: 'Arial', sans-serif;
+      background-color: #fff8dc;
+      margin: 0;
+      padding: 1em;
+      text-align: center;
+    }
+
+    .auth-box {
+      max-width: 400px;
+      margin: auto;
+      background: #fffaf0;
+      padding: 2em;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      font-size: 1.8em;
+      margin-bottom: 1em;
+      color: #8b4513;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+    }
+
+    input[type="text"], input[type="password"] {
+      padding: 0.8em;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    button {
+      padding: 0.8em;
+      font-size: 1.2em;
+      background-color: #fbb03b;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    p a {
+      display: block;
+      margin-top: 1em;
+      color: #333;
+      font-size: 1em;
+      text-decoration: none;
+    }
+
+    p a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body class="auth-page">
+  <div class="auth-box">
+    <h1>うんこ王国にログイン💩</h1>
+    <form method="POST" action="{% url 'login' %}?next={% url 'home' %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">ログインする💩</button>
+    </form>
+    <p><a href="{% url 'poopgame_register' %}">初めての方はこちら</a></p>
+  </div>
+</body>
+</html>

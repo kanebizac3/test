@@ -90,9 +90,9 @@
     <h5 style="text-align: center;">ポイ捨て写真でポイントためてゴミモンを育てよう</h5>
     <div class="button-container">
         {% if user.is_authenticated %}
-            <a href="{% url 'logout' %}" class="button-link">ログアウト</a>
+            <!-- <a href="{% url 'gomimon_logout' %}" class="button-link">ログアウト</a> -->
         {% else %}
-            <a href="{% url 'login' %}" class="button-link">ログイン</a>
+            <a href="{% url 'gomimon_login' %}" class="button-link">ログイン</a>
         {% endif %}
         <a href="{% url 'gomimon' %}" class="button-link">ゴミモン</a>
         <a href="{% url 'user_profile' %}" class="button-link">ポイント</a>

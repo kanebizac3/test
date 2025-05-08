@@ -1,0 +1,30 @@
+.auth-page {
+    background: #fffbe6 url('/static/poopgame/bg_cute.png') no-repeat center/cover;
+    font-family: 'Comic Sans MS', sans-serif;
+    text-align: center;
+    padding: 2em;
+  }
+  
+  .auth-box {
+    background: rgba(255,255,255,0.9);
+    border: 4px dashed #d39c3f;
+    border-radius: 15px;
+    display: inline-block;
+    padding: 2em;
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.2);
+  }
+  
+  .auth-box h1 {
+    font-size: 2em;
+    color: #7b4f20;
+  }
+  
+  .auth-box button {
+    background-color: #ffd966;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5em 1em;
+    font-size: 1.2em;
+    cursor: pointer;
+  }
+  
