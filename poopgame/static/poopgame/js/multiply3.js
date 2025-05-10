@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
         poopGrid.classList.add('jiggle');
         setTimeout(() => poopGrid.classList.remove('jiggle'), 300);
       }
-      else if (v === 'C') {
+      else if (v === 'けす') {
         // クリア
         answerInput.value = '';
         answerDisplay.textContent = '';
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
       // サウンドとアニメーション（iPhone対応）
       if (isCorrect) {
         poopGrid.classList.add('correct');
-        resultMessage.textContent = '正解！';
+        resultMessage.textContent = 'かいケツ！';
         resultMessage.className = 'result-message correct';
         if (correctSound) {
           correctSound.currentTime = 0;
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       } else {
         poopGrid.classList.add('wrong');
-        resultMessage.textContent = '残念…';
+        resultMessage.textContent = 'ブッブー…';
         resultMessage.className = 'result-message wrong';
         if (wrongSound) {
           wrongSound.currentTime = 0;
