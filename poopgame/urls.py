@@ -12,6 +12,8 @@ urlpatterns = [
     path('poopadd/check/', views.poopadd_check, name='poopadd_check'),
     path('multiply2/', views.poopmultiply2, name='poopmultiply2'),
     path('multiply2/check/', views.poopmultiply2_check, name='poopmultiply2_check'),
+    path('multiply3/', views.unko_kakezan, name='unko_kakezan'),
+
     path('divide/',   views.divide,   name='divide'),
     path('home', views.home, name="home"),
     path('register/', views.poopgame_register, name='poopgame_register'),

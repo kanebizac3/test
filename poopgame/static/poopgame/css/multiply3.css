@@ -1,0 +1,140 @@
+/* game.css */
+
+/* 全体 */
+body {
+    margin: 0;
+    padding: 0;
+    background: #fffbe6;
+    font-family: sans-serif;
+  }
+  .game-container {
+    max-width: 480px;
+    margin: auto;
+    text-align: center;
+    padding: 10px;
+  }
+  
+  /* ポイント表示 */
+  .score {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    color: #664e04;
+  }
+  
+  /* 問題文 */
+  #problem {
+    font-size: 2rem;
+    margin: 10px 0;
+    cursor: pointer;
+    user-select: none;
+  }
+  #problem:active {
+    opacity: 0.7;
+  }
+  
+  /* うんこグリッド */
+  .poop-grid {
+    margin: 10px auto;
+    display: grid;
+    gap: 5px;
+    justify-content: center;
+  }
+  .poop-img {
+    width: 50px;
+    height: 50px;
+  }
+  .hidden {
+    display: none;
+  }
+  
+  /* 答え表示 */
+  .answer-display {
+    min-height: 40px;
+    font-size: 2rem;
+    margin: 10px 0;
+    border-bottom: 2px solid #ccc;
+    color: #333;
+  }
+  
+  /* 数字パッド */
+  .num-pad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 10px auto;
+    max-width: 400px;
+  }
+  .num-btn {
+    font-size: 1.5rem;
+    padding: 15px;
+    background: #d2691e;   /* 茶色・オレンジ系 */
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 2px 0 #a35415;
+    aspect-ratio: 1;
+    cursor: pointer;
+  }
+  .num-btn:active {
+    box-shadow: none;
+    transform: translateY(2px);
+  }
+  
+  /* Home / Next ボタン */
+  .actions {
+    margin-top: 10px;
+  }
+  .action-btn {
+    font-size: 1.1rem;
+    padding: 10px 20px;
+    background: #8f5e15;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    margin: 0 10px;
+  }
+  
+  /* 結果メッセージ */
+  .result-message {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  .result-message.correct {
+    color: green;
+  }
+  .result-message.wrong {
+    color: red;
+  }
+  
+  /* アニメーションキーフレーム */
+  @keyframes jiggle {
+    0%,100% { transform: rotate(0deg); }
+    25%     { transform: rotate(5deg); }
+    50%     { transform: rotate(0deg); }
+    75%     { transform: rotate(-5deg); }
+  }
+  @keyframes flowAway {
+    to { transform: translateY(120px); opacity: 0; }
+  }
+  @keyframes scatterLeft {
+    to { transform: translate(-200px,-200px) rotate(-720deg); opacity: 0; }
+  }
+  @keyframes scatterRight {
+    to { transform: translate(200px,-200px) rotate(720deg); opacity: 0; }
+  }
+  
+  /* アニメーションクラス */
+  .poop-grid.jiggle .poop-img {
+    animation: jiggle 0.3s;
+  }
+  .poop-grid.correct .poop-img {
+    animation: flowAway 1s forwards;
+  }
+  .poop-grid.wrong .poop-img:nth-child(odd) {
+    animation: scatterLeft 0.8s forwards;
+  }
+  .poop-grid.wrong .poop-img:nth-child(even) {
+    animation: scatterRight 0.8s forwards;
+  }
+  

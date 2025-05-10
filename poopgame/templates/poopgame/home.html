@@ -12,7 +12,7 @@
   <header>
     <h1>ようこそ！ {{ user.username|default:"ゲスト" }} <br>🍑かいケツうんこへ💩</h1>
     {% if user.is_authenticated %}
-      <p>今のうんP：<span id="point-count">{{ request.user.unppoint.point }}</span> うんP</p>
+      <p>いまのうんP：<span id="point-count">{{ request.user.unppoint.point }}</span> うんP</p>
     {% endif %}
   </header>
 
@@ -20,8 +20,9 @@
     <div class="game-menu">
 
 
-        <!-- <a href="{% url 'multiply' %}" class="game-btn poop-btn">✖ うんこかけ算</a> -->
-        <a href="{% url 'poopadd' %}" class="game-btn poop-btn">➕ うんこたし算</a>
+        <a href="{% url 'poopadd' %}" class="game-btn poop-btn">➕ うんこたしざん</a>
+        <a href="{% url 'unko_kakezan' %}" class="game-btn poop-btn">✖ うんこかけざん</a>
+
         <!-- <a href="{% url 'divide' %}" class="game-btn poop-btn">➗ うんこわり算</a> -->
         {% if user.is_authenticated %}
         <form method="post" action="{% url 'poopgame_logout' %}" style="display: inline;">

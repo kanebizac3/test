@@ -3,7 +3,6 @@ from django.shortcuts import render
 def programing(request):
     return render(request, 'poopgame/programing.html')
 
-from django.shortcuts import render
 import random
 
 def poopsub(request):
@@ -77,7 +76,7 @@ def multiply_check(request):
 
 
 def poopadd(request):
-    num1 = random.randint(1, 9)
+    num1 = random.randint(1, 14)
     num2 = random.randint(1, 9)
     total = num1 + num2
 
@@ -240,6 +239,55 @@ def poopgame_register(request):
         form = UserCreationForm()
     return render(request, 'poopgame/register.html', {'form': form})
 
-from django.contrib.auth.views import LogoutView
-from django.shortcuts import redirect
+from django.shortcuts import render, redirect
+import random
 
+def unko_kakezan(request):
+    # — セッション初期化 —
+    if 'points' not in request.session:
+        request.session['points'] = 0
+
+    if request.user.is_authenticated:
+        unp, _ = UnpPoint.objects.get_or_create(user=request.user)
+        request.session['points'] = unp.point
+
+    if request.method == 'POST':
+        # — 回答処理 —
+        user_answer = request.POST.get('answer')
+        try:
+            user_answer = int(user_answer)
+        except (TypeError, ValueError):
+            user_answer = None
+
+        a = request.session.get('a')
+        b = request.session.get('b')
+        correct_answer = a * b
+        is_correct = (user_answer == correct_answer)
+
+        # モデルにもDBにも正解ポイントを反映
+        if is_correct and request.user.is_authenticated:
+            unp.add_point(1)
+            request.session['points'] = unp.point  # DB値に合わせる
+
+        context = {
+            'a': a, 'b': b,
+            'a_range': range(a), 'b_range': range(b),
+            'answered': True, 'is_correct': is_correct,
+            'points': request.session['points'],
+            'correct_answer': correct_answer,
+        }
+    else:
+        # — 新しい問題を作成 —
+        a = random.randint(1, 9)
+        b = random.randint(1, 9)
+        request.session['a'] = a
+        request.session['b'] = b
+
+        context = {
+            'a': a, 'b': b,
+            'a_range': range(a), 'b_range': range(b),
+            'answered': False,
+            'points': request.session['points'],
+        }
+
+    return render(request, 'poopgame/multiply3.html', context)

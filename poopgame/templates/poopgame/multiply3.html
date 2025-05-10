@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <!-- モバイル対応：自由拡大・縮小 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💩うんちがけ💩</title>
+  <link rel="stylesheet" href="{% static 'poopgame/css/multiply3.css' %}">
+</head>
+<body>
+  <div class="game-container">
+    <!-- ポイント表示 -->
+    <div class="score">うんP: {{ points }}</div>
+
+    <!-- 問題：タップでうんこ画像が出現 -->
+    <h1 id="problem">{{ a }}💩&times; {{ b }}💩</h1>
+
+    <!-- うんこ画像グリッド（answered=Falseのときは hidden クラス） -->
+    <div id="poop-grid"
+         class="poop-grid {% if not answered %}hidden{% endif %}"
+         style="grid-template-columns: repeat({{ b }}, auto);">
+      {% for _ in a_range %}
+        {% for _ in b_range %}
+          <img src="{% static 'poopgame/img/poop-dance.png' %}"
+               alt="うんこ"
+               class="poop-img">
+        {% endfor %}
+      {% endfor %}
+    </div>
+
+    <!-- 結果メッセージ（answered=Trueのときに表示） -->
+    <div id="result-message"
+         class="result-message"
+         style="{% if not answered %}display: none;{% endif %}">
+      {% if answered %}
+        {% if is_correct %}
+          <span class="correct">かいケツ！</span>
+        {% else %}
+          <span class="wrong">ブッブー… せいかいは {{ correct_answer }} です</span>
+        {% endif %}
+      {% endif %}
+    </div>
+
+    <!-- 入力フォーム（answered=Falseのときだけ表示） -->
+    {% if not answered %}
+      <form id="answer-form" method="post" action="">
+        {% csrf_token %}
+        <input type="hidden" name="answer" id="answer-input">
+        <div id="answer-display" class="answer-display"></div>
+
+        <div class="num-pad">
+            <button type="button" class="num-btn">7</button>
+            <button type="button" class="num-btn">8</button>
+            <button type="button" class="num-btn">9</button>
+            <button type="button" class="num-btn">4</button>
+            <button type="button" class="num-btn">5</button>
+            <button type="button" class="num-btn">6</button>
+            <button type="button" class="num-btn">1</button>
+            <button type="button" class="num-btn">2</button>
+            <button type="button" class="num-btn">3</button>
+            <button type="button" class="num-btn" id="clear-btn">けす</button>
+            <button type="button" class="num-btn">0</button>
+            <button type="button" class="num-btn" id="submit-btn">こたえる</button>
+          </div>
+      </form>
+    {% endif %}
+
+    <!-- ホーム＆次の問題ボタン -->
+    <div class="actions">
+        <a href="{% url 'home' %}" class="action-btn" id="home-btn">ホーム</a>
+        <!-- 回答前でもNextボタンを出力し、最初は隠す -->
+        <a href="{% url 'unko_kakezan' %}"
+           class="action-btn"
+           id="next-btn"
+           style="display: none;">つぎのもんだい</a>
+      </div>
+  </div>
+
+  <!-- 効果音（ユーザー操作時に再生） -->
+  <audio id="correct-sound" src="{% static 'poopgame/sounds/kaiketsu.m4a' %}" preload="auto"></audio>
+  <audio id="wrong-sound"   src="{% static 'poopgame/sounds/bubbuu.m4a' %}"   preload="auto"></audio>
+
+  <script src="{% static 'poopgame/js/multiply3.js' %}"></script>
+</body>
+</html>
