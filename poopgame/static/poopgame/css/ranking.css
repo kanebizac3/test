@@ -1,0 +1,74 @@
+/* ranking.css */
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #fffde7;
+    font-family: sans-serif;
+  }
+  .ranking-container {
+    max-width: 480px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+  }
+  h1 {
+    font-size: 2rem;
+    color: #6b4f01;
+    margin-bottom: 1em;
+  }
+  .podium {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+  }
+  .podium-item {
+    width: 30%;
+  }
+  .podium-item img {
+    width: 100%;
+    max-width: 120px;
+  }
+  .podium-item .user {
+    margin-top: 0.5em;
+    font-size: 1.1rem;
+    color: #4e3709;
+  }
+  .podium-item .score {
+    font-size: 1rem;
+    color: #8f5e15;
+  }
+  .home-btn {
+    display: inline-block;
+    margin-top: 1.5em;
+    padding: 10px 20px;
+    background: #8f5e15;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+  }
+  
+  /* confetti container */
+  #confetti-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 9999;
+  }
+  
+/* ranking.css の末尾に追加 */
+
+@keyframes fall {
+    0%   { transform: translateY(-10vh) rotate(0deg); opacity:1; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity:0; }
+  }
+  .confetti {
+    position: absolute;
+    top: -10px;
+    pointer-events: none;
+    opacity: 0.9;
+    animation: fall 5s linear infinite;
+  }
+  

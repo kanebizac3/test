@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>デイリーウンPランキング</title>
+  <link rel="stylesheet" href="{% static 'poopgame/css/ranking.css' %}">
+</head>
+<body>
+  <!-- 紙吹雪用コンテナ -->
+  <div id="confetti-container"></div>
+
+  <div class="ranking-container">
+    <h1>デイリーウンP<br>ランキング 🏆</h1>
+
+    <div class="podium">
+        {% for entry in podium %}
+          <div class="podium-item pos{{ entry.rank }}">
+            <!-- Viewで作った img_path を static タグに渡す -->
+            <img src="{% static entry.img_path %}"
+                 alt="{{ entry.rank }}位のキャラクター">
+            <div class="user">{{ entry.username }}</div>
+            <div class="score">{{ entry.total }} P</div>
+          </div>
+        {% empty %}
+          <p>まだだれもいません。</p>
+        {% endfor %}
+      </div>
+
+    <a href="{% url 'home' %}" class="home-btn">🏠 ホームにもどる</a>
+  </div>
+
+  <script src="{% static 'poopgame/js/confetti.js' %}"></script>
+</body>
+</html>

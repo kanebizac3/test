@@ -12,3 +12,15 @@ class UnpPoint(models.Model):
     def add_point(self, amount=1):
         self.point += amount
         self.save()
+        # ポイント履歴を残す
+        UnpPointHistory.objects.create(user=self.user, points=amount)
+
+
+class UnpPointHistory(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='unp_history')
+    points = models.IntegerField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        # 週間ランキング集計のため、timestampでソートしても良い
+        ordering = ['-timestamp']

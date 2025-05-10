@@ -22,5 +22,5 @@ urlpatterns = [
         redirect_authenticated_user=True
     ), name='poopgame_login'),
     path('poopgame_logout/', LogoutView.as_view(next_page='home'), name='poopgame_logout'),
-
+    path('daily-ranking/', views.weekly_ranking, name='weekly_ranking'),
 ]

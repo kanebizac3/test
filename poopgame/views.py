@@ -291,3 +291,39 @@ def unko_kakezan(request):
         }
 
     return render(request, 'poopgame/multiply3.html', context)
+
+# views.py
+
+from django.shortcuts import render
+from django.utils import timezone
+from datetime import timedelta
+from django.db.models import Sum
+from .models import UnpPointHistory
+
+def weekly_ranking(request):
+    now = timezone.now()
+    week_ago = now - timedelta(days=1)
+
+    # 過去7日間ポイント合計TOP3
+    raw = (
+        UnpPointHistory.objects
+        .filter(timestamp__gte=week_ago)
+        .values('user__username')
+        .annotate(total=Sum('points'))
+        .order_by('-total')[:3]
+    )
+
+    # ビュー側で順位と画像パスを付与
+    podium = []
+    for idx, entry in enumerate(raw, start=1):
+        podium.append({
+            'rank': idx,
+            'username': entry['user__username'],
+            'total': entry['total'],
+            # staticファイル上のパス（例: poopgame/img/podium1.png）
+            'img_path': f'poopgame/img/podium{idx}.png',
+        })
+
+    return render(request, 'poopgame/weekly_ranking.html', {
+        'podium': podium,
+    })
