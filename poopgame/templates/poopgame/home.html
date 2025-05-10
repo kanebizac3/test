@@ -21,13 +21,14 @@
 
 
         <a href="{% url 'poopadd' %}" class="game-btn poop-btn">➕ うんこたしざん</a>
+        <a href="{% url 'unko_hikizan' %}" class="game-btn poop-btn">➖ うんこひきざん</a>
         <a href="{% url 'unko_kakezan' %}" class="game-btn poop-btn">✖ うんこかけざん</a>
-        <a href="{% url 'weekly_ranking' %}" class="game-btn poop-btn">ランキング</a>
+        <a href="{% url 'weekly_ranking' %}" class="game-btn poop-btn">🏆　ランキング</a>
         <!-- <a href="{% url 'divide' %}" class="game-btn poop-btn">➗ うんこわり算</a> -->
         {% if user.is_authenticated %}
         <form method="post" action="{% url 'poopgame_logout' %}" style="display: inline;">
           {% csrf_token %}
-          <button type="submit" class="game-btn poop-btn">ログアウト</button>
+          <button type="submit" class="game-btn poop-btn">ログアウト💨</button>
         </form>
         {% else %}
         <a href="{% url 'poopgame_login' %}" class="game-btn poop-btn">ログインする💩</a>

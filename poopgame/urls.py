@@ -5,6 +5,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 urlpatterns = [
     path('programing', views.programing, name='poopgame_programing'),
     path('poopsub', views.poopsub, name='poopgame_poopsub'),
+    path('subtract3/', views.unko_hikizan, name='unko_hikizan'),
     path('multiply', views.multiply, name='multiply'),
         # 追加：解答チェック用エンドポイント
     path('multiply/check/', views.multiply_check, name='multiply_check'),

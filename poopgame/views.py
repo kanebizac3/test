@@ -327,3 +327,62 @@ def weekly_ranking(request):
     return render(request, 'poopgame/weekly_ranking.html', {
         'podium': podium,
     })
+
+from django.shortcuts import render
+import random
+from .models import UnpPoint
+
+def unko_hikizan(request):
+    # セッションポイント初期化
+    if 'points' not in request.session:
+        request.session['points'] = 0
+    if request.user.is_authenticated:
+        unp, _ = UnpPoint.objects.get_or_create(user=request.user)
+        request.session['points'] = unp.point
+
+    if request.method == 'POST':
+        # ユーザー解答取得
+        try:
+            user_answer = int(request.POST.get('answer',''))
+        except:
+            user_answer = None
+
+        # セッションから問題を取得
+        a = request.session.get('a', 0)
+        b = request.session.get('b', 0)
+        correct_answer = a - b
+        is_correct = (user_answer == correct_answer)
+
+        # 正解ならポイント追加
+        if is_correct and request.user.is_authenticated:
+            unp.add_point(1)
+            request.session['points'] = unp.point
+
+        # 結果表示用コンテキスト
+        context = {
+            'a': a,
+            'b': b,
+            'poop_range': range(a),     # うんこ表示用
+            'toilet_range': range(b),   # 便器表示用
+            'answered': True,
+            'is_correct': is_correct,
+            'correct_answer': correct_answer,
+            'points': request.session['points'],
+        }
+        return render(request, 'poopgame/subtract3.html', context)
+
+    # GET: 新しい問題を生成
+    a = random.randint(3, 9)
+    b = random.randint(1, a-1)
+    request.session['a'] = a
+    request.session['b'] = b
+
+    context = {
+        'a': a,
+        'b': b,
+        'poop_range': range(a),
+        'toilet_range': range(b),
+        'answered': False,
+        'points': request.session['points'],
+    }
+    return render(request, 'poopgame/subtract3.html', context)

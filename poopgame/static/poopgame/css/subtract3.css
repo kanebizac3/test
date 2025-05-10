@@ -1,0 +1,121 @@
+/* subtract3.css */
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #fffbe6;
+    font-family: sans-serif;
+  }
+  .game-container {
+    max-width: 480px;
+    margin: auto;
+    text-align: center;
+    padding: 10px;
+  }
+  .score {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    color: #664e04;
+  }
+  #problem {
+    font-size: 2rem;
+    cursor: pointer;
+    user-select: none;
+    margin: 10px 0;
+  }
+  #problem:active {
+    opacity: 0.7;
+  }
+  
+  /* グリッド共通 */
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 10px 0;
+  }
+  .hidden {
+    display: none;
+  }
+  .poop-img,
+  .toilet-img {
+    width: 40px;
+    height: 40px;
+    margin: 2px;
+  }
+  
+  /* 結果メッセージ */
+  .result-message {
+    font-size: 1.5rem;
+    margin: 10px 0;
+  }
+  .correct { color: green; }
+  .wrong   { color: red; }
+  
+  /* 数字パッド */
+  .num-pad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 10px auto;
+    max-width: 360px;
+  }
+  .num-btn {
+    font-size: 1.3rem;
+    padding: 12px;
+    background: #d2691e;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    aspect-ratio: 1;
+    cursor: pointer;
+  }
+  .num-btn:active {
+    transform: translateY(2px);
+  }
+  
+  /* アクションボタン */
+  .actions {
+    margin: 15px 0;
+  }
+  .action-btn {
+    display: inline-block;
+    margin: 0 10px;
+    padding: 10px 20px;
+    background: #8f5e15;
+    color: #fff;
+    border-radius: 8px;
+    text-decoration: none;
+  }
+  
+  /* アニメーション */
+  
+  /* ぷるぷる */
+  @keyframes jiggle {
+    0%,100% { transform: rotate(0deg); }
+    25%     { transform: rotate(5deg); }
+    50%     { transform: rotate(0deg); }
+    75%     { transform: rotate(-5deg);}
+  }
+  
+  /* 正解: 3つのうんこを便器方向へ移動＆消失 */
+  @keyframes toToilet {
+    0%   { transform: translateY(0) scale(1); opacity:1; }
+    100% { transform: translateY(50px) scale(0.1); opacity:0; }
+  }
+  
+  /* 不正解: 飛び散る */
+  @keyframes explode {
+    to { transform: translate(var(--dx), var(--dy)) rotate(720deg); opacity: 0; }
+  }
+  
+  .poop-img.jiggle {
+    animation: jiggle 0.3s;
+  }
+  .poop-img.toilet-away {
+    animation: toToilet 1s forwards;
+  }
+  .poop-img.explode {
+    animation: explode 1s forwards;
+  }
+  
