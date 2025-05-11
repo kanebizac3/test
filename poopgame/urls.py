@@ -28,6 +28,7 @@ urlpatterns = [
     path('poopgame_logout/', LogoutView.as_view(next_page='home'), name='poopgame_logout'),
     path('daily-ranking/', views.weekly_ranking, name='weekly_ranking'),
     path('', views.capitalism, name='capitalism'),
+    path('parent/', views.parent_page, name='parent_page'),
 ]
 
 if settings.DEBUG:

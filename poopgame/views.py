@@ -426,3 +426,40 @@ def unko_hikizan(request):
 def capitalism(request):
     """うんこ資本主義ページ"""
     return render(request, 'poopgame/capitalism.html')
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from .models import Chore, UnpPoint
+
+@login_required
+def parent_page(request):
+    """親用お手伝い管理ページ"""
+    # チャイルドポイント取得 or 初期化
+    unp, _ = UnpPoint.objects.get_or_create(user=request.user)
+    current_points = unp.point
+
+    if request.method == 'POST':
+        # 1) 新しいお手伝い項目の追加
+        if request.POST.get('action') == 'add_chore':
+            name  = request.POST.get('name', '').strip()
+            pts   = int(request.POST.get('points', 0))
+            if name and pts > 0:
+                Chore.objects.create(name=name, points=pts)
+            return redirect('parent_page')
+
+        # 2) お手伝い完了 → ポイント付与（AJAX）
+        if request.POST.get('action') == 'award_chore':
+            chore_id = int(request.POST.get('chore_id', 0))
+            chore = get_object_or_404(Chore, pk=chore_id)
+            # ポイント加算
+            unp.add_point(chore.points)
+            return JsonResponse({'success': True, 'new_points': unp.point})
+
+    # GET: お手伝い一覧表示
+    chores = Chore.objects.all().order_by('-points', 'name')
+    return render(request, 'poopgame/parent.html', {
+        'chores': chores,
+        'points': current_points,
+    })

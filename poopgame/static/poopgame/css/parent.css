@@ -1,0 +1,115 @@
+/* parent.css */
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #fff8e1;
+    font-family: "Hiragino Kaku Gothic Pro", sans-serif;
+  }
+  .parent-container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 1rem;
+    text-align: center;
+  }
+  h1 {
+    font-size: 2rem;
+    color: #ff9800;
+    margin-bottom: 0.5rem;
+  }
+  .points {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #795548;
+  }
+  .add-chore, .chore-list {
+    background: #ffffffaa;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  .add-chore h2, .chore-list h2 {
+    font-size: 1.4rem;
+    color: #ff6f00;
+    margin-bottom: 0.5rem;
+  }
+  .add-chore form {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .add-chore input[type="text"],
+  .add-chore input[type="number"] {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    flex: 1;
+    min-width: 120px;
+  }
+  .btn-add {
+    background: #ff9800;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .btn-add:hover {
+    background: #fb8c00;
+  }
+  
+  .chore-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .chore-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem;
+    border-bottom: 1px solid #eee;
+  }
+  .chore-list li:last-child {
+    border-bottom: none;
+  }
+  .chore-name {
+    font-size: 1rem;
+  }
+  .chore-points {
+    font-size: 0.9rem;
+    color: #ff5722;
+    margin: 0 0.5rem;
+  }
+  .btn-award {
+    background: #ffcc80;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-award:hover {
+    background: #ffb74d;
+  }
+  .btn-award:disabled {
+    background: #ddd;
+    cursor: not-allowed;
+  }
+  
+  footer {
+    margin-top: 1rem;
+  }
+  .btn-home {
+    display: inline-block;
+    background: #ffe0b2;
+    color: #795548;
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    text-decoration: none;
+  }
+  .btn-home:hover {
+    background: #ffcc80;
+  }
+  

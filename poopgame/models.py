@@ -45,3 +45,13 @@ class AttemptLog(models.Model):
 
     def __str__(self):
         return f"{self.user.username} {self.get_operation_display()} {self.operand_a},{self.operand_b} → {self.user_answer} ({'OK' if self.is_correct else 'NG'})"
+    
+from django.contrib.auth.models import User
+
+class Chore(models.Model):
+    """親が作るお手伝い項目"""
+    name   = models.CharField("お手伝い内容", max_length=100)
+    points = models.PositiveIntegerField("獲得ポイント", default=1)
+
+    def __str__(self):
+        return f"{self.name} ({self.points}P)"

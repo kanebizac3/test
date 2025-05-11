@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width,
+                 initial-scale=1.0,
+                 maximum-scale=1.0,
+                 user-scalable=no">
+  <title>お手伝い管理ページ</title>
+  <link rel="stylesheet" href="{% static 'poopgame/css/parent.css' %}">
+</head>
+<body>
+  <div class="parent-container">
+    <h1>お手伝い管理 🎉</h1>
+    <p class="points">今のポイント: <span id="point-count">{{ points }}</span> P</p>
+
+    <!-- 新規お手伝い追加フォーム -->
+    <section class="add-chore">
+      <h2>新しいお手伝いを追加</h2>
+      <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add_chore">
+        <input type="text" name="name" placeholder="お手伝い内容" required>
+        <input type="number" name="points" placeholder="ポイント" min="1" required>
+        <button type="submit" class="btn-add">追加する</button>
+      </form>
+    </section>
+
+    <!-- お手伝いリスト -->
+    <section class="chore-list">
+      <h2>お手伝い一覧</h2>
+      <ul>
+        {% for chore in chores %}
+        <li data-id="{{ chore.id }}">
+          <span class="chore-name">📝 {{ chore.name }}</span>
+          <span class="chore-points">{{ chore.points }}P</span>
+          <button class="btn-award">完了して付与</button>
+        </li>
+        {% empty %}
+        <li>まだお手伝いが登録されていません。</li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <!-- ホームへ戻る -->
+    <footer>
+      <a href="{% url 'home' %}" class="btn-home">🏠 ホームへ戻る</a>
+    </footer>
+  </div>
+
+  <script src="{% static 'poopgame/js/parent.js' %}"></script>
+</body>
+</html>
