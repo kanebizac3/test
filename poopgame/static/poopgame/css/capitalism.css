@@ -1,0 +1,150 @@
+/* capitalism.css */
+
+/* ベース */
+:root {
+    --primary: #ff9f1c;
+    --secondary: #ffd60a;
+    --accent: #ffffff;
+    --text: #333333;
+  }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+    color: var(--text);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+  a, button {
+    text-decoration: none;
+    font-family: inherit;
+  }
+  
+  /* ヘッダー */
+  .site-header {
+    text-align: center;
+    padding: 2rem 1rem 1rem;
+    background: rgba(255,255,255,0.8);
+  }
+  .site-header h1 {
+    font-size: 2.2rem;
+    color: var(--primary);
+  }
+  .site-header .tagline {
+    margin-top: 0.5rem;
+    color: var(--text);
+    font-size: 1rem;
+  }
+  
+  /* メインコンテンツ */
+  .content {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .btn {
+    display: inline-block;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .btn-primary {
+    background: var(--primary);
+    color: var(--accent);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+  .btn-primary:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+  }
+  .btn-secondary {
+    background: #ffffff33;
+    color: var(--accent);
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  .btn-secondary small {
+    display: block;
+    font-size: 0.7rem;
+    opacity: 0.8;
+  }
+  
+  /* 世界観セクション */
+  .description {
+    text-align: center;
+    padding: 1rem;
+    background: rgba(255,255,255,0.6);
+    border-radius: 8px;
+  }
+  .description h2 {
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  .description p {
+    margin-bottom: 1rem;
+  }
+  .world-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+  
+  /* フッター */
+  .site-footer {
+    text-align: center;
+    padding: 1rem;
+    background: rgba(255,255,255,0.8);
+    position: relative;
+    bottom: 0;
+    width: 100%;
+  }
+  .home-link {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    color: var(--primary);
+    font-weight: bold;
+  }
+  .site-footer p {
+    font-size: 0.8rem;
+    color: var(--text);
+  }
+  
+  /* 浮遊うんこエフェクト */
+  #floating-poops {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+  }
+  .floating {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background: url('../img/poop-dance.png') no-repeat center/contain;
+    animation: floatUp linear infinite;
+  }
+  @keyframes floatUp {
+    from { transform: translateY(100vh) scale(0.5) rotate(0deg); opacity: 0; }
+    10%  { opacity: 1; }
+    to   { transform: translateY(-10vh) scale(1) rotate(360deg); opacity: 0; }
+  }
+  

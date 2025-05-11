@@ -422,3 +422,7 @@ def unko_hikizan(request):
         'points': request.session['points'],
     }
     return render(request, 'poopgame/subtract3.html', context)
+
+def capitalism(request):
+    """うんこ資本主義ページ"""
+    return render(request, 'poopgame/capitalism.html')

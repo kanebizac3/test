@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <!-- モバイル対応：ズーム禁止 -->
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0,
+                 maximum-scale=1.0, user-scalable=no">
+  <title>うんこ資本主義</title>
+  <link rel="stylesheet" href="{% static 'poopgame/css/capitalism.css' %}">
+  <script src="{% static 'poopgame/js/capitalism.js' %}" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <h1>うんこしほんしゅぎ</h1>
+    <p class="tagline">うんこでまなび、セカイをひらけ！</p>
+  </header>
+
+  <main class="content">
+    <section class="actions">
+      <a href="{% url 'unko_kakezan' %}" class="btn btn-primary">ろうどうする</a>
+      <button class="btn btn-secondary" disabled>きぎょうする<br><small>準備中</small></button>
+      <button class="btn btn-secondary" disabled>とうしかになる<br><small>準備中</small></button>
+      <button class="btn btn-secondary" disabled>うんコラム<br><small>準備中</small></button>
+    </section>
+
+    <section class="description">
+      <h2>世界観をのぞいてみよう</h2>
+      <p>「うんこ資本主義」の世界で、働いたり投資したり…子どものうちから資本主義を体験することで、人間界でも活躍できる逸材...ビッグうんこを排泄する！！</p>
+      <img src="{% static 'poopgame/img/worldview2.png' %}"
+           alt="Poop World Illustration"
+           class="world-image">
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2025 うんこ資本主義</p>
+  </footer>
+
+  <!-- 背景エフェクト用コンテナ -->
+  <div id="floating-poops"></div>
+</body>
+</html>
