@@ -30,18 +30,20 @@
 
     <!-- お手伝いリスト -->
     <section class="chore-list">
-      <h2>お手伝い一覧</h2>
-      <ul>
-        {% for chore in chores %}
-        <li data-id="{{ chore.id }}">
-          <span class="chore-name">📝 {{ chore.name }}</span>
-          <span class="chore-points">{{ chore.points }}P</span>
-          <button class="btn-award">完了して付与</button>
-        </li>
-        {% empty %}
-        <li>まだお手伝いが登録されていません。</li>
-        {% endfor %}
-      </ul>
+        <h2>お手伝い一覧</h2>
+        <ul>
+          {% for chore in chores %}
+          <li data-id="{{ chore.id }}">
+            <span class="chore-name">📝 {{ chore.name }}</span>
+            <span class="chore-points">{{ chore.points }}P</span>
+            <button class="btn-award">完了して付与</button>
+            <!-- ここを追加 -->
+            <button class="btn-delete">削除</button>
+          </li>
+          {% empty %}
+          <li>まだお手伝いが登録されていません。</li>
+          {% endfor %}
+        </ul>
     </section>
 
     <!-- ホームへ戻る -->

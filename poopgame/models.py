@@ -9,11 +9,12 @@ class UnpPoint(models.Model):
     def __str__(self):
         return f"{self.user.username} のうんP: {self.point}うんP"
 
-    def add_point(self, amount=1):
+    def add_point(self, amount=1, log=True):
         self.point += amount
         self.save()
         # ポイント履歴を残す
-        UnpPointHistory.objects.create(user=self.user, points=amount)
+        if log:
+            UnpPointHistory.objects.create(user=self.user, points=amount)
 
 
 class UnpPointHistory(models.Model):
@@ -47,11 +48,19 @@ class AttemptLog(models.Model):
         return f"{self.user.username} {self.get_operation_display()} {self.operand_a},{self.operand_b} → {self.user_answer} ({'OK' if self.is_correct else 'NG'})"
     
 from django.contrib.auth.models import User
-
 class Chore(models.Model):
-    """親が作るお手伝い項目"""
+    """親が作るお手伝い項目（親ユーザー固有）"""
+    user   = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='chores',
+        verbose_name='親ユーザー',
+        null=True,
+        blank=True,
+    )
     name   = models.CharField("お手伝い内容", max_length=100)
     points = models.PositiveIntegerField("獲得ポイント", default=1)
 
     def __str__(self):
         return f"{self.name} ({self.points}P)"
+

@@ -1,7 +1,7 @@
 # poopgame/admin.py
 from django.contrib import admin
 from django.contrib.auth.models import User
-from .models import UnpPoint, UnpPointHistory
+from .models import UnpPoint, UnpPointHistory, Chore
 
 
 # 標準の User モデルをそのまま使用（カスタムユーザーを使わない場合）
@@ -22,3 +22,11 @@ class AttemptLogAdmin(admin.ModelAdmin):
     list_display = ('user', 'operation', 'operand_a', 'operand_b', 'user_answer', 'correct_answer', 'is_correct', 'timestamp')
     list_filter  = ('operation', 'is_correct', 'timestamp')
     search_fields= ('user__username',)
+
+
+
+@admin.register(Chore)
+class ChoreAdmin(admin.ModelAdmin):
+    list_display   = ('user', 'name', 'points')
+    list_filter    = ('user',)
+    search_fields  = ('name', 'user__username')

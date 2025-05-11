@@ -436,30 +436,43 @@ from .models import Chore, UnpPoint
 @login_required
 def parent_page(request):
     """親用お手伝い管理ページ"""
-    # チャイルドポイント取得 or 初期化
+
+    # ユーザーの UnpPoint
     unp, _ = UnpPoint.objects.get_or_create(user=request.user)
-    current_points = unp.point
+    request.session['points'] = unp.point
 
     if request.method == 'POST':
-        # 1) 新しいお手伝い項目の追加
-        if request.POST.get('action') == 'add_chore':
-            name  = request.POST.get('name', '').strip()
-            pts   = int(request.POST.get('points', 0))
+        action = request.POST.get('action')
+
+        # 1) 新規お手伝い追加
+        if action == 'add_chore':
+            name = request.POST.get('name','').strip()
+            pts  = int(request.POST.get('points',0))
             if name and pts > 0:
-                Chore.objects.create(name=name, points=pts)
+                Chore.objects.create(
+                  user=request.user,
+                  name=name,
+                  points=pts
+                )
             return redirect('parent_page')
 
-        # 2) お手伝い完了 → ポイント付与（AJAX）
-        if request.POST.get('action') == 'award_chore':
-            chore_id = int(request.POST.get('chore_id', 0))
-            chore = get_object_or_404(Chore, pk=chore_id)
-            # ポイント加算
-            unp.add_point(chore.points)
+        # 2) ポイント付与
+        if action == 'award_chore':
+            chore_id = int(request.POST.get('chore_id',0))
+            chore = get_object_or_404(Chore, pk=chore_id, user=request.user)
+            unp.add_point(chore.points, log=False)
             return JsonResponse({'success': True, 'new_points': unp.point})
 
-    # GET: お手伝い一覧表示
-    chores = Chore.objects.all().order_by('-points', 'name')
+        # 3) お手伝い削除
+        if action == 'delete_chore':
+            chore_id = int(request.POST.get('chore_id',0))
+            chore = get_object_or_404(Chore, pk=chore_id, user=request.user)
+            chore.delete()
+            return JsonResponse({'success': True})
+
+    # GET: このユーザーのチャア一覧のみ取得
+    chores = Chore.objects.filter(user=request.user).order_by('-points','name')
     return render(request, 'poopgame/parent.html', {
         'chores': chores,
-        'points': current_points,
+        'points': unp.point,
     })
