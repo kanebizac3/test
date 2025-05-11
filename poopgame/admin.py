@@ -14,3 +14,11 @@ admin.site.register(UnpPointHistory)
 class CustomUserAdmin(admin.ModelAdmin):
     list_display = ('username', 'is_active', 'date_joined')
     search_fields = ('username',)
+
+from .models import AttemptLog
+
+@admin.register(AttemptLog)
+class AttemptLogAdmin(admin.ModelAdmin):
+    list_display = ('user', 'operation', 'operand_a', 'operand_b', 'user_answer', 'correct_answer', 'is_correct', 'timestamp')
+    list_filter  = ('operation', 'is_correct', 'timestamp')
+    search_fields= ('user__username',)

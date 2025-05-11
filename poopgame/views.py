@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import UnpPoint, AttemptLog
 
 def programing(request):
     return render(request, 'poopgame/programing.html')
@@ -109,6 +110,18 @@ def poopadd_check(request):
         if result and request.user.is_authenticated:
             unp, created = UnpPoint.objects.get_or_create(user=request.user)
             unp.add_point(1)
+
+        # ③ ログを保存
+        if request.user.is_authenticated:
+            AttemptLog.objects.create(
+                user           = request.user,
+                operation      = 'add',
+                operand_a      = num1,
+                operand_b      = num2,
+                user_answer    = user_answer if user_answer is not None else -1,
+                correct_answer = total,
+                is_correct     = result
+            )
 
         context = {
             'num1': num1,
@@ -264,6 +277,18 @@ def unko_kakezan(request):
         correct_answer = a * b
         is_correct = (user_answer == correct_answer)
 
+        # ログ保存
+        if request.user.is_authenticated:
+            AttemptLog.objects.create(
+                user           = request.user,
+                operation      = 'mul',
+                operand_a      = a,
+                operand_b      = b,
+                user_answer    = user_answer if user_answer is not None else -1,
+                correct_answer = correct_answer,
+                is_correct     = is_correct
+            )
+
         # モデルにもDBにも正解ポイントを反映
         if is_correct and request.user.is_authenticated:
             unp.add_point(1)
@@ -330,7 +355,6 @@ def weekly_ranking(request):
 
 from django.shortcuts import render
 import random
-from .models import UnpPoint
 
 def unko_hikizan(request):
     # セッションポイント初期化
@@ -352,6 +376,18 @@ def unko_hikizan(request):
         b = request.session.get('b', 0)
         correct_answer = a - b
         is_correct = (user_answer == correct_answer)
+
+        # ③ ログを保存
+        if request.user.is_authenticated:
+            AttemptLog.objects.create(
+                user           = request.user,
+                operation      = 'sub',
+                operand_a      = a,
+                operand_b      = b,
+                user_answer    = user_answer if user_answer is not None else -1,
+                correct_answer = correct_answer,
+                is_correct     = is_correct
+            )
 
         # 正解ならポイント追加
         if is_correct and request.user.is_authenticated:
