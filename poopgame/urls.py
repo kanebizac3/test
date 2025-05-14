@@ -29,6 +29,8 @@ urlpatterns = [
     path('daily-ranking/', views.weekly_ranking, name='weekly_ranking'),
     path('', views.capitalism, name='capitalism'),
     path('parent/', views.parent_page, name='parent_page'),
+    path('bonus/', views.bonus_game, name='bonus_game'),
+    path('bonus/result/', views.bonus_result, name='bonus_result'),
 ]
 
 if settings.DEBUG:

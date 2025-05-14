@@ -1,0 +1,96 @@
+/* static/poopgame/css/bonus_result.css */
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #fffbe6;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: #333;
+    text-align: center;
+  }
+  
+  .result-container {
+    max-width: 480px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  
+  .result-container h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #ff9800;
+  }
+  
+  .result-container .message {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+  
+  .result-container .message br {
+    /* 行送りを少しゆったり */
+    line-height: 1.6;
+  }
+  
+  .result-img {
+    width: 40vw;
+    max-width: 200px;
+    margin: 1rem auto;
+    display: block;
+    animation: popIn 0.5s ease-out;
+  }
+  
+  @keyframes popIn {
+    0%   { transform: scale(0.5); opacity: 0; }
+    100% { transform: scale(1);   opacity: 1; }
+  }
+  
+  .buttons {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .btn {
+    background: #ff9f1c;
+    color: #fff;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 0.8rem 1.2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+  }
+  
+  .btn-home {
+    background: #ffd60a;
+    color: #795548;
+  }
+  
+  @media (max-width: 360px) {
+    .result-container {
+      margin: 1rem 0.5rem;
+      padding: 0.5rem;
+    }
+    .result-container h1 {
+      font-size: 1.6rem;
+    }
+    .result-container .message {
+      font-size: 1rem;
+    }
+    .btn {
+      font-size: 0.9rem;
+      padding: 0.6rem 1rem;
+    }
+  }
+  

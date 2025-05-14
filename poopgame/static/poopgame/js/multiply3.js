@@ -1,4 +1,4 @@
-// game.js
+// static/poopgame/js/game.js
 
 document.addEventListener('DOMContentLoaded', function () {
   const problemEl     = document.getElementById('problem');
@@ -10,9 +10,9 @@ document.addEventListener('DOMContentLoaded', function () {
   const correctSound  = document.getElementById('correct-sound');
   const wrongSound    = document.getElementById('wrong-sound');
 
-  // ① 問題をタップするとうんこグリッドを表示
+  // ① 問題をタップするとグリッドを表示
   if (problemEl) {
-    problemEl.addEventListener('click', function () {
+    problemEl.addEventListener('click', () => {
       poopGrid.classList.remove('hidden');
     });
   }
@@ -22,36 +22,32 @@ document.addEventListener('DOMContentLoaded', function () {
     btn.addEventListener('click', () => {
       const v = btn.textContent;
       if (/[0-9]/.test(v)) {
-        // 数字入力
         answerInput.value += v;
-        answerDisplay.textContent += v;
-        // 入力ごとにぷるぷる
+        answerDisplay.textContent = answerInput.value;
         poopGrid.classList.add('jiggle');
         setTimeout(() => poopGrid.classList.remove('jiggle'), 300);
-      }
-      else if (v === 'けす') {
-        // クリア
+      } else if (v === 'けす') {
         answerInput.value = '';
         answerDisplay.textContent = '';
       }
     });
   });
 
-  // ③ OK（送信）ボタンの処理
+  // ③ 「解ケツ！」ボタンの処理
   const submitBtn = document.getElementById('submit-btn');
   if (submitBtn) {
     submitBtn.addEventListener('click', () => {
-      if (answerInput.value === '') return;
+      if (!answerInput.value) return;
 
-      // 問題から正解を計算
-      const parts = problemEl.textContent.split('×').map(n => n.trim());
-      const a = parseInt(parts[0], 10);
-      const b = parseInt(parts[1], 10);
+      // 正解判定
+      const parts   = problemEl.textContent.split('×').map(n => n.trim());
+      const a       = parseInt(parts[0], 10);
+      const b       = parseInt(parts[1], 10);
       const correct = a * b;
       const userAns = parseInt(answerInput.value, 10);
       const isCorrect = (userAns === correct);
 
-      // サウンドとアニメーション（iPhone対応）
+      // アニメーション & メッセージ & サウンド
       if (isCorrect) {
         poopGrid.classList.add('correct');
         resultMessage.textContent = 'かいケツ！';
@@ -71,17 +67,12 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       resultMessage.style.display = 'block';
 
-      // 入力エリアを隠す（存在チェック）
+      // 入力部を隠し、次へボタンを表示
       const pad = document.querySelector('.num-pad');
-      if (pad) {
-        pad.style.display = 'none';
-      }
-      // 次へボタンを表示（存在チェック）
-      if (nextBtn) {
-        nextBtn.style.display = 'inline-block';
-      }
+      if (pad) pad.style.display = 'none';
+      if (nextBtn) nextBtn.style.display = 'inline-block';
 
-      // サーバーに回答を POST してポイント更新
+      // サーバーに POST → 302リダイレクトを検知
       fetch(window.location.href, {
         method: 'POST',
         headers: {
@@ -89,7 +80,17 @@ document.addEventListener('DOMContentLoaded', function () {
           'X-CSRFToken': document.querySelector('input[name=csrfmiddlewaretoken]').value
         },
         body: new URLSearchParams({ 'answer': answerInput.value })
-      });
+      })
+      .then(response => {
+        if (response.redirected) {
+          const redirectUrl = response.url;
+          // 3秒待ってから遷移
+          setTimeout(() => {
+            window.location.href = redirectUrl;
+          }, 3000);
+        }
+      })
+      .catch(err => console.error('通信エラー', err));
     });
   }
 });

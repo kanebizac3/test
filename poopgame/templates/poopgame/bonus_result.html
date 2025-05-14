@@ -1,0 +1,42 @@
+{# templates/poopgame/bonus_result.html #}
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width,
+                 initial-scale=1.0,
+                 maximum-scale=1.0,
+                 user-scalable=no">
+  <title>ボーナスゲーム結果</title>
+  <link rel="stylesheet" href="{% static 'poopgame/css/bonus_result.css' %}">
+</head>
+<body>
+  <div class="result-container">
+    {% if is_win %}
+      <h1>🎉 イェーイ！ボーナスクリア！</h1>
+      <p class="message">10うんPがついか！</p>
+      <img src="{% static 'poopgame/img/poop-wink.png' %}" alt="ハッピーうんこ" class="result-img">
+      <audio autoplay src="{% static 'poopgame/sounds/cheer.mp3' %}"></audio>
+    {% else %}
+      <h1>ざんねん… 😢</h1>
+      <p class="message">
+        {% if elapsed > 30 %}
+          じかん ぎれ…<br>
+        {% else %}
+          ちがうウンコをさわったよ…<br>
+        {% endif %}
+        せいかいは {{ correct_answer }} でした。
+      </p>
+      <img src="{% static 'poopgame/img/poop-sad.png' %}" alt="サッドうんこ" class="result-img">
+      <audio autoplay src="{% static 'poopgame/sounds/explosion.mp3' %}"></audio>
+    {% endif %}
+
+    <div class="buttons">
+      <a href="{% url 'unko_kakezan' %}" class="btn">つぎのもんだいへ</a>
+      <a href="{% url 'home' %}" class="btn btn-home">ホームへ</a>
+    </div>
+  </div>
+</body>
+</html>

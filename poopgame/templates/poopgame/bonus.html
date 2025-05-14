@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width,
+                 initial-scale=1.0,
+                 maximum-scale=1.0,
+                 user-scalable=no">
+  <title>ボーナスゲーム！</title>
+  <link rel="stylesheet" href="{% static 'poopgame/css/bonus.css' %}">
+  <script>
+    const CORRECT_INDEX = {{ correct_index }};
+    const TIME_LIMIT    = 30;
+    // 画像 URL をここで定義
+    const POOP_URL = "{% static 'poopgame/img/poop-dance.png' %}";
+    const WINK_URL = "{% static 'poopgame/img/poop-wink.png' %}";
+  </script>
+  <script src="{% static 'poopgame/js/bonus.js' %}" defer></script>
+</head>
+<body>
+  <div class="bonus-container">
+    <h1>ウインクうんこをさがせ！</h1>
+    <div id="timer">のこりじかん：<span id="time">30</span>びょう</div>
+
+    <div id="grid" class="grid"
+    style="grid-template-columns: repeat({{ cols }}, 1fr);">
+    {% for i in indices %}
+    <div class="cell">
+     <img src="{% static 'poopgame/img/poop-dance.png' %}"
+          data-index="{{ i }}"
+          class="poop-img">
+    </div>
+    {% endfor %}
+    </div>
+
+    <form id="bonus-form" method="post" action="{% url 'bonus_result' %}">
+      {% csrf_token %}
+      <input type="hidden" name="selected" id="selected-input" value="-1">
+    </form>
+  </div>
+
+  <!-- 効果音 -->
+  <audio id="cheer-sound" src="{% static 'poopgame/sounds/kirakira.mp3' %}" preload="auto"></audio>
+  <audio id="explode-sound" src="{% static 'poopgame/sounds/explosion.mp3' %}" preload="auto"></audio>
+</body>
+</html>

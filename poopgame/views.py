@@ -77,7 +77,7 @@ def multiply_check(request):
 
 
 def poopadd(request):
-    num1 = random.randint(1, 14)
+    num1 = random.randint(1, 10)
     num2 = random.randint(1, 9)
     total = num1 + num2
 
@@ -294,6 +294,10 @@ def unko_kakezan(request):
             unp.add_point(1)
             request.session['points'] = unp.point  # DB値に合わせる
 
+                        # ★5%でボーナスゲームへ
+        if random.random() < 0.1:
+            return redirect('bonus_game')
+
         context = {
             'a': a, 'b': b,
             'a_range': range(a), 'b_range': range(b),
@@ -301,6 +305,8 @@ def unko_kakezan(request):
             'points': request.session['points'],
             'correct_answer': correct_answer,
         }
+        return render(request, 'poopgame/multiply3.html', context)
+    
     else:
         # — 新しい問題を作成 —
         a = random.randint(1, 9)
@@ -393,6 +399,10 @@ def unko_hikizan(request):
         if is_correct and request.user.is_authenticated:
             unp.add_point(1)
             request.session['points'] = unp.point
+        
+                                # ★5%でボーナスゲームへ
+        if random.random() < 0.1:
+            return redirect('bonus_game')
 
         # 結果表示用コンテキスト
         context = {
@@ -475,4 +485,65 @@ def parent_page(request):
     return render(request, 'poopgame/parent.html', {
         'chores': chores,
         'points': unp.point,
+    })
+
+# views.py
+
+import random
+from django.shortcuts import render, redirect
+from django.utils import timezone
+from .models import UnpPoint
+
+@login_required
+def bonus_game(request):
+    if request.method == 'POST':
+        return redirect('bonus_result')
+
+    rows, cols = 8, 6
+    total = rows * cols
+
+    # ① 0 〜 total-1 のインデックスを生成
+    indices = list(range(total))
+
+    # ② 正解インデックスをランダムに決定
+    correct_index = random.randrange(total)
+
+    # セッションに保存
+    request.session['bonus_correct_index'] = correct_index
+    request.session['bonus_start_time'] = timezone.now().timestamp()
+
+    return render(request, 'poopgame/bonus.html', {
+        'rows': rows,
+        'cols': cols,
+        'total': total,
+        'indices': indices,
+        'correct_index': correct_index,
+    })
+
+
+
+@login_required
+def bonus_result(request):
+    """
+    ボーナスゲームの結果ページ。
+    30秒以内に正解すれば +10 P。
+    """
+    # セッションからデータ取得
+    correct_index = request.session.get('bonus_correct_index')
+    start_ts      = request.session.get('bonus_start_time')
+    elapsed       = timezone.now().timestamp() - start_ts if start_ts else 999
+
+    # POSTされた選択
+    selected = int(request.POST.get('selected', -1))
+
+    # 制限時間内かつ正解か
+    is_win = (elapsed <= 30) and (selected == correct_index)
+
+    if is_win:
+        unp, _ = UnpPoint.objects.get_or_create(user=request.user)
+        unp.add_point(10)  # ボーナスポイント 10UP
+
+    return render(request, 'poopgame/bonus_result.html', {
+        'is_win': is_win,
+        'elapsed': int(elapsed),
     })
