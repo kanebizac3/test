@@ -30,3 +30,9 @@ class ChoreAdmin(admin.ModelAdmin):
     list_display   = ('user', 'name', 'points')
     list_filter    = ('user',)
     search_fields  = ('name', 'user__username')
+
+from django.contrib import admin
+from .models import ShopItem, PurchaseRequest
+
+admin.site.register(ShopItem)
+admin.site.register(PurchaseRequest)

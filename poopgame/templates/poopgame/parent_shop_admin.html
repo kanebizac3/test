@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>うんこショップ管理（親用）</title>
+  <link rel="stylesheet" href="{% static 'poopgame/css/parent_shop.css' %}">
+</head>
+<body>
+  <div class="container">
+    <h1>🧻 うんこショップ管理ページ（親用）</h1>
+
+    <!-- 商品登録フォーム -->
+    <section class="form-section">
+      <h2>🛍 商品を登録</h2>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-register">商品を追加する💩</button>
+      </form>
+    </section>
+
+    <!-- 登録済み商品一覧 -->
+    <section class="item-section">
+      <h2>📦 登録された商品</h2>
+      {% if items %}
+        <ul class="item-list">
+          {% for item in items %}
+            <li>
+              <img src="{{ item.image.url }}" alt="{{ item.name }}" class="item-img">
+              <div class="item-info">
+                <strong>{{ item.name }}</strong><br>
+                消費うんP: {{ item.cost }}
+              </div>
+              <form method="post" action="{% url 'delete_shop_item' item.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-delete">削除</button>
+              </form>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>まだ商品はありません。</p>
+      {% endif %}
+    </section>
+
+    <!-- 購入申請一覧 -->
+    <section class="request-section">
+      <h2>🧒 子どもからの購入申請</h2>
+      {% if requests %}
+        <ul class="request-list">
+          {% for req in requests %}
+            <li>
+              <div class="req-info">
+                <strong>{{ req.child.username }}</strong> が 
+                <strong>{{ req.item.name }}</strong> を買おうとしています！<br>
+                必要うんP: {{ req.item.cost }}
+              </div>
+              <form method="post" action="{% url 'approve_purchase' req.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-approve">承認💮</button>
+              </form>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>購入申請はありません。</p>
+      {% endif %}
+    </section>
+
+    <div class="nav-links">
+      <a href="{% url 'home' %}" class="btn btn-home">🏠 ホームに戻る</a>
+      <a href="{% url 'parent_page' %}" class="btn btn-home">お手伝い管理画面へ</a>
+    </div>
+  </div>
+</body>
+</html>

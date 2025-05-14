@@ -37,7 +37,11 @@ urlpatterns = [
     path('parent-auth/', views.parent_auth, name='parent_auth'),
     # 高度問題チャレンジ
     path('advanced-challenge/', views.advanced_challenge, name='advanced_challenge'),
-]
-
+    path('shop/', views.unko_shop, name='unko_shop'),  # 子ども側ショップ画面
+    path('shop/request/<int:item_id>/', views.request_purchase, name='request_purchase'),  # 購入申請  
+    path('parent/shop/', views.parent_shop_admin, name='parent_shop_admin'),  # 親用管理画面
+    path('parent/shop/approve/<int:request_id>/', views.approve_purchase, name='approve_purchase'),  # 購入承認
+    path('parent/shop/delete/<int:item_id>/', views.delete_shop_item, name='delete_shop_item'),  # 商品削除]
+    ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

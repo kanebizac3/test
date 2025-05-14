@@ -1,0 +1,109 @@
+body {
+    font-family: "Noto Sans JP", sans-serif;
+    background: #fff8e1;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+  
+  .shop-header {
+    background: linear-gradient(to right, #ffcc80, #ffe0b2);
+    padding: 1em;
+  }
+  
+  .shop-banner {
+    width: 100%;
+    max-height: 150px;
+    object-fit: contain;
+  }
+  
+  .point {
+    font-weight: bold;
+    font-size: 1.4em;
+    color: #d2691e;
+  }
+  
+  .shop-main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 1em;
+  }
+  
+  .shop-item {
+    width: 200px;
+    background: #fff3e0;
+    border-radius: 12px;
+    margin: 1em;
+    padding: 1em;
+    box-shadow: 2px 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  .item-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  .item-info {
+    margin-top: 0.5em;
+  }
+  
+  .item-name {
+    font-size: 1.2em;
+    color: #6d4c41;
+  }
+  
+  .item-cost {
+    font-weight: bold;
+    margin: 0.5em 0;
+  }
+  
+  .buy-btn {
+    padding: 0.5em 1em;
+    font-size: 1em;
+    background: #ff9800;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .buy-btn:hover {
+    background: #f57c00;
+  }
+  
+  .buy-btn.disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .shop-footer {
+    margin-top: 2em;
+    padding-bottom: 2em;
+  }
+  
+  .home-btn {
+    padding: 0.8em 2em;
+    font-size: 1.2em;
+    background: #8bc34a;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+  }
+  
+  .status {
+    font-weight: bold;
+    margin-top: 0.5em;
+    font-size: 1em;
+  }
+  
+  .status.pending {
+    color: #ff9800;
+  }
+  
+  .status.approved {
+    color: #4caf50;
+  }
+  

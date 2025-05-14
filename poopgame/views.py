@@ -612,3 +612,83 @@ def advanced_challenge(request):
         'error': error,
     })
 
+
+from .models import ShopItem, PurchaseRequest, UnpPoint
+
+@login_required
+def unko_shop(request):
+    user = request.user
+    unp = UnpPoint.objects.get(user=user)
+    items = ShopItem.objects.filter(user=request.user)
+
+    # 各商品の購入申請状況を取得
+    purchase_status_dict = {}
+    for item in items:
+        request_exists = PurchaseRequest.objects.filter(
+            item=item,
+            child=user
+        ).order_by('-created_at').first()
+
+        if request_exists:
+            if request_exists.is_approved:
+                item.status = 'approved'
+            else:
+                item.status = 'pending'
+        else:
+            item.status = None
+
+    context = {
+        'items': items,
+        'user_points': unp.point,
+    }
+    return render(request, 'poopgame/unko_shop.html', context)
+
+@login_required
+def request_purchase(request, item_id):
+    item = get_object_or_404(ShopItem, id=item_id)
+    PurchaseRequest.objects.create(child=request.user, item=item)
+    return redirect('unko_shop')
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import ShopItem, PurchaseRequest, UnpPoint
+from .forms import ShopItemForm
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def parent_shop_admin(request):
+    if request.method == 'POST':
+        form = ShopItemForm(request.POST, request.FILES)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.user = request.user
+            item.save()
+            return redirect('parent_shop_admin')
+    else:
+        form = ShopItemForm()
+    items = ShopItem.objects.filter(user=request.user)
+    requests = PurchaseRequest.objects.filter(item__user=request.user, is_approved=False)
+    return render(request, 'poopgame/parent_shop_admin.html', {
+        'form': form,
+        'items': items,
+        'requests': requests,
+    })
+
+@login_required
+def approve_purchase(request, request_id):
+    purchase = get_object_or_404(PurchaseRequest, id=request_id)
+    if request.method == 'POST' and purchase.item.user == request.user:
+        # 子供のポイントから減算
+        unp = UnpPoint.objects.get(user=purchase.child)
+        if unp.point >= purchase.item.cost:
+            unp.point -= purchase.item.cost
+            unp.save()
+            purchase.is_approved = True
+            purchase.save()
+    return redirect('parent_shop_admin')
+
+@login_required
+def delete_shop_item(request, item_id):
+    item = get_object_or_404(ShopItem, id=item_id, user=request.user)
+    item.delete()
+    return redirect('parent_shop_admin')

@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>うんこショップ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="{% static 'poopgame/css/shop.css' %}">
+</head>
+<body>
+
+<header class="shop-header">
+  <img src="{% static 'poopgame/img/poopshop2.gif' %}" alt="うんこたちのお買い物" class="shop-banner">
+  <h1>うんこショップ💩</h1>
+  <p>あなたの うんP：<span class="point">{{ user_points }}</span> うんP</p>
+</header>
+
+<main class="shop-main">
+  {% for item in items %}
+    <div class="shop-item">
+      <img src="{{ item.image.url }}" alt="{{ item.name }}" class="item-image">
+      <div class="item-info">
+        <h2 class="item-name">{{ item.name }}</h2>
+        <p class="item-cost">💩 {{ item.cost }}うんP</p>
+
+        {% if item.status == 'approved' %}
+        <p class="status approved">✅ オッケーだって！</p>
+      {% elif item.status == 'pending' %}
+        <p class="status pending">🕒 しんせいちゅう</p>
+      {% elif user_points >= item.cost %}
+        <form method="post" action="{% url 'request_purchase' item.id %}">
+          {% csrf_token %}
+          <button type="submit" class="buy-btn">これほしい！</button>
+        </form>
+      {% else %}
+        <button class="buy-btn disabled" disabled>うんPたりない…</button>
+      {% endif %}
+      </div>
+    </div>
+  {% empty %}
+    <p class="no-items">ざいこぎれ だよ. パパママにしいれてもらおう.</p>
+  {% endfor %}
+</main>
+
+<footer class="shop-footer">
+  <a href="{% url 'home' %}" class="home-btn">🏠 ホームにもどる</a>
+</footer>
+
+</body>
+</html>

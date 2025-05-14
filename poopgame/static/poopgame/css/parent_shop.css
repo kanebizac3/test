@@ -1,0 +1,132 @@
+/* 全体レイアウト */
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: #fffbe7;
+    color: #333;
+    margin: 0;
+    padding: 1em;
+    text-align: center;
+  }
+  
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding-bottom: 3em;
+  }
+  
+  /* 見出し */
+  h1, h2 {
+    color: #d2691e;
+    margin-bottom: 0.5em;
+  }
+  
+  /* フォーム */
+  form {
+    margin: 1em 0;
+  }
+  
+  form input,
+  form select,
+  form textarea {
+    width: 100%;
+    padding: 0.5em;
+    margin-top: 0.5em;
+    border: 2px solid #e0c080;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: #fff8e0;
+  }
+  
+  /* ボタン共通 */
+  .btn {
+    display: inline-block;
+    margin: 0.3em;
+    padding: 0.6em 1.2em;
+    border: none;
+    border-radius: 1.2em;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .btn:hover {
+    transform: scale(1.05);
+  }
+  
+  /* 各ボタンのスタイル */
+  .btn-register {
+    background: #ffb347;
+    color: white;
+  }
+  
+  .btn-delete {
+    background: #ff7f7f;
+    color: white;
+  }
+  
+  .btn-approve {
+    background: #90ee90;
+    color: #333;
+  }
+  
+  .btn-home {
+    background: #f0a500;
+    color: white;
+  }
+  
+  /* 商品一覧 */
+  .item-section,
+  .request-section {
+    background: #fff6db;
+    border-radius: 10px;
+    padding: 1em;
+    margin-top: 1.5em;
+  }
+  
+  .item-list,
+  .request-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .item-list li,
+  .request-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border: 1px solid #ffe3a3;
+    border-radius: 8px;
+    padding: 0.6em;
+    margin-bottom: 0.6em;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  
+  /* 商品画像 */
+  .item-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 0.5em;
+  }
+  
+  /* 情報表示 */
+  .item-info,
+  .req-info {
+    flex: 1;
+    text-align: left;
+    font-size: 0.95rem;
+  }
+  
+  /* ボタン横に並べる */
+  form {
+    display: inline;
+  }
+  
+  /* ナビリンク */
+  .nav-links {
+    margin-top: 2em;
+  }
+  
