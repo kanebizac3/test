@@ -111,6 +111,9 @@ def poopadd_check(request):
             unp, created = UnpPoint.objects.get_or_create(user=request.user)
             unp.add_point(1)
 
+        if random.random() < 0.1:
+            return redirect('bonus_game')
+
         # ③ ログを保存
         if request.user.is_authenticated:
             AttemptLog.objects.create(

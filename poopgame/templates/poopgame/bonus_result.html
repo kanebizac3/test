@@ -27,14 +27,14 @@
         {% else %}
           ちがうウンコをさわったよ…<br>
         {% endif %}
-        せいかいは {{ correct_answer }} でした。
+
       </p>
-      <img src="{% static 'poopgame/img/poop-sad.png' %}" alt="サッドうんこ" class="result-img">
+      <img src="{% static 'poopgame/img/podium3.png' %}" alt="サッドうんこ" class="result-img">
       <audio autoplay src="{% static 'poopgame/sounds/explosion.mp3' %}"></audio>
     {% endif %}
 
     <div class="buttons">
-      <a href="{% url 'unko_kakezan' %}" class="btn">つぎのもんだいへ</a>
+      <!-- <a href="{% url 'unko_kakezan' %}" class="btn">つぎのもんだいへ</a> -->
       <a href="{% url 'home' %}" class="btn btn-home">ホームへ</a>
     </div>
   </div>
