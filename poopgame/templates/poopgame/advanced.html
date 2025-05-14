@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>高度問題チャレンジ</title>
+  <link rel="stylesheet" href="{% static 'poopgame/css/auth.css' %}">
+</head>
+<body>
+  <div class="auth-container">
+    <h1>大人のためのチャレンジ🧠</h1>
+    <p class="question">{{ question }} = ?</p>
+    {% if error %}<p class="error">{{ error }}</p>{% endif %}
+    <form method="post">
+      {% csrf_token %}
+      <input type="number" name="answer" placeholder="答えを入力" required>
+      <button type="submit">解答して進む</button>
+    </form>
+    <a href = "{% url 'home' %}">こどもです👶</a>
+  </div>
+</body>
+</html>

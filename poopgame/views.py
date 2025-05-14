@@ -449,6 +449,9 @@ from .models import Chore, UnpPoint
 @login_required
 def parent_page(request):
     """親用お手伝い管理ページ"""
+    """親のお手伝い管理画面（認証済みのみ）"""
+    # if not request.session.get('is_parent_authenticated'):
+    #     return redirect('parent_auth')
 
     # ユーザーの UnpPoint
     unp, _ = UnpPoint.objects.get_or_create(user=request.user)
@@ -550,3 +553,62 @@ def bonus_result(request):
         'is_win': is_win,
         'elapsed': int(elapsed),
     })
+
+
+import random
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from .models import Chore, ParentProfile, UnpPoint
+
+def child_chores(request):
+    """子ども用ページ：親が設定したお手伝い一覧と認証ボタン"""
+        # GET: このユーザーのチャア一覧のみ取得
+    chores = Chore.objects.filter(user=request.user).order_by('-points','name')
+    return render(request, 'poopgame/child.html', {
+        'chores': chores,
+    })
+
+@login_required
+def parent_auth(request):
+    """親認証：PINがあればここで入力、なければ高度問題へ"""
+    profile, _ = ParentProfile.objects.get_or_create(user=request.user)
+    # PIN 未設定なら高度問題へ
+    if not profile.pin_code:
+        return redirect('advanced_challenge')
+
+    error = None
+    if request.method == 'POST':
+        pin = request.POST.get('pin', '').strip()
+        if pin == profile.pin_code:
+            request.session['is_parent_authenticated'] = True
+            return redirect('parent_page')
+        else:
+            error = 'PIN が違います'
+    return render(request, 'poopgame/parent_auth.html', {
+        'error': error,
+    })
+
+@login_required
+def advanced_challenge(request):
+    """PIN未設定ユーザー向けの高度問題チャレンジ"""
+    error = None
+    if request.method == 'POST':
+        ans = request.POST.get('answer', '').strip()
+        correct = request.session.get('adv_correct')
+        if str(ans) == str(correct):
+            request.session['is_parent_authenticated'] = True
+            return redirect('parent_page')
+        else:
+            error = '残念…もう一度挑戦してください。'
+    else:
+        # 新しい問題を作る
+        a = random.randint(11, 99)
+        b = random.randint(11, 99)
+        request.session['adv_correct'] = a * b
+        request.session['adv_q']       = f"{a} × {b}"
+    return render(request, 'poopgame/advanced.html', {
+        'question': request.session['adv_q'],
+        'error': error,
+    })
+

@@ -64,3 +64,9 @@ class Chore(models.Model):
     def __str__(self):
         return f"{self.name} ({self.points}P)"
 
+from django.db import models
+from django.contrib.auth.models import User
+
+class ParentProfile(models.Model):
+    user    = models.OneToOneField(User, on_delete=models.CASCADE)
+    pin_code = models.CharField("親認証 PIN", max_length=4, help_text="数字4桁")

@@ -31,6 +31,12 @@ urlpatterns = [
     path('parent/', views.parent_page, name='parent_page'),
     path('bonus/', views.bonus_game, name='bonus_game'),
     path('bonus/result/', views.bonus_result, name='bonus_result'),
+        # 子ども用お手伝いページ
+    path('child-chores/', views.child_chores, name='child_chores'),
+    # 親認証（PINがあればここで聞く、なければ高度問題へリダイレクト）
+    path('parent-auth/', views.parent_auth, name='parent_auth'),
+    # 高度問題チャレンジ
+    path('advanced-challenge/', views.advanced_challenge, name='advanced_challenge'),
 ]
 
 if settings.DEBUG:

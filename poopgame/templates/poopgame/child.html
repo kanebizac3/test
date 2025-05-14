@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <title>お手伝いリスト</title>
+  <link rel="stylesheet" href="{% static 'poopgame/css/child.css' %}">
+</head>
+<body>
+  <div class="child-container">
+    <h1>お手伝いリスト 📝</h1>
+    <ul class="chore-list">
+      {% for chore in chores %}
+        <li>
+          <span class="name">📝 {{ chore.name }}</span>
+          <span class="pts">{{ chore.points }}P</span>
+        </li>
+      {% empty %}
+        <li>まだおけつだいがありません。</li>
+      {% endfor %}
+    </ul>
+
+    <div class="auth-btn-wrap">
+      <a href="{% url 'parent_auth' %}" class="btn-auth">パパママだけのページ🔒</a>
+    </div>
+  </div>
+</body>
+</html>
