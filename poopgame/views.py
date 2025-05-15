@@ -131,7 +131,7 @@ def poopadd_check(request):
                 correct_answer = total,
                 is_correct     = result
             )
-
+        level = calculate_user_level(request.user, question_type='add')
         context = {
             'num1': num1,
             'num2': num2,
@@ -305,8 +305,8 @@ def unko_kakezan(request):
             request.session['points'] = unp.point  # DB値に合わせる
 
                         # ★5%でボーナスゲームへ
-        if random.random() < 0.1:
-            return redirect('bonus_game')
+            if random.random() < 0.2:
+                return redirect('bonus_game')
 
         context = {
             'a': a, 'b': b,
@@ -411,8 +411,9 @@ def unko_hikizan(request):
             request.session['points'] = unp.point
         
                                 # ★5%でボーナスゲームへ
-        if random.random() < 0.1:
-            return redirect('bonus_game')
+            if random.random() < 0.1:
+                return redirect('bonus_game')
+        level = calculate_user_level(request.user, question_type='add')
 
         # 結果表示用コンテキスト
         context = {
@@ -743,3 +744,24 @@ def unko_programming_view(request):
     return render(request, 'poopgame/unko_programming.html', {
         'stage_json': json.dumps(stage),
     })
+
+# うんこ筆算
+# views.py
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+import random
+
+@login_required
+def unko_hissan(request):
+    num1 = random.randint(10, 99)
+    num2 = random.randint(10, 99)
+    num1_digits = list(str(num1).zfill(2))
+    num2_digits = list(str(num2).zfill(2))
+    context = {
+        'num1': num1,
+        'num2': num2,
+        'num1_digits': num1_digits,
+        'num2_digits': num2_digits,
+        'answer': num1 + num2,
+    }
+    return render(request, 'poopgame/unko_hissan.html', context)

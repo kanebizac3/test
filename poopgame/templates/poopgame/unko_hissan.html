@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>うんこ筆算</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="{% static 'poopgame/css/unko_hissan.css' %}">
+  <script src="{% static 'poopgame/js/unko_hissan.js' %}" defer></script>
+</head>
+<body>
+
+  <div class="container">
+    <h1>うんこ筆算にチャレンジ！💩</h1>
+
+    <div class="hissan-area">
+      <!-- 桁ヘッダー -->
+      <div class="digit-header">
+        <span>十</span>
+        <span>一</span>
+      </div>
+
+      <!-- 問題の筆算 -->
+      <div class="number-line">
+        {% for d in num1_digits %}
+          <div class="digit"><img src="{% static 'poopgame/img/poop_num'|add:d|stringformat:'s'|add:'.png' %}" alt="{{ d }}"></div>
+        {% endfor %}
+      </div>
+      <div class="plus-sign">＋</div>
+      <div class="number-line">
+        {% for d in num2_digits %}
+          <div class="digit"><img src="{% static 'poopgame/img/poop_num'|add:d|stringformat:'s'|add:'.png' %}" alt="{{ d }}"></div>
+        {% endfor %}
+      </div>
+      <hr class="line">
+      <div class="answer-line">
+        <input type="number" id="hissan-answer" data-correct="{{ answer }}" placeholder="答えを入れてね">
+        <button id="submit-hissan">かいケツ！</button>
+      </div>
+      <div id="hissan-result" class="result-message"></div>
+    </div>
+
+    <div class="home-btn-container">
+      <a href="{% url 'home' %}" class="home-btn">🏠 ホームへ</a>
+    </div>
+  </div>
+
+</body>
+</html>

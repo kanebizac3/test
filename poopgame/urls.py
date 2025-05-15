@@ -43,7 +43,7 @@ urlpatterns = [
     path('parent/shop/approve/<int:request_id>/', views.approve_purchase, name='approve_purchase'),  # 購入承認
     path('parent/shop/delete/<int:item_id>/', views.delete_shop_item, name='delete_shop_item'),  # 商品削除]
     path('unko_programming/', views.unko_programming_view, name='unko_programming'),
-
+    path('unko_hissan/', views.unko_hissan, name='unko_hissan'),
     ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

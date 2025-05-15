@@ -1,7 +1,7 @@
 from .models import AttemptLog
 
 def calculate_user_level(user, question_type):
-    logs = AttemptLog.objects.filter(user=user, operation=question_type).order_by('timestamp')[:100]
+    logs = AttemptLog.objects.filter(user=user, operation=question_type).order_by('-timestamp')[:100]
     if not logs:
         return 1
 
@@ -13,6 +13,7 @@ def calculate_user_level(user, question_type):
         else:
             break
 
+    print("正答率, 連続正答数",correct_rate, streak)
     if correct_rate < 0.6:
         return 1
     elif correct_rate < 0.75:
@@ -32,11 +33,10 @@ def get_max_value_for_level(level):
     table = {
         1: 5,
         2: 10,
-        3: 10,
+        3: 15,
         4: 20,
-        5: 30,
-        6: 50,
-        7: 100,
-        8: 999,
+        5: 50,
+        6: 100,
+        7: 999,
     }
     return table.get(level, 10)
