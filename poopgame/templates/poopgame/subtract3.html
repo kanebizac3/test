@@ -9,12 +9,13 @@
           initial-scale=1.0,
           maximum-scale=1.0,
           user-scalable=no">
-  <title>うんこ引き算ゲーム</title>
+  <title>うんこひきざん💩レベル{{level}}</title>
   <link rel="stylesheet" href="{% static 'poopgame/css/subtract3.css' %}">
 </head>
 <body>
   <div class="game-container">
     <div class="score">あなたのウンP: {{ points }}</div>
+    <h2>うんこひきざん💩レベル{{level}}</h2>
 
     <!-- 問題をタップすると a うんこと b 便器が現れる -->
     <h1 id="problem">{{ a }}💩 &minus; {{ b }}🚽</h1>

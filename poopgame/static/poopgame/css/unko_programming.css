@@ -1,0 +1,51 @@
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: #fff8e1;
+    text-align: center;
+    padding: 1em;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(5, 60px);
+    grid-gap: 5px;
+    margin: 1em auto;
+    width: max-content;
+  }
+  
+  .cell {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    line-height: 60px;
+    font-size: 24px;
+    font-weight: bold;
+    background-color: #eee;
+  }
+  
+  .cell.poop {
+    background-color: #fbc02d;
+  }
+  .cell.goal {
+    background-color: #4caf50;
+  }
+  .cell.path {
+    background-color: #dcedc8;
+  }
+  .cell.obstacle {
+    background-color: #aaa;
+  }
+  .controls {
+    margin-top: 1em;
+  }
+  button {
+    font-size: 18px;
+    margin: 0.3em;
+    padding: 0.6em 1em;
+  }
+  #message {
+    margin-top: 1em;
+    font-size: 1.2em;
+    color: #d32f2f;
+  }
+  

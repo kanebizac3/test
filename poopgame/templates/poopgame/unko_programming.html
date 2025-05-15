@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>うんこプログラミング</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="{% static 'poopgame/css/unko_programming.css' %}">
+</head>
+<body>
+  <h1>うんこプログラミング</h1>
+  <div id="grid" class="grid"></div>
+  <div class="controls">
+    <button onclick="addCommand('up')">↑</button>
+    <button onclick="addCommand('down')">↓</button>
+    <button onclick="addCommand('left')">←</button>
+    <button onclick="addCommand('right')">→</button>
+    <button onclick="runProgram()">▶ 実行</button>
+    <button onclick="resetGame()">↺ リセット</button>
+  </div>
+  <div id="message"></div>
+
+  <script>
+    const stageData = {{ stage_json|safe }};
+  </script>
+  <script src="{% static 'poopgame/js/unko_programming.js' %}"></script>
+</body>
+</html>

@@ -75,10 +75,14 @@ def multiply_check(request):
         'user_answer': user_answer,
     })
 
-
+from .models import AttemptLog
+from .utils import calculate_user_level, get_max_value_for_level
 def poopadd(request):
-    num1 = random.randint(1, 10)
-    num2 = random.randint(1, 9)
+    level = calculate_user_level(request.user, question_type='add')
+    max_val = get_max_value_for_level(level)
+
+    num1 = random.randint(1, max_val)
+    num2 = random.randint(1, max_val)
     total = num1 + num2
 
     # ここでリスト化して渡す
@@ -89,6 +93,8 @@ def poopadd(request):
         'num1_list': list(range(num1)),
         'num2_list': list(range(num2)),
         'checked': False,
+        'level':level,
+        'user':request.user
     }
     return render(request, 'poopgame/poopadd.html', context)
 
@@ -135,6 +141,7 @@ def poopadd_check(request):
             'checked': True,
             'user_answer': user_answer,
             'result': result,
+            'level':level,
         }
         return render(request, 'poopgame/poopadd.html', context)
     # GET で来た場合はリダイレクト
@@ -417,11 +424,16 @@ def unko_hikizan(request):
             'is_correct': is_correct,
             'correct_answer': correct_answer,
             'points': request.session['points'],
+            'level':level
+
         }
         return render(request, 'poopgame/subtract3.html', context)
 
     # GET: 新しい問題を生成
-    a = random.randint(3, 9)
+    level = calculate_user_level(request.user, question_type='sub')
+    max_val = get_max_value_for_level(level)
+
+    a = random.randint(3, max_val)
     b = random.randint(1, a-1)
     request.session['a'] = a
     request.session['b'] = b
@@ -433,6 +445,7 @@ def unko_hikizan(request):
         'toilet_range': range(b),
         'answered': False,
         'points': request.session['points'],
+        'level':level
     }
     return render(request, 'poopgame/subtract3.html', context)
 
@@ -692,3 +705,41 @@ def delete_shop_item(request, item_id):
     item = get_object_or_404(ShopItem, id=item_id, user=request.user)
     item.delete()
     return redirect('parent_shop_admin')
+
+
+# def unko_programming_view(request):
+#     return render(request, 'poopgame/unko_programming.html')
+
+import random
+import json
+from django.shortcuts import render
+
+def unko_programming_view(request):
+    def generate_stage(grid_size=5):
+        start = (0, 0)
+        goal = (grid_size - 1, grid_size - 1)
+        grid = [["empty" for _ in range(grid_size)] for _ in range(grid_size)]
+        path = [start]
+        current = start
+        while current != goal:
+            x, y = current
+            next_steps = []
+            if x < grid_size - 1: next_steps.append((x + 1, y))
+            if y < grid_size - 1: next_steps.append((x, y + 1))
+            current = random.choice(next_steps)
+            if current not in path:
+                path.append(current)
+        for x, y in path:
+            grid[y][x] = "path"
+        for y in range(grid_size):
+            for x in range(grid_size):
+                if grid[y][x] == "empty" and random.random() < 0.3:
+                    grid[y][x] = "obstacle"
+        grid[0][0] = "poop"
+        grid[grid_size - 1][grid_size - 1] = "goal"
+        return grid
+
+    stage = generate_stage()
+    return render(request, 'poopgame/unko_programming.html', {
+        'stage_json': json.dumps(stage),
+    })
