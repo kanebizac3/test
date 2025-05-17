@@ -14,7 +14,7 @@
 <body>
   <div class="game-container">
     <!-- ポイント表示 -->
-    <div class="score">うんP: {{ points }}</div>
+    <div class="score">うんP: {{ points }}, レベル：{{level}}</div>
 
     <!-- 問題：タップでうんこ画像が出現 -->
     <h1 id="problem">{{ a }}💩&times; {{ b }}💩</h1>
@@ -70,13 +70,12 @@
     {% endif %}
 
     <!-- ホーム＆次の問題ボタン -->
-    <div class="actions">
-        <a href="{% url 'home' %}" class="action-btn" id="home-btn">ホーム</a>
+    <div class="actions" id="btn" style="display: none;">
+        <a href="{% url 'home' %}" class="action-btn">
+          ホーム</a>
         <!-- 回答前でもNextボタンを出力し、最初は隠す -->
-        <a href="{% url 'unko_kakezan' %}"
-           class="action-btn"
-           id="next-btn"
-           style="display: none;">つぎのもんだい</a>
+        <a href="{% url 'unko_kakezan' %}" class="action-btn">
+          つぎのもんだい</a>
       </div>
   </div>
 

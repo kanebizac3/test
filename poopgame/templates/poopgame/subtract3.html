@@ -74,9 +74,9 @@
 
     <!-- ホーム＆次の問題 -->
     <div class="actions">
-      <a href="{% url 'home' %}" class="action-btn">🏠 ホーム</a>
       {% if answered %}
-        <a href="{% url 'unko_hikizan' %}" class="action-btn" id="next-btn">つぎのもんだい</a>
+      <a href="{% url 'home' %}" class="action-btn">🏠 ホーム</a>
+      <a href="{% url 'unko_hikizan' %}" class="action-btn" id="next-btn">つぎのもんだい</a>
       {% endif %}
     </div>
   </div>

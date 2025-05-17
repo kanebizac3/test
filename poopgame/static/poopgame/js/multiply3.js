@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const answerInput   = document.getElementById('answer-input');
   const answerDisplay = document.getElementById('answer-display');
   const resultMessage = document.getElementById('result-message');
-  const nextBtn       = document.getElementById('next-btn');
+  const Btn       = document.getElementById('btn');
   const correctSound  = document.getElementById('correct-sound');
   const wrongSound    = document.getElementById('wrong-sound');
 
@@ -70,7 +70,10 @@ document.addEventListener('DOMContentLoaded', function () {
       // 入力部を隠し、次へボタンを表示
       const pad = document.querySelector('.num-pad');
       if (pad) pad.style.display = 'none';
-      if (nextBtn) nextBtn.style.display = 'inline-block';
+      setTimeout(function() {
+        if (Btn) Btn.style.display = 'block';
+      }, 3200); // 4000ミリ秒 = 4秒
+
 
       // サーバーに POST → 302リダイレクトを検知
       fetch(window.location.href, {
@@ -88,6 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
           setTimeout(() => {
             window.location.href = redirectUrl;
           }, 3000);
+
         }
       })
       .catch(err => console.error('通信エラー', err));

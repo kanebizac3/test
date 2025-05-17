@@ -117,8 +117,8 @@ def poopadd_check(request):
             unp, created = UnpPoint.objects.get_or_create(user=request.user)
             unp.add_point(1)
 
-        if random.random() < 0.1:
-            return redirect('bonus_game')
+            if random.random() < 0.1:
+                return redirect('bonus_game')
 
         # ③ ログを保存
         if request.user.is_authenticated:
@@ -314,13 +314,19 @@ def unko_kakezan(request):
             'answered': True, 'is_correct': is_correct,
             'points': request.session['points'],
             'correct_answer': correct_answer,
+            'level': level,
+
         }
         return render(request, 'poopgame/multiply3.html', context)
     
     else:
         # — 新しい問題を作成 —
+        level = calculate_user_level(request.user, question_type='add')
+        max_val = get_max_value_for_level(level)
+
         a = random.randint(1, 9)
         b = random.randint(1, 9)
+
         request.session['a'] = a
         request.session['b'] = b
 
@@ -329,6 +335,7 @@ def unko_kakezan(request):
             'a_range': range(a), 'b_range': range(b),
             'answered': False,
             'points': request.session['points'],
+            'level': level,
         }
 
     return render(request, 'poopgame/multiply3.html', context)
