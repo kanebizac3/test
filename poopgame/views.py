@@ -308,7 +308,7 @@ def unko_kakezan(request):
             request.session['points'] = unp.point  # DB値に合わせる
 
                         # ★5%でボーナスゲームへ
-            if random.random() < 0.2:
+            if random.random() < 0.1:
                 return redirect('bonus_game')
 
         context = {
@@ -328,9 +328,9 @@ def unko_kakezan(request):
             level = calculate_user_level(request.user, question_type='sub')
         else:
             level = 1
-        max_val = get_max_value_for_level(level)
+        max_val = get_max_value_for_level(level, difficulty="mul")
 
-        a = random.randint(1, 9)
+        a = random.randint(1, max_val)
         b = random.randint(1, 9)
 
         request.session['a'] = a
@@ -591,6 +591,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from .models import Chore, ParentProfile, UnpPoint
 
+@login_required
 def child_chores(request):
     """子ども用ページ：親が設定したお手伝い一覧と認証ボタン"""
         # GET: このユーザーのチャア一覧のみ取得

@@ -29,14 +29,25 @@ def calculate_user_level(user, question_type):
     else:
         return 2
 
-def get_max_value_for_level(level):
-    table = {
-        1: 5,
-        2: 10,
-        3: 15,
-        4: 20,
-        5: 50,
-        6: 100,
-        7: 999,
-    }
+def get_max_value_for_level(level, difficulty="default"):
+    if difficulty=="default":
+        table = {
+            1: 5,
+            2: 10,
+            3: 15,
+            4: 20,
+            5: 50,
+            6: 100,
+            7: 999,
+        }
+    elif difficulty == "mul":
+        table = {
+            1: 3,
+            2: 4,
+            3: 5,
+            4: 6,
+            5: 7,
+            6: 8,
+            7: 9,
+        }
     return table.get(level, 10)
