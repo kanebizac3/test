@@ -16,26 +16,35 @@
     <div class="hissan-area">
       <!-- 桁ヘッダー -->
       <div class="digit-header">
-        <span>十</span>
-        <span>一</span>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;🔟&nbsp; </span>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1️⃣</span>
       </div>
 
       <!-- 問題の筆算 -->
-      <div class="number-line">
+      <div class="number-line plus-sign">&nbsp;
         {% for d in num1_digits %}
           <div class="digit"><img src="{% static 'poopgame/img/poop_num'|add:d|stringformat:'s'|add:'.png' %}" alt="{{ d }}"></div>
         {% endfor %}
       </div>
-      <div class="plus-sign">＋</div>
-      <div class="number-line">
+      <div class="plus-sign"></div>
+      <div class="number-line plus-sign">+
         {% for d in num2_digits %}
           <div class="digit"><img src="{% static 'poopgame/img/poop_num'|add:d|stringformat:'s'|add:'.png' %}" alt="{{ d }}"></div>
         {% endfor %}
       </div>
+      
       <hr class="line">
       <div class="answer-line">
-        <input type="number" id="hissan-answer" data-correct="{{ answer }}" placeholder="答えを入れてね">
-        <button id="submit-hissan">かいケツ！</button>
+        <input id="hissan-answer" class="answer-box" readonly data-correct="{{ correct_answer }}" placeholder="こたえを入力">
+        <!-- 数字パッド -->
+        <div class="num-pad">
+          {% for n in "123456789" %}
+            <button type="button" class="num-btn" onclick="addDigit('{{ n }}')">{{ n }}</button>
+          {% endfor %}
+          <button type="button" class="num-btn" onclick="clearAnswer()">C</button>
+          <button type="button" class="num-btn" onclick="addDigit('0')">0</button>
+          <button type="submit" id="submit-hissan" class="submit-btn">かいケツ！</button>
+        </div>
       </div>
       <div id="hissan-result" class="result-message"></div>
     </div>

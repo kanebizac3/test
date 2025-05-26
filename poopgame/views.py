@@ -78,7 +78,10 @@ def multiply_check(request):
 from .models import AttemptLog
 from .utils import calculate_user_level, get_max_value_for_level
 def poopadd(request):
-    level = calculate_user_level(request.user, question_type='add')
+    if request.user.is_authenticated:
+        level = calculate_user_level(request.user, question_type='sub')
+    else:
+        level = 1
     max_val = get_max_value_for_level(level)
 
     num1 = random.randint(1, max_val)
@@ -321,7 +324,10 @@ def unko_kakezan(request):
     
     else:
         # — 新しい問題を作成 —
-        level = calculate_user_level(request.user, question_type='add')
+        if request.user.is_authenticated:
+            level = calculate_user_level(request.user, question_type='sub')
+        else:
+            level = 1
         max_val = get_max_value_for_level(level)
 
         a = random.randint(1, 9)
@@ -438,7 +444,10 @@ def unko_hikizan(request):
         return render(request, 'poopgame/subtract3.html', context)
 
     # GET: 新しい問題を生成
-    level = calculate_user_level(request.user, question_type='sub')
+    if request.user.is_authenticated:
+        level = calculate_user_level(request.user, question_type='sub')
+    else:
+        level = 1
     max_val = get_max_value_for_level(level)
 
     a = random.randint(3, max_val)
@@ -760,8 +769,8 @@ import random
 
 @login_required
 def unko_hissan(request):
-    num1 = random.randint(10, 99)
-    num2 = random.randint(10, 99)
+    num1 = random.randint(10, 50)
+    num2 = random.randint(10, 49)
     num1_digits = list(str(num1).zfill(2))
     num2_digits = list(str(num2).zfill(2))
     context = {
